@@ -35,7 +35,7 @@
   --r6:6px;--r10:10px;--r14:14px;--r20:20px;--r28:28px;
 }
 html{font-size:15px}
-body{font-family:var(--fb);background:var(--bg);color:var(--ink);min-height:100vh;display:flex;-webkit-font-smoothing:antialiased}
+body{font-family:var(--fb);background:var(--bg);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased;overflow:hidden}
 
 /* ── SIDEBAR ── */
 .sb{width:var(--sw);min-height:100vh;background:var(--sb);position:fixed;top:0;left:0;bottom:0;z-index:50;display:flex;flex-direction:column;overflow:hidden}
@@ -88,8 +88,8 @@ body{font-family:var(--fb);background:var(--bg);color:var(--ink);min-height:100v
 .u-role{font-size:10px;color:rgba(255,255,255,0.65);font-family:var(--fm)}
 
 /* ── MAIN ── */
-.main{margin-left:var(--sw);flex:1;display:flex;flex-direction:column;min-height:100vh}
-.topbar{height:58px;background:var(--sur);border-bottom:1.5px solid var(--bdr);display:flex;align-items:center;padding:0 26px;gap:10px;position:sticky;top:0;z-index:40}
+.main{margin-left:var(--sw);flex:1;display:flex;flex-direction:column;height:100vh;overflow-y:auto;overflow-x:hidden}
+.topbar{height:58px;background:var(--sur);border-bottom:1.5px solid var(--bdr);display:flex;align-items:center;padding:0 26px;gap:10px;position:sticky;top:0;z-index:40;flex-shrink:0}
 .tb-title{font-family:var(--fd);font-size:1.1rem;font-weight:800;color:var(--ink);flex:1;letter-spacing:-0.01em}
 .search{display:flex;align-items:center;gap:8px;background:var(--bg);border:1.5px solid var(--bdr);border-radius:var(--r20);padding:0 13px;height:35px;width:200px;transition:all 0.15s}
 .search:focus-within{border-color:var(--pw);background:white;box-shadow:0 0 0 3px rgba(123,143,212,0.12)}
@@ -539,15 +539,345 @@ body{font-family:var(--fb);background:var(--bg);color:var(--ink);min-height:100v
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:9px}
 .modal-ftr{display:flex;justify-content:flex-end;gap:8px;margin-top:18px;padding-top:15px;border-top:1px solid var(--bdr)}
 
-::-webkit-scrollbar{width:4px;height:4px}
-::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:var(--bdr2);border-radius:4px}
-::-webkit-scrollbar-thumb:hover{background:var(--ink4)}
+/* ══════════════════════════════
+   AUTH / LANDING SCREENS
+══════════════════════════════ */
+#screen-landing,#screen-signin,#screen-signup{
+  display:none;position:fixed;inset:0;z-index:200;
+  flex-direction:column;overflow-y:auto;overflow-x:hidden;
+  background:white;
+}
+#screen-landing.active,#screen-signin.active,#screen-signup.active{display:flex}
+/* App wrapper fills viewport when active */
+#app-wrapper{display:none;width:100%;min-height:100vh}
+#app-wrapper.active{display:flex}
+
+/* ── LANDING NAV ── */
+.l-nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--bdr);height:62px;display:flex;align-items:center;padding:0 40px;justify-content:space-between;gap:16px}
+.l-logo{display:flex;align-items:center;gap:11px;cursor:pointer}
+.l-logo-badge{background:var(--pw);border-radius:12px;width:72px;height:40px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(91,114,201,0.5)}
+.l-nav-links{display:flex;gap:28px}
+.l-nav-link{font-size:14px;font-weight:500;color:var(--ink3);cursor:pointer;background:none;border:none;font-family:var(--fb);transition:color .15s;padding:0}
+.l-nav-link:hover{color:var(--ink)}
+.l-nav-right{display:flex;gap:9px;align-items:center}
+
+/* ── HERO ── */
+.l-hero{padding:80px 40px 60px;text-align:center;background:linear-gradient(180deg,var(--bg) 0%,white 100%);position:relative}
+.l-hero::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:700px;height:100%;background:radial-gradient(ellipse at 50% 0%,rgba(123,143,212,0.14) 0%,transparent 65%);pointer-events:none;z-index:0}
+.l-hero>*{position:relative;z-index:1}
+.hero-tag{display:inline-flex;align-items:center;gap:7px;background:var(--pw-bg);border:1px solid var(--pw-lt);border-radius:20px;padding:5px 14px;font-size:11px;font-weight:600;color:var(--pw-dk);font-family:var(--fm);text-transform:uppercase;letter-spacing:.08em;margin-bottom:26px}
+.hero-h1{font-family:var(--fd);font-size:clamp(2.2rem,5vw,3.6rem);font-weight:900;color:var(--ink);line-height:1.08;letter-spacing:-0.03em;margin-bottom:18px}
+.hero-h1 em{font-style:normal;color:var(--pw)}
+.hero-p{font-size:1.05rem;color:var(--ink3);max-width:510px;margin:0 auto 32px;line-height:1.7;font-weight:300}
+.hero-btns{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap}
+.hero-note{font-size:12px;color:var(--ink4);margin-top:12px;font-family:var(--fm)}
+
+/* ── MOCK APP PREVIEW ── */
+.hero-preview{margin:48px auto 0;max-width:860px;background:white;border:1.5px solid var(--bdr);border-radius:18px;overflow:hidden;box-shadow:0 24px 64px rgba(18,19,58,0.15)}
+.hp-bar{height:38px;background:var(--sb);display:flex;align-items:center;padding:0 14px;gap:6px}
+.hp-dot{width:10px;height:10px;border-radius:50%}
+.hp-body{display:flex;height:240px}
+.hp-sb{width:48px;background:var(--sb2);display:flex;flex-direction:column;align-items:center;padding:10px 0;gap:8px}
+.hp-si{width:26px;height:26px;border-radius:6px;background:rgba(255,255,255,0.08)}
+.hp-si.a{background:rgba(123,143,212,0.45)}
+.hp-content{flex:1;background:var(--bg);padding:12px;display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:auto auto;gap:9px}
+.hp-card{background:white;border-radius:10px;padding:11px;border:1px solid var(--bdr)}
+.hp-card.span2{grid-column:span 2}
+.hp-stat-n{font-family:var(--fd);font-size:1.5rem;font-weight:800;color:var(--ink)}
+.hp-stat-l{font-size:10px;color:var(--ink4);font-family:var(--fm);text-transform:uppercase;letter-spacing:.07em}
+.hp-bars{display:flex;align-items:flex-end;gap:3px;height:44px;margin-top:6px}
+.hp-b{flex:1;border-radius:3px 3px 0 0;opacity:.8}
+
+/* ── FEATURES ── */
+.l-section{padding:72px 40px;background:white}
+.l-section.alt{background:var(--bg)}
+.section-tag{font-family:var(--fm);font-size:10px;text-transform:uppercase;letter-spacing:.15em;color:var(--pw);margin-bottom:8px;font-weight:600}
+.section-h{font-family:var(--fd);font-size:clamp(1.7rem,3vw,2.3rem);font-weight:800;color:var(--ink);letter-spacing:-0.02em;margin-bottom:12px}
+.section-p{font-size:1rem;color:var(--ink3);max-width:500px;line-height:1.7;font-weight:300}
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:48px}
+.feat-card{background:var(--bg);border:1.5px solid var(--bdr);border-radius:var(--r20);padding:24px;transition:all .2s}
+.feat-card:hover{box-shadow:var(--shmd);transform:translateY(-3px);border-color:var(--pw-lt)}
+.feat-icon{width:42px;height:42px;border-radius:var(--r14);display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+.feat-icon svg{width:21px;height:21px}
+.feat-h{font-family:var(--fd);font-size:1rem;font-weight:800;color:var(--ink);margin-bottom:7px}
+.feat-p{font-size:13px;color:var(--ink3);line-height:1.6;font-weight:300}
+
+/* ── PRICING ── */
+.price-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:680px;margin:48px auto 0}
+.price-card{background:white;border:1.5px solid var(--bdr);border-radius:var(--r28);padding:30px;position:relative;transition:all .2s}
+.price-card.pro{background:var(--sb);border-color:transparent}
+.price-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--pw);color:white;font-size:10px;font-weight:700;font-family:var(--fm);padding:3px 13px;border-radius:10px;white-space:nowrap;letter-spacing:.07em;text-transform:uppercase}
+.price-name{font-family:var(--fd);font-size:1.1rem;font-weight:800;color:var(--ink);margin-bottom:3px}
+.price-card.pro .price-name{color:white}
+.price-amt{font-family:var(--fd);font-size:2.5rem;font-weight:800;color:var(--ink);line-height:1;margin:10px 0 3px}
+.price-card.pro .price-amt{color:white}
+.price-per{font-size:12px;color:var(--ink4);font-family:var(--fm);margin-bottom:20px}
+.price-card.pro .price-per{color:rgba(255,255,255,0.4)}
+.price-feats{list-style:none;display:flex;flex-direction:column;gap:9px;margin-bottom:22px}
+.price-feats li{display:flex;align-items:center;gap:9px;font-size:13px;color:var(--ink2)}
+.price-card.pro .price-feats li{color:rgba(255,255,255,0.85)}
+.pf-check{width:17px;height:17px;border-radius:50%;background:var(--offer-bg);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:9px;color:var(--offer)}
+.price-card.pro .pf-check{background:rgba(5,150,105,0.2);color:#6ee7b7}
+.price-cta{width:100%;justify-content:center;padding:11px}
+
+/* ── SOCIAL PROOF ── */
+.stats-band{padding:52px 40px;background:var(--sb);text-align:center}
+.stats-band-h{font-family:var(--fd);font-size:clamp(1.5rem,3vw,2rem);font-weight:800;color:white;margin-bottom:32px}
+.stat-band-row{display:flex;justify-content:center;gap:56px;flex-wrap:wrap}
+.stat-band-item .sbn{font-family:var(--fd);font-size:2rem;font-weight:800;color:white;letter-spacing:-0.03em}
+.stat-band-item .sbl{font-size:13px;color:rgba(255,255,255,0.4);margin-top:3px}
+
+/* ── LANDING FOOTER ── */
+.l-footer{padding:28px 40px;background:var(--sb2);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:auto}
+.l-footer-copy{font-size:12px;color:rgba(255,255,255,0.3);font-family:var(--fm)}
+.l-footer-links{display:flex;gap:18px}
+.l-footer-link{font-size:12px;color:rgba(255,255,255,0.35);cursor:pointer;background:none;border:none;font-family:var(--fm);transition:color .15s}
+.l-footer-link:hover{color:rgba(255,255,255,0.7)}
+
+/* ── AUTH PAGES ── */
+.auth-wrap{flex:1;display:flex;align-items:center;justify-content:center;padding:24px;background:var(--bg)}
+.auth-box{background:white;border:1.5px solid var(--bdr);border-radius:var(--r28);padding:40px;width:420px;max-width:95vw;box-shadow:var(--shlg)}
+.auth-logo{display:flex;align-items:center;justify-content:center;margin-bottom:24px}
+.auth-logo-badge{background:var(--pw);border-radius:12px;width:72px;height:40px;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(91,114,201,0.4)}
+.auth-h{font-family:var(--fd);font-size:1.5rem;font-weight:800;color:var(--ink);text-align:center;margin-bottom:5px;letter-spacing:-0.02em}
+.auth-sub{font-size:13px;color:var(--ink3);text-align:center;margin-bottom:24px;font-weight:300}
+.auth-field{margin-bottom:14px}
+.auth-lbl{display:block;font-size:11px;font-weight:700;font-family:var(--fm);text-transform:uppercase;letter-spacing:.08em;color:var(--ink3);margin-bottom:5px}
+.auth-inp{width:100%;padding:10px 13px;border:1.5px solid var(--bdr2);border-radius:var(--r14);font-family:var(--fb);font-size:14px;color:var(--ink);background:white;outline:none;transition:border-color .15s}
+.auth-inp:focus{border-color:var(--pw);box-shadow:0 0 0 3px rgba(91,114,201,0.1)}
+.auth-divider{display:flex;align-items:center;gap:12px;margin:16px 0;font-size:12px;color:var(--ink4);font-family:var(--fm)}
+.auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:var(--bdr)}
+.auth-error{background:var(--rejected-bg);border:1px solid rgba(220,38,38,0.2);border-radius:var(--r10);padding:10px 13px;font-size:12.5px;color:var(--rejected);margin-bottom:12px;display:none}
+.auth-error.show{display:block}
+.auth-footer-text{text-align:center;font-size:13px;color:var(--ink3);margin-top:18px}
+.auth-link{color:var(--pw-dk);font-weight:600;cursor:pointer;background:none;border:none;font-family:var(--fb);font-size:13px;text-decoration:none}
+.auth-link:hover{text-decoration:underline}
+.demo-box{background:var(--bg);border:1.5px solid var(--bdr);border-radius:var(--r14);padding:12px 14px;margin-top:14px}
+.demo-box-h{font-size:10px;font-family:var(--fm);font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--ink4);margin-bottom:7px}
+.demo-acc{font-size:12.5px;color:var(--ink3);padding:4px 0;display:flex;justify-content:space-between;border-bottom:1px solid var(--bdr)}
+.demo-acc:last-child{border-bottom:none}
+.demo-acc strong{color:var(--ink2);font-weight:600}
+.demo-acc .demo-use{font-size:11px;color:var(--pw);cursor:pointer;font-weight:600;background:none;border:none;font-family:var(--fb)}
+.demo-use:hover{text-decoration:underline}
+
+/* ══════════════════════════════
+   RESPONSIVE
+══════════════════════════════ */
+@media(max-width:900px){
+  :root{--sw:220px}
+  .feat-grid{grid-template-columns:1fr 1fr}
+  .price-grid{grid-template-columns:1fr}
+  .price-card.pro{order:-1}
+  .stat-band-row{gap:32px}
+}
+@media(max-width:700px){
+  :root{--sw:0px}
+  .sb{transform:translateX(-248px);transition:transform .25s}
+  .sb.open{transform:translateX(0)}
+  .main{margin-left:0;height:100vh;overflow-y:auto}
+  .topbar{padding:0 14px}
+  .mobile-menu-btn{display:flex !important}
+  .feat-grid{grid-template-columns:1fr}
+  .l-nav-links{display:none}
+  .l-nav{padding:0 18px}
+  .l-hero{padding:52px 20px 40px}
+  .l-section{padding:52px 20px}
+  .stats-band{padding:40px 20px}
+  .l-footer{padding:20px 18px}
+  .stat-band-row{gap:24px}
+  .hp-content{grid-template-columns:repeat(2,1fr)}
+  .hp-card.span2{grid-column:span 2}
+  .hero-preview{margin:32px 16px 0;border-radius:12px}
+  .pg{padding:14px 14px}
+  .ph{flex-direction:column;align-items:flex-start}
+  .ph-actions{flex-wrap:wrap}
+  .stats-row{grid-template-columns:1fr 1fr}
+  .charts-row{grid-template-columns:1fr}
+  .bot-row{grid-template-columns:1fr}
+  .cv-grid,.cl-grid{grid-template-columns:1fr}
+  .docs-layout{grid-template-columns:1fr}
+  .acc-layout{grid-template-columns:1fr}
+  .ai-layout{grid-template-columns:1fr}
+  .prep-grid{grid-template-columns:1fr}
+  .alerts-layout{grid-template-columns:1fr}
+  .editor-layout{grid-template-columns:1fr;height:auto}
+  .cl-el{grid-template-columns:1fr;height:auto}
+  .acc-field-row{grid-template-columns:1fr}
+  .auth-box{padding:28px 22px}
+}
+.mobile-menu-btn{display:none;width:36px;height:36px;background:none;border:1.5px solid var(--bdr);border-radius:var(--r10);align-items:center;justify-content:center;cursor:pointer;margin-right:4px}
+.mobile-menu-btn svg{width:18px;height:18px;color:var(--ink3)}
 </style>
 </head>
 <body>
 
-<!-- ════════════════════════ SIDEBAR ════════════════════════ -->
+<!-- ════════ LANDING PAGE (signed-out) ════════ -->
+<div id="screen-landing">
+  <nav class="l-nav">
+    <div class="l-logo" onclick="showScreen('landing')">
+      <div class="l-logo-badge"><svg width="64" height="32" viewBox="0 0 64 32" fill="none"><circle cx="56" cy="8" r="10" fill="rgba(255,255,255,0.12)"/><text x="4" y="24" font-family="Nunito" font-weight="900" font-size="20" fill="white">W</text><text x="22" y="24" font-family="Nunito" font-weight="900" font-size="20" fill="rgba(255,255,255,0.88)">O</text><text x="40" y="24" font-family="Nunito" font-weight="900" font-size="20" fill="white">W</text><path d="M21 13 Q31 5 41 13" stroke="rgba(255,255,255,0.45)" stroke-width="1.8" fill="none" stroke-linecap="round"/><path d="M58 3 L59 6 L62 7 L59 8 L58 11 L57 8 L54 7 L57 6 Z" fill="rgba(255,255,255,0.92)"/></svg></div>
+      <span style="font-family:var(--fd);font-size:15px;font-weight:800;color:var(--ink)">Work on Work</span>
+    </div>
+    <div class="l-nav-links">
+      <button class="l-nav-link" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">Features</button>
+      <button class="l-nav-link" onclick="document.getElementById('pricing').scrollIntoView({behavior:'smooth'})">Pricing</button>
+    </div>
+    <div class="l-nav-right">
+      <button class="btn btn-s" onclick="showScreen('signin')">Sign in</button>
+      <button class="btn btn-p" onclick="showScreen('signup')">Get started free</button>
+    </div>
+  </nav>
+
+  <section class="l-hero">
+    <div class="hero-tag">✦ AI-powered job search · Now available</div>
+    <h1 class="hero-h1">Your job search,<br><em>finally organised.</em></h1>
+    <p class="hero-p">Track every application, tailor your CV with AI, prep for interviews, and land your next role — all in one place.</p>
+    <div class="hero-btns">
+      <button class="btn btn-p" style="padding:13px 30px;font-size:14px" onclick="showScreen('signup')">Get started for free</button>
+      <button class="btn btn-s" style="padding:13px 22px;font-size:14px" onclick="showScreen('signin')">Sign in →</button>
+    </div>
+    <div class="hero-note">Free plan · No credit card required · 2 min setup</div>
+    <div class="hero-preview">
+      <div class="hp-bar"><div class="hp-dot" style="background:#FF5F57"></div><div class="hp-dot" style="background:#FFBD2E"></div><div class="hp-dot" style="background:#28CA41"></div></div>
+      <div class="hp-body">
+        <div class="hp-sb"><div class="hp-si a"></div><div class="hp-si"></div><div class="hp-si"></div><div class="hp-si"></div><div class="hp-si"></div></div>
+        <div class="hp-content">
+          <div class="hp-card"><div class="hp-stat-n">34</div><div class="hp-stat-l">Applied</div></div>
+          <div class="hp-card"><div class="hp-stat-n">7</div><div class="hp-stat-l">Interviews</div></div>
+          <div class="hp-card"><div class="hp-stat-n">21%</div><div class="hp-stat-l">Rate</div></div>
+          <div class="hp-card"><div class="hp-stat-n">3</div><div class="hp-stat-l">Offers</div></div>
+          <div class="hp-card span2" style="grid-row:2"><div class="hp-stat-l" style="margin-bottom:6px">Applications over time</div><div class="hp-bars"><div class="hp-b" style="height:44%;background:var(--saved)"></div><div class="hp-b" style="height:62%;background:var(--saved)"></div><div class="hp-b" style="height:36%;background:var(--saved)"></div><div class="hp-b" style="height:80%;background:var(--saved)"></div><div class="hp-b" style="height:100%;background:var(--saved)"></div><div class="hp-b" style="height:72%;background:var(--saved)"></div><div class="hp-b" style="height:22%;background:var(--int1)"></div><div class="hp-b" style="height:32%;background:var(--int1)"></div><div class="hp-b" style="height:12%;background:var(--int1)"></div><div class="hp-b" style="height:44%;background:var(--int1)"></div><div class="hp-b" style="height:56%;background:var(--int1)"></div><div class="hp-b" style="height:78%;background:var(--int1)"></div></div></div>
+          <div class="hp-card span2" style="grid-row:2"><div class="hp-stat-l" style="margin-bottom:8px">Pipeline</div><div style="display:flex;flex-direction:column;gap:5px"><div style="display:flex;align-items:center;gap:6px"><div style="width:6px;height:6px;border-radius:50%;background:var(--saved)"></div><span style="font-size:10px;color:var(--ink3);flex:1">Saved</span><div style="flex:3;height:4px;background:var(--bg2);border-radius:2px;overflow:hidden"><div style="width:18%;height:100%;background:var(--saved);border-radius:2px"></div></div><span style="font-size:10px;font-family:var(--fm);color:var(--ink4);margin-left:4px">6</span></div><div style="display:flex;align-items:center;gap:6px"><div style="width:6px;height:6px;border-radius:50%;background:var(--applied)"></div><span style="font-size:10px;color:var(--ink3);flex:1">Applied</span><div style="flex:3;height:4px;background:var(--bg2);border-radius:2px;overflow:hidden"><div style="width:35%;height:100%;background:var(--applied);border-radius:2px"></div></div><span style="font-size:10px;font-family:var(--fm);color:var(--ink4);margin-left:4px">12</span></div><div style="display:flex;align-items:center;gap:6px"><div style="width:6px;height:6px;border-radius:50%;background:var(--int1)"></div><span style="font-size:10px;color:var(--ink3);flex:1">Interview</span><div style="flex:3;height:4px;background:var(--bg2);border-radius:2px;overflow:hidden"><div style="width:21%;height:100%;background:var(--int1);border-radius:2px"></div></div><span style="font-size:10px;font-family:var(--fm);color:var(--ink4);margin-left:4px">7</span></div><div style="display:flex;align-items:center;gap:6px"><div style="width:6px;height:6px;border-radius:50%;background:var(--offer)"></div><span style="font-size:10px;color:var(--ink3);flex:1">Offer</span><div style="flex:3;height:4px;background:var(--bg2);border-radius:2px;overflow:hidden"><div style="width:9%;height:100%;background:var(--offer);border-radius:2px"></div></div><span style="font-size:10px;font-family:var(--fm);color:var(--ink4);margin-left:4px">3</span></div></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="l-section" id="features">
+    <div style="text-align:center"><div class="section-tag">Everything you need</div><div class="section-h">Your job search command centre</div><div class="section-p" style="margin:0 auto">From tracking applications to AI-powered CVs, WOW handles the admin so you can focus on landing the role.</div></div>
+    <div class="feat-grid">
+      <div class="feat-card"><div class="feat-icon" style="background:var(--saved-bg)"><svg fill="none" viewBox="0 0 24 24" stroke="var(--saved)" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></div><div class="feat-h">Kanban job tracker</div><div class="feat-p">Drag and drop jobs through Saved → Applied → Interview → Offer. See your whole pipeline at a glance.</div></div>
+      <div class="feat-card"><div class="feat-icon" style="background:var(--applied-bg)"><svg fill="none" viewBox="0 0 24 24" stroke="var(--applied)" stroke-width="2"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></div><div class="feat-h">AI-powered CV tailoring</div><div class="feat-p">Paste any job description and Claude AI rewrites your CV to match. ATS scoring tells you how you'll rank.</div></div>
+      <div class="feat-card"><div class="feat-icon" style="background:var(--int1-bg)"><svg fill="none" viewBox="0 0 24 24" stroke="var(--int1)" stroke-width="2"><path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg></div><div class="feat-h">Interview preparation</div><div class="feat-p">AI-generated question banks tailored to each role. Practice with mock Q&amp;A and track your progress.</div></div>
+      <div class="feat-card"><div class="feat-icon" style="background:rgba(190,24,93,0.1)"><svg fill="none" viewBox="0 0 24 24" stroke="var(--cl-c)" stroke-width="2"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></div><div class="feat-h">Cover letter builder</div><div class="feat-p">AI drafts tailored cover letters in seconds. Export as PDF, DOCX, or share via link.</div></div>
+      <div class="feat-card"><div class="feat-icon" style="background:var(--applied-bg)"><svg fill="none" viewBox="0 0 24 24" stroke="var(--applied)" stroke-width="2"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></div><div class="feat-h">Smart alerts</div><div class="feat-p">Never miss an offer deadline or interview. WOW reminds you to follow up and keep moving.</div></div>
+      <div class="feat-card"><div class="feat-icon" style="background:var(--offer-bg)"><svg fill="none" viewBox="0 0 24 24" stroke="var(--offer)" stroke-width="2"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg></div><div class="feat-h">Analytics &amp; insights</div><div class="feat-p">Track response rates, interview conversion, and weekly progress. Know what's working.</div></div>
+    </div>
+  </section>
+
+  <section class="l-section alt" id="pricing" style="text-align:center">
+    <div class="section-tag">Pricing</div>
+    <div class="section-h">Simple, honest pricing</div>
+    <div class="section-p" style="margin:0 auto">Start for free. Upgrade when you're ready for more.</div>
+    <div class="price-grid">
+      <div class="price-card">
+        <div class="price-name">Free</div><div class="price-amt">£0</div><div class="price-per">forever</div>
+        <ul class="price-feats">
+          <li><div class="pf-check">✓</div>Up to 3 CVs</li>
+          <li><div class="pf-check">✓</div>Up to 5 cover letters</li>
+          <li><div class="pf-check">✓</div>50 AI messages / month</li>
+          <li><div class="pf-check">✓</div>Unlimited job tracker</li>
+          <li><div class="pf-check">✓</div>Interview prep basics</li>
+          <li><div class="pf-check">✓</div>Smart alerts</li>
+        </ul>
+        <button class="btn btn-s price-cta" style="width:100%;justify-content:center" onclick="showScreen('signup')">Get started free</button>
+      </div>
+      <div class="price-card pro">
+        <div class="price-badge">Most popular</div>
+        <div class="price-name">Pro</div><div class="price-amt" style="color:white">£9</div><div class="price-per">per month</div>
+        <ul class="price-feats">
+          <li><div class="pf-check">✓</div>Unlimited CVs</li>
+          <li><div class="pf-check">✓</div>Unlimited cover letters</li>
+          <li><div class="pf-check">✓</div>Unlimited AI messages</li>
+          <li><div class="pf-check">✓</div>ATS scoring &amp; keywords</li>
+          <li><div class="pf-check">✓</div>Advanced interview prep</li>
+          <li><div class="pf-check">✓</div>Priority support</li>
+        </ul>
+        <button class="btn price-cta" style="background:var(--pw);color:white;width:100%;justify-content:center" onclick="showScreen('signup')">Start Pro free — 14 days</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="stats-band">
+    <div class="stats-band-h">Trusted by 12,000+ job seekers</div>
+    <div class="stat-band-row">
+      <div class="stat-band-item"><div class="sbn">12,400+</div><div class="sbl">Active users</div></div>
+      <div class="stat-band-item"><div class="sbn">94,000+</div><div class="sbl">Applications tracked</div></div>
+      <div class="stat-band-item"><div class="sbn">3.2×</div><div class="sbl">More interviews on Pro</div></div>
+      <div class="stat-band-item"><div class="sbn">4.8 ★</div><div class="sbl">Average rating</div></div>
+    </div>
+  </div>
+
+  <footer class="l-footer">
+    <div class="l-footer-copy">© 2026 Work on Work Ltd · All rights reserved</div>
+    <div class="l-footer-links">
+      <button class="l-footer-link">Privacy</button>
+      <button class="l-footer-link">Terms</button>
+      <button class="l-footer-link">Contact</button>
+    </div>
+  </footer>
+</div>
+
+<!-- ════════ SIGN IN ════════ -->
+<div id="screen-signin">
+  <nav class="l-nav">
+    <div class="l-logo" onclick="showScreen('landing')" style="cursor:pointer">
+      <div class="l-logo-badge"><svg width="64" height="32" viewBox="0 0 64 32" fill="none"><circle cx="56" cy="8" r="10" fill="rgba(255,255,255,0.12)"/><text x="4" y="24" font-family="Nunito" font-weight="900" font-size="20" fill="white">W</text><text x="22" y="24" font-family="Nunito" font-weight="900" font-size="20" fill="rgba(255,255,255,0.88)">O</text><text x="40" y="24" font-family="Nunito" font-weight="900" font-size="20" fill="white">W</text><path d="M21 13 Q31 5 41 13" stroke="rgba(255,255,255,0.45)" stroke-width="1.8" fill="none" stroke-linecap="round"/><path d="M58 3 L59 6 L62 7 L59 8 L58 11 L57 8 L54 7 L57 6 Z" fill="rgba(255,255,255,0.92)"/></svg></div>
+      <span style="font-family:var(--fd);font-size:15px;font-weight:800;color:var(--ink)">Work on Work</span>
+    </div>
+    <button class="l-nav-link" onclick="showScreen('landing')">← Back to home</button>
+  </nav>
+  <div class="auth-wrap">
+    <div class="auth-box">
+      <div class="auth-logo"><div class="auth-logo-badge"><svg width="64" height="32" viewBox="0 0 64 32" fill="none"><circle cx="56" cy="8" r="10" fill="rgba(255,255,255,0.12)"/><text x="4" y="24" font-family="Nunito" font-weight="900" font-size="20" fill="white">W</text><text x="22" y="24" font-family="Nunito" font-weight="900" font-size="20" fill="rgba(255,255,255,0.88)">O</text><text x="40" y="24" font-family="Nunito" font-weight="900" font-size="20" fill="white">W</text><path d="M21 13 Q31 5 41 13" stroke="rgba(255,255,255,0.45)" stroke-width="1.8" fill="none" stroke-linecap="round"/><path d="M58 3 L59 6 L62 7 L59 8 L58 11 L57 8 L54 7 L57 6 Z" fill="rgba(255,255,255,0.92)"/></svg></div></div>
+      <div class="auth-h">Welcome back</div>
+      <div class="auth-sub">Sign in to your WOW account</div>
+      <div class="auth-error" id="signin-error">Incorrect email or password. Try a demo account below.</div>
+      <div class="auth-field"><label class="auth-lbl">Email</label><input class="auth-inp" type="email" id="signin-email" placeholder="you@example.com" onkeydown="if(event.key==='Enter')doSignIn()"></div>
+      <div class="auth-field">
+        <label class="auth-lbl" style="display:flex;justify-content:space-between"><span>Password</span><button class="auth-link" tabindex="-1" style="font-size:11px">Forgot password?</button></label>
+        <input class="auth-inp" type="password" id="signin-pw" placeholder="••••••••" onkeydown="if(event.key==='Enter')doSignIn()">
+      </div>
+      <button class="btn btn-p" style="width:100%;justify-content:center;padding:11px;font-size:14px;margin-top:4px" onclick="doSignIn()">Sign in</button>
+      <div class="auth-footer-text">No account? <button class="auth-link" onclick="showScreen('signup')">Sign up free →</button></div>
+      <div class="demo-box">
+        <div class="demo-box-h">Demo accounts — click to auto-fill</div>
+        <div class="demo-acc"><div><strong>jasmine@wow.app</strong> &nbsp;·&nbsp; <code style="font-family:var(--fm);font-size:11px;color:var(--ink3)">demo123</code></div><button class="demo-use" onclick="fillDemo('jasmine@wow.app','demo123')">Use →</button></div>
+        <div class="demo-acc"><div><strong>mike@wow.app</strong> &nbsp;·&nbsp; <code style="font-family:var(--fm);font-size:11px;color:var(--ink3)">demo456</code></div><button class="demo-use" onclick="fillDemo('mike@wow.app','demo456')">Use →</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ SIGN UP ════════ -->
+<div id="screen-signup">
+  <nav class="l-nav">
+    <div class="l-logo" onclick="showScreen('landing')" style="cursor:pointer">
+      <div class="l-logo-badge"><svg width="64" height="32" viewBox="0 0 64 32" fill="none"><circle cx="56" cy="8" r="10" fill="rgba(255,255,255,0.12)"/><text x="4" y="24" font-family="Nunito" font-weight="900" font-size="20" fill="white">W</text><text x="22" y="24" font-family="Nunito" font-weight="900" font-size="20" fill="rgba(255,255,255,0.88)">O</text><text x="40" y="24" font-family="Nunito" font-weight="900" font-size="20" fill="white">W</text><path d="M21 13 Q31 5 41 13" stroke="rgba(255,255,255,0.45)" stroke-width="1.8" fill="none" stroke-linecap="round"/><path d="M58 3 L59 6 L62 7 L59 8 L58 11 L57 8 L54 7 L57 6 Z" fill="rgba(255,255,255,0.92)"/></svg></div>
+      <span style="font-family:var(--fd);font-size:15px;font-weight:800;color:var(--ink)">Work on Work</span>
+    </div>
+    <button class="l-nav-link" onclick="showScreen('landing')">← Back to home</button>
+  </nav>
+  <div class="auth-wrap">
+    <div class="auth-box">
+      <div class="auth-logo"><div class="auth-logo-badge"><svg width="64" height="32" viewBox="0 0 64 32" fill="none"><circle cx="56" cy="8" r="10" fill="rgba(255,255,255,0.12)"/><text x="4" y="24" font-family="Nunito" font-weight="900" font-size="20" fill="white">W</text><text x="22" y="24" font-family="Nunito" font-weight="900" font-size="20" fill="rgba(255,255,255,0.88)">O</text><text x="40" y="24" font-family="Nunito" font-weight="900" font-size="20" fill="white">W</text><path d="M21 13 Q31 5 41 13" stroke="rgba(255,255,255,0.45)" stroke-width="1.8" fill="none" stroke-linecap="round"/><path d="M58 3 L59 6 L62 7 L59 8 L58 11 L57 8 L54 7 L57 6 Z" fill="rgba(255,255,255,0.92)"/></svg></div></div>
+      <div class="auth-h">Create your account</div>
+      <div class="auth-sub">Start organising your job search for free</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+        <div><label class="auth-lbl">First name</label><input class="auth-inp" id="su-first" placeholder="Jasmine"></div>
+        <div><label class="auth-lbl">Last name</label><input class="auth-inp" id="su-last" placeholder="Lee"></div>
+      </div>
+      <div class="auth-field"><label class="auth-lbl">Email</label><input class="auth-inp" id="su-email" type="email" placeholder="you@example.com"></div>
+      <div class="auth-field"><label class="auth-lbl">Password</label><input class="auth-inp" id="su-pw" type="password" placeholder="Min. 8 characters" onkeydown="if(event.key==='Enter')doSignUp()"></div>
+      <div style="font-size:12px;color:var(--ink4);margin-bottom:14px;line-height:1.5">By signing up you agree to our <span style="color:var(--pw-dk);cursor:pointer">Terms</span> and <span style="color:var(--pw-dk);cursor:pointer">Privacy Policy</span>.</div>
+      <button class="btn btn-p" style="width:100%;justify-content:center;padding:11px;font-size:14px" onclick="doSignUp()">Create free account</button>
+      <div class="auth-footer-text">Already have an account? <button class="auth-link" onclick="showScreen('signin')">Sign in</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ APP (signed-in) ════════ -->
+<div id="app-wrapper" class="hidden">
 <aside class="sb">
   <div class="sb-logo">
     <div class="wow-logo-row" onclick="goPage('dashboard',null)">
@@ -624,18 +954,22 @@ body{font-family:var(--fb);background:var(--bg);color:var(--ink);min-height:100v
     </button>
   </nav>
 
-  <div class="sb-user" onclick="goPage('account',null)">
+  <div class="sb-user" onclick="goPage('account',null)" style="cursor:pointer">
     <div class="u-ava">JL</div>
-    <div>
+    <div style="flex:1">
       <div class="u-name">Jasmine Lee</div>
       <div class="u-role">UX Designer</div>
     </div>
+    <button title="Sign out" onclick="event.stopPropagation();doSignOut()" style="background:none;border:none;cursor:pointer;padding:5px;color:rgba(255,255,255,0.35);transition:color .15s;flex-shrink:0" onmouseover="this.style.color='rgba(255,255,255,0.8)'" onmouseout="this.style.color='rgba(255,255,255,0.35)'">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+    </button>
   </div>
 </aside>
 
 <!-- ════════════════════════ MAIN ════════════════════════ -->
 <main class="main">
   <div class="topbar">
+    <button class="mobile-menu-btn" onclick="toggleMobileMenu()"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
     <div class="tb-title" id="pg-title">Dashboard</div>
     <div style="display:flex;align-items:center;gap:8px">
       <div class="search"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg><input placeholder="Search jobs, CVs…" id="topbar-search-inp" onclick="openSearchPage()" readonly style="cursor:pointer"></div>
@@ -1276,6 +1610,7 @@ body{font-family:var(--fb);background:var(--bg);color:var(--ink);min-height:100v
   </div>
 
 </main>
+</div><!-- end #app-wrapper -->
 
 <!-- ═══ JOB DETAIL OVERLAY ═══ -->
 <div class="jdp-ov" id="jd-ov" onclick="closeJDifOv(event)">
@@ -1341,8 +1676,86 @@ body{font-family:var(--fb);background:var(--bg);color:var(--ink);min-height:100v
 
 <script>
 // ═══════════════════════════════
-// PAGE ROUTING
+// AUTH & SCREEN ROUTING
 // ═══════════════════════════════
+const DEMO_ACCOUNTS={
+  'jasmine@wow.app':{password:'demo123',name:'Jasmine Lee',initials:'JL',role:'UX Designer'},
+  'mike@wow.app':   {password:'demo456',name:'Mike Smith',  initials:'MS',role:'Product Manager'}
+};
+
+let currentUser=null;
+
+function showScreen(name){
+  // Hide all screens
+  ['landing','signin','signup'].forEach(s=>{
+    document.getElementById('screen-'+s).classList.remove('active');
+  });
+  document.getElementById('app-wrapper').classList.remove('active');
+
+  if(name==='app'){
+    document.getElementById('app-wrapper').classList.add('active');
+    buildMiniKanban();buildFullKanban();
+    buildChart(chartSets.month.data);buildDonut();
+  } else {
+    document.getElementById('screen-'+name).classList.add('active');
+    // Scroll landing back to top on each visit
+    const el=document.getElementById('screen-'+name);
+    if(el) el.scrollTop=0;
+  }
+}
+
+function fillDemo(email,pw){
+  document.getElementById('signin-email').value=email;
+  document.getElementById('signin-pw').value=pw;
+  document.getElementById('signin-error').classList.remove('show');
+}
+
+function doSignIn(){
+  const email=document.getElementById('signin-email').value.trim().toLowerCase();
+  const pw=document.getElementById('signin-pw').value;
+  const errEl=document.getElementById('signin-error');
+  const account=DEMO_ACCOUNTS[email];
+  if(account && account.password===pw){
+    currentUser={email,...account};
+    errEl.classList.remove('show');
+    // Update sidebar with user info
+    document.querySelector('.u-name').textContent=account.name;
+    document.querySelector('.u-role').textContent=account.role;
+    document.querySelector('.u-ava').textContent=account.initials;
+    showScreen('app');
+  } else {
+    errEl.classList.add('show');
+  }
+}
+
+function doSignUp(){
+  const first=document.getElementById('su-first').value.trim();
+  const last=document.getElementById('su-last').value.trim();
+  const email=document.getElementById('su-email').value.trim();
+  const pw=document.getElementById('su-pw').value;
+  if(!first||!email||!pw){alert('Please fill in all required fields.');return;}
+  if(pw.length<8){alert('Password must be at least 8 characters.');return;}
+  // Register and log in
+  const name=`${first} ${last}`.trim();
+  const initials=(first[0]+(last[0]||'')).toUpperCase();
+  currentUser={email,name,initials,role:'Job Seeker'};
+  document.querySelector('.u-name').textContent=name;
+  document.querySelector('.u-role').textContent='Job Seeker';
+  document.querySelector('.u-ava').textContent=initials;
+  showScreen('app');
+}
+
+function doSignOut(){
+  currentUser=null;
+  showScreen('landing');
+}
+
+function toggleMobileMenu(){
+  document.getElementById('sidebar')?.classList.toggle('open');
+}
+
+// Start on landing page
+showScreen('landing');
 const pageTitles={dashboard:'Dashboard',jobs:'Job Tracker',kanban:'Kanban Board',cvs:'CVs','cv-editor':'CV Editor','cv-dl':'Download CV',cl:'Cover Letters','cl-editor':'Cover Letter Editor','cl-export':'Export Cover Letter',docs:'Docs & Links',prep:'Interview Prep',ai:'AI Assistant',alerts:'Alerts',account:'Account',help:'Help Centre',search:'Search'};
 
 function goPage(name,btn){
