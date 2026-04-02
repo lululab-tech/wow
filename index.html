@@ -1,0 +1,2031 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WOW — Work on Work</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;0,800;0,900;1,800&family=Outfit:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --pw:#7B8FD4;--pw-dk:#5A6EC0;--pw-lt:#C8D1F5;--pw-bg:#EEF1FB;
+  --sb:#1A1D3F;--sb2:#22264D;--sb3:#2C3060;
+  --bg:#F4F5FF;--bg2:#ECEEFF;--sur:#FFFFFF;
+  /* Upgraded text palette — no invisible greys */
+  --ink:#12133A;--ink2:#2E3060;--ink3:#5A5C84;--ink4:#8A8CA8;
+  --bdr:#E0E3F4;--bdr2:#C8CCEC;
+  --saved:#5B72C9;--saved-bg:#EEF1FB;
+  --applied:#D97706;--applied-bg:#FEF3E8;
+  --phone:#0891B2;--phone-bg:#E0F7FA;
+  --int1:#7C3AED;--int1-bg:#EDE9FE;
+  --int2:#5B21B6;--int2-bg:#E8E0FF;
+  --final:#1D4ED8;--final-bg:#DBEAFE;
+  --offer:#059669;--offer-bg:#D1FAE5;
+  --rejected:#DC2626;--rejected-bg:#FEE2E2;
+  --cv-c:#B45309;--cl-c:#BE185D;--doc-c:#0369A1;
+  --shsm:0 1px 4px rgba(18,19,58,0.09);
+  --shmd:0 4px 16px rgba(18,19,58,0.12);
+  --shlg:0 12px 40px rgba(18,19,58,0.18);
+  --sw:248px;
+  --fd:'Nunito',system-ui,sans-serif;
+  --fb:'Outfit',system-ui,sans-serif;
+  --fm:'DM Mono',monospace;
+  --r6:6px;--r10:10px;--r14:14px;--r20:20px;--r28:28px;
+}
+html{font-size:15px}
+body{font-family:var(--fb);background:var(--bg);color:var(--ink);min-height:100vh;display:flex;-webkit-font-smoothing:antialiased}
+
+/* ── SIDEBAR ── */
+.sb{width:var(--sw);min-height:100vh;background:var(--sb);position:fixed;top:0;left:0;bottom:0;z-index:50;display:flex;flex-direction:column;overflow:hidden}
+
+/* ── WOW LOGO — big, bold, unmissable ── */
+.sb-logo{padding:14px 14px 12px;border-bottom:1px solid rgba(255,255,255,0.09);flex-shrink:0}
+.wow-logo-row{display:flex;align-items:center;gap:11px;cursor:pointer}
+.wow-badge{
+  background:var(--pw);
+  border-radius:12px;
+  width:72px;height:40px;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 16px rgba(91,114,201,0.55);
+  flex-shrink:0;position:relative;overflow:visible;
+}
+.wow-wordmark{font-family:var(--fd);font-size:14px;font-weight:800;color:rgba(255,255,255,0.95);letter-spacing:0.01em;line-height:1.2}
+
+/* ── NAV ── */
+.sb-nav{flex:1;padding:8px 9px;overflow-y:auto;display:flex;flex-direction:column;gap:1px}
+.sb-nav::-webkit-scrollbar{width:0}
+.sb-grp{font-family:var(--fm);font-size:9.5px;text-transform:uppercase;letter-spacing:0.14em;color:rgba(255,255,255,0.55);padding:14px 10px 5px;font-weight:600}
+.ni{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:var(--r10);cursor:pointer;border:none;background:none;width:100%;text-align:left;font-family:var(--fb);font-size:13.5px;font-weight:600;transition:all 0.15s;position:relative;color:rgba(255,255,255,0.72)}
+.ni:hover{background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.95)}
+.ni.active{background:rgba(123,143,212,0.25);color:#fff;font-weight:700}
+.ni.active::before{content:'';position:absolute;left:-1px;top:50%;transform:translateY(-50%);width:3px;height:22px;background:var(--pw);border-radius:0 3px 3px 0}
+.ni-icon{width:30px;height:30px;border-radius:var(--r6);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.15s}
+.ni-icon svg{width:15px;height:15px}
+.ni:not(.active) .ni-icon{background:rgba(255,255,255,0.1)}
+.ni:not(.active) .ni-icon svg{color:rgba(255,255,255,0.7)}
+.ni.active .ni-icon svg{color:white}
+.ni.active[data-p="dashboard"] .ni-icon{background:rgba(123,143,212,0.4)}
+.ni.active[data-p="jobs"] .ni-icon,.ni.active[data-p="kanban"] .ni-icon{background:rgba(217,119,6,0.35)}
+.ni.active[data-p="cvs"] .ni-icon{background:rgba(180,83,9,0.35)}
+.ni.active[data-p="cl"] .ni-icon{background:rgba(190,24,93,0.35)}
+.ni.active[data-p="docs"] .ni-icon{background:rgba(3,105,161,0.35)}
+.ni.active[data-p="prep"] .ni-icon{background:rgba(5,150,105,0.35)}
+.ni.active[data-p="ai"] .ni-icon{background:rgba(124,58,237,0.4)}
+.ni.active[data-p="alerts"] .ni-icon{background:rgba(220,38,38,0.35)}
+.ni.active[data-p="account"] .ni-icon{background:rgba(123,143,212,0.4)}
+.ni-lbl{flex:1}
+.ni-badge{font-family:var(--fm);font-size:10px;font-weight:500;padding:2px 7px;border-radius:10px;background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.7);flex-shrink:0}
+.ni.active .ni-badge{background:var(--pw);color:white}
+.ni-badge.red{background:rgba(220,38,38,0.35);color:#FCA5A5}
+.ni.active .ni-badge.red{background:var(--rejected);color:white}
+
+.sb-user{padding:14px 15px;border-top:1px solid rgba(255,255,255,0.09);display:flex;align-items:center;gap:10px;cursor:pointer;transition:background 0.15s}
+.sb-user:hover{background:rgba(255,255,255,0.06)}
+.u-ava{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--pw),#EC4899);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:white;font-family:var(--fd);flex-shrink:0}
+.u-name{font-size:13px;font-weight:700;color:rgba(255,255,255,0.95)}
+.u-role{font-size:10px;color:rgba(255,255,255,0.65);font-family:var(--fm)}
+
+/* ── MAIN ── */
+.main{margin-left:var(--sw);flex:1;display:flex;flex-direction:column;min-height:100vh}
+.topbar{height:58px;background:var(--sur);border-bottom:1.5px solid var(--bdr);display:flex;align-items:center;padding:0 26px;gap:10px;position:sticky;top:0;z-index:40}
+.tb-title{font-family:var(--fd);font-size:1.1rem;font-weight:800;color:var(--ink);flex:1;letter-spacing:-0.01em}
+.search{display:flex;align-items:center;gap:8px;background:var(--bg);border:1.5px solid var(--bdr);border-radius:var(--r20);padding:0 13px;height:35px;width:200px;transition:all 0.15s}
+.search:focus-within{border-color:var(--pw);background:white;box-shadow:0 0 0 3px rgba(123,143,212,0.12)}
+.search input{border:none;outline:none;background:none;font-family:var(--fb);font-size:13px;color:var(--ink);flex:1}
+.search input::placeholder{color:var(--ink4)}
+.search svg{width:13px;height:13px;color:var(--ink4)}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;border-radius:var(--r20);font-family:var(--fb);font-size:13px;font-weight:600;cursor:pointer;transition:all 0.15s;border:none;white-space:nowrap}
+.btn svg{width:13px;height:13px}
+.btn-p{background:var(--pw);color:white;box-shadow:0 2px 8px rgba(91,114,201,0.35)}
+.btn-p:hover{background:var(--pw-dk);transform:translateY(-1px)}
+.btn-s{background:white;color:var(--ink2);border:1.5px solid var(--bdr2)}
+.btn-s:hover{background:var(--bg);border-color:var(--pw);color:var(--ink)}
+.btn-share{background:rgba(5,150,105,0.1);color:var(--offer);border:1.5px solid rgba(5,150,105,0.25)}
+.btn-share:hover{background:var(--offer-bg);border-color:var(--offer)}
+.notif-btn{position:relative;width:35px;height:35px;background:var(--bg);border:1.5px solid var(--bdr);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.15s}
+.notif-btn:hover{border-color:var(--pw)}
+.notif-btn svg{width:15px;height:15px;color:var(--ink3)}
+.notif-dot{position:absolute;top:-1px;right:-1px;width:8px;height:8px;background:var(--rejected);border-radius:50%;border:2px solid var(--sur)}
+
+/* ── PAGES ── */
+.pg{display:none;padding:22px 26px;animation:fadeUp 0.2s ease}
+.pg.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.ph{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;gap:14px}
+.ph-title{font-family:var(--fd);font-size:1.55rem;font-weight:800;color:var(--ink);letter-spacing:-0.02em;line-height:1.1}
+.ph-sub{font-size:13px;color:var(--ink3);margin-top:3px;font-weight:400}
+.ph-actions{display:flex;gap:8px;align-items:center;flex-shrink:0}
+
+/* cards */
+.card{background:var(--sur);border:1.5px solid var(--bdr);border-radius:var(--r14);overflow:hidden}
+.card-hdr{padding:15px 20px 12px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--bdr)}
+.card-title{font-family:var(--fd);font-size:.98rem;font-weight:800;color:var(--ink)}
+.card-sub{font-size:11px;color:var(--ink3);font-family:var(--fm);margin-top:2px}
+.card-body{padding:16px 20px}
+
+/* ── WELCOME BANNER ── */
+.welcome-banner{
+  background:linear-gradient(135deg,var(--sb) 0%,var(--sb3) 100%);
+  border-radius:var(--r20);padding:22px 28px;margin-bottom:16px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:relative;overflow:hidden;
+}
+.welcome-banner::after{content:'';position:absolute;top:-40px;right:-40px;width:140px;height:140px;background:rgba(123,143,212,0.18);border-radius:50%}
+.wb-left h2{font-family:var(--fd);font-size:1.4rem;font-weight:800;color:white;letter-spacing:-0.01em;margin-bottom:4px}
+.wb-left p{font-size:13px;color:rgba(255,255,255,0.65);font-weight:400}
+.wb-right{display:flex;gap:8px;position:relative;z-index:1}
+
+/* ── STATS ── */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:15px}
+.stat-card{background:var(--sur);border:1.5px solid var(--bdr);border-radius:var(--r20);padding:17px 19px;position:relative;overflow:hidden;transition:all 0.2s}
+.stat-card:hover{box-shadow:var(--shmd);transform:translateY(-2px)}
+.stat-stripe{position:absolute;top:0;left:0;right:0;height:4px;border-radius:var(--r20) var(--r20) 0 0}
+.stat-icon{width:36px;height:36px;border-radius:var(--r10);display:flex;align-items:center;justify-content:center;margin-bottom:11px}
+.stat-icon svg{width:18px;height:18px}
+.stat-num{font-family:var(--fd);font-size:2rem;font-weight:800;color:var(--ink);line-height:1;letter-spacing:-0.03em;margin-bottom:3px}
+.stat-lbl{font-size:11px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:.06em;font-family:var(--fm)}
+.stat-chg{display:flex;align-items:center;gap:4px;font-size:12px;font-weight:600;margin-top:5px}
+.chg-up{color:var(--offer)}.chg-neu{color:var(--ink4)}
+
+/* ── CHART ── */
+.charts-row{display:grid;grid-template-columns:5fr 3fr;gap:12px;margin-bottom:15px;align-items:stretch}
+.period-tabs{display:flex;background:var(--bg);border-radius:var(--r10);padding:3px;gap:2px}
+.ptab{padding:4px 10px;border-radius:var(--r6);font-size:11px;font-weight:700;font-family:var(--fm);border:none;background:none;color:var(--ink3);cursor:pointer;transition:all 0.15s}
+.ptab.active{background:white;color:var(--ink);box-shadow:var(--shsm)}
+.ptab:hover:not(.active){color:var(--ink)}
+.bar-chart-wrap{position:relative;flex:1;display:flex;flex-direction:column}
+.bar-chart{display:flex;align-items:flex-end;gap:8px;flex:1;min-height:70px;margin-bottom:8px;width:100%}
+.bar-grp{flex:1;display:flex;flex-direction:column;align-items:stretch;gap:5px;height:100%;cursor:pointer;min-width:0}
+.bars{display:flex;align-items:flex-end;gap:4px;flex:1;width:100%;justify-content:center}
+.bar{border-radius:6px 6px 0 0;width:36%;max-width:32px;min-width:8px;flex:none;transition:all 0.25s}
+.bar:hover{opacity:.75;transform:scaleY(1.04);transform-origin:bottom}
+.bar-lbl{font-size:9.5px;color:var(--ink3);font-family:var(--fm);text-align:center;width:100%;font-weight:500;line-height:1.3;flex-shrink:0}
+.chart-tooltip{position:absolute;background:var(--sb);color:white;padding:6px 10px;border-radius:var(--r10);font-size:11px;pointer-events:none;z-index:10;white-space:nowrap;font-family:var(--fm);opacity:0;transition:opacity 0.15s;transform:translateX(-50%);bottom:calc(100% + 5px)}
+.chart-tooltip.show{opacity:1}
+.chart-tooltip::after{content:'';position:absolute;bottom:-5px;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:var(--sb);border-bottom:0}
+.chart-legend{display:flex;gap:14px;margin-top:4px;flex-shrink:0}
+.leg-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink3);font-weight:600}
+.leg-dot{width:9px;height:9px;border-radius:3px}
+.donut-wrap{display:flex;flex-direction:column;align-items:center;gap:8px}
+.donut-legend{width:100%;display:flex;flex-direction:column;gap:5px}
+.donut-row{display:flex;align-items:center;justify-content:space-between;font-size:12px;cursor:pointer;padding:2px 5px;border-radius:var(--r6);transition:background 0.1s}
+.donut-row:hover{background:var(--bg)}
+.donut-lbl{display:flex;align-items:center;gap:8px;color:var(--ink2);font-weight:600}
+.donut-sw{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+.donut-pct{font-family:var(--fm);font-size:11px;color:var(--ink3);font-weight:500}
+
+/* ── KANBAN ── */
+.k-board{display:flex;gap:10px;overflow-x:auto;padding-bottom:6px}
+.k-board.full{align-items:flex-start;min-height:calc(100vh - 160px)}
+.k-col{border-radius:var(--r14);padding:11px 9px;min-width:172px;flex-shrink:0;transition:outline 0.15s}
+.k-col.drag-over{outline:2.5px dashed var(--pw);outline-offset:-2px}
+/* Column colours */
+.col-saved{background:#ECEFFE}.col-applied{background:#FEF6EE}.col-phone{background:#E0F7FA}
+.col-int1{background:#F1EFFE}.col-int2{background:#EDE8FF}.col-final{background:#EBF0FF}
+.col-offer{background:#ECFDF5}.col-rejected{background:#FEF2F2}
+.k-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}
+.k-title{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-family:var(--fm)}
+.col-saved .k-title{color:var(--saved)}.col-applied .k-title{color:var(--applied)}.col-phone .k-title{color:var(--phone)}.col-int1 .k-title{color:var(--int1)}.col-int2 .k-title{color:var(--int2)}.col-final .k-title{color:var(--final)}.col-offer .k-title{color:var(--offer)}.col-rejected .k-title{color:var(--rejected)}
+.k-cnt{font-family:var(--fm);font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px}
+.col-saved .k-cnt{background:rgba(91,114,201,0.15);color:var(--saved)}.col-applied .k-cnt{background:rgba(217,119,6,0.15);color:var(--applied)}.col-phone .k-cnt{background:rgba(8,145,178,0.15);color:var(--phone)}.col-int1 .k-cnt{background:rgba(124,58,237,0.15);color:var(--int1)}.col-int2 .k-cnt{background:rgba(91,33,182,0.15);color:var(--int2)}.col-final .k-cnt{background:rgba(29,78,216,0.15);color:var(--final)}.col-offer .k-cnt{background:rgba(5,150,105,0.15);color:var(--offer)}.col-rejected .k-cnt{background:rgba(220,38,38,0.15);color:var(--rejected)}
+.jcard{background:white;border:1.5px solid var(--bdr);border-radius:var(--r10);padding:11px 12px;margin-bottom:6px;cursor:grab;transition:all 0.15s;user-select:none}
+.jcard:hover{box-shadow:var(--shmd);transform:translateY(-2px)}
+.jcard.dragging{opacity:0.35;transform:scale(0.97);cursor:grabbing}
+.jc-co{font-size:10px;font-weight:700;font-family:var(--fm);text-transform:uppercase;letter-spacing:.06em;color:var(--ink3);margin-bottom:2px}
+.jc-role{font-size:12.5px;font-weight:600;color:var(--ink);margin-bottom:7px;line-height:1.35}
+.jc-meta{display:flex;align-items:center;justify-content:space-between}
+.jc-tag{font-size:10px;font-weight:600;padding:2px 7px;border-radius:10px;font-family:var(--fm)}
+.tag-r{background:var(--saved-bg);color:var(--saved)}.tag-h{background:var(--applied-bg);color:var(--applied)}.tag-o{background:var(--offer-bg);color:var(--offer)}
+.jc-date{font-size:10px;color:var(--ink4);font-family:var(--fm)}
+/* Interview detail on full kanban cards */
+.jcard-extra{margin-top:8px;padding-top:8px;border-top:1px solid var(--bdr);display:flex;flex-direction:column;gap:4px}
+.jce-row{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--ink3);font-weight:500}
+.jce-row svg{width:11px;height:11px;flex-shrink:0;color:var(--ink4)}
+.k-add{width:100%;padding:8px;border:1.5px dashed var(--bdr2);border-radius:var(--r10);background:none;color:var(--ink4);font-size:12px;font-weight:600;cursor:pointer;transition:all 0.15s;font-family:var(--fb);display:flex;align-items:center;justify-content:center;gap:5px}
+.k-add:hover{border-color:var(--pw);color:var(--pw);background:var(--pw-bg)}
+
+/* ── FILTER TABS ── */
+.filter-tabs{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
+.ft{display:flex;align-items:center;gap:5px;padding:6px 13px;border-radius:20px;font-size:12px;font-weight:600;border:1.5px solid var(--bdr);background:white;cursor:pointer;transition:all 0.15s;font-family:var(--fb);color:var(--ink3)}
+.ft:hover{border-color:var(--pw);color:var(--pw-dk)}
+.ft.active{border-color:transparent;color:white}
+.ft-all.active{background:var(--ink)}.ft-saved.active{background:var(--saved)}.ft-applied.active{background:var(--applied)}.ft-phone.active{background:var(--phone)}.ft-int.active{background:var(--int1)}.ft-offer.active{background:var(--offer)}.ft-rejected.active{background:var(--rejected)}
+.ft-dot{width:7px;height:7px;border-radius:50%;background:currentColor;opacity:.85}
+
+/* ── TABLE ── */
+.table-wrap{background:white;border:1.5px solid var(--bdr);border-radius:var(--r20);overflow:hidden}
+.jtable{width:100%;border-collapse:collapse}
+.jtable thead tr{background:var(--bg)}
+.jtable th{text-align:left;padding:11px 15px;font-size:10.5px;font-family:var(--fm);text-transform:uppercase;letter-spacing:.09em;color:var(--ink3);border-bottom:1.5px solid var(--bdr);font-weight:600}
+.jtable td{padding:12px 15px;font-size:13px;color:var(--ink2);border-bottom:1px solid var(--bdr);vertical-align:middle;font-weight:400}
+.jtable tbody tr:last-child td{border-bottom:none}
+.jtable tbody tr{transition:background 0.1s;cursor:pointer}
+.jtable tbody tr:hover{background:var(--bg)}
+.jtable tbody tr.hidden-row{display:none}
+.sp{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:10px;font-size:10px;font-weight:700;font-family:var(--fm);text-transform:uppercase;letter-spacing:.05em}
+.sp-saved{background:var(--saved-bg);color:var(--saved)}.sp-applied{background:var(--applied-bg);color:var(--applied)}.sp-phone{background:var(--phone-bg);color:var(--phone)}.sp-int1{background:var(--int1-bg);color:var(--int1)}.sp-offer{background:var(--offer-bg);color:var(--offer)}.sp-rejected{background:var(--rejected-bg);color:var(--rejected)}
+.co-cell{display:flex;align-items:center;gap:9px}
+.co-logo{width:27px;height:27px;border-radius:var(--r6);background:var(--bg2);border:1px solid var(--bdr);display:flex;align-items:center;justify-content:center;font-size:9.5px;font-weight:800;color:var(--ink3);flex-shrink:0;font-family:var(--fd)}
+.view-btn{padding:4px 10px;border-radius:var(--r20);border:1.5px solid var(--bdr2);background:none;font-size:11px;font-weight:600;font-family:var(--fb);color:var(--ink3);cursor:pointer;transition:all 0.15s}
+.view-btn:hover{border-color:var(--pw);color:var(--pw-dk);background:var(--pw-bg)}
+
+/* ── JOB DETAIL PANEL ── */
+.jdp-ov{display:none;position:fixed;inset:0;z-index:100;background:rgba(18,19,58,0.45);backdrop-filter:blur(4px);align-items:flex-start;justify-content:flex-end}
+.jdp-ov.open{display:flex;animation:fadeUp 0.2s ease}
+.jdp-panel{width:500px;height:100vh;background:white;overflow-y:auto;box-shadow:var(--shlg)}
+.jdp-hdr{padding:20px 22px 16px;border-bottom:1.5px solid var(--bdr);background:white;position:sticky;top:0;z-index:5}
+.jdp-close{width:30px;height:30px;border-radius:var(--r6);border:1.5px solid var(--bdr);background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--ink4);font-size:15px;transition:all 0.15s;float:right}
+.jdp-close:hover{background:var(--bg2);color:var(--ink)}
+.jdp-co{font-size:11px;font-weight:700;font-family:var(--fm);text-transform:uppercase;letter-spacing:.07em;color:var(--ink4);margin-bottom:4px}
+.jdp-role{font-family:var(--fd);font-size:1.3rem;font-weight:800;color:var(--ink);letter-spacing:-0.02em;margin-bottom:8px}
+.jdp-body{padding:18px 22px}
+.jdp-st{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--ink3);font-family:var(--fm);margin-bottom:8px}
+.jdp-mg{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.jdp-mi{background:var(--bg);border-radius:var(--r10);padding:9px 13px}
+.jdp-ml{font-size:10px;font-family:var(--fm);color:var(--ink4);text-transform:uppercase;letter-spacing:.07em;margin-bottom:2px;font-weight:500}
+.jdp-mv{font-size:13px;font-weight:600;color:var(--ink2)}
+.dlc{background:var(--bg);border:1.5px solid var(--bdr);border-radius:var(--r10);padding:11px 13px;display:flex;align-items:center;gap:10px;margin-bottom:7px;cursor:pointer;transition:all 0.15s}
+.dlc:hover{border-color:var(--pw);background:var(--pw-bg)}
+.dlci{width:32px;height:32px;border-radius:var(--r6);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.dlci svg{width:16px;height:16px}
+.tlitem{display:flex;gap:11px;padding:9px 0;border-bottom:1px solid var(--bdr)}
+.tlitem:last-child{border-bottom:none}
+.tl-dot{width:8px;height:8px;border-radius:50%;margin-top:4px;flex-shrink:0}
+.tl-date{font-size:11px;font-family:var(--fm);color:var(--ink4);margin-bottom:2px;font-weight:500}
+.tl-ev{font-size:13px;color:var(--ink2);font-weight:400}
+
+/* ── CVs ── */
+.cv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.cv-card{background:white;border:1.5px solid var(--bdr);border-radius:var(--r20);overflow:hidden;cursor:pointer;transition:all 0.2s}
+.cv-card:hover{box-shadow:var(--shmd);transform:translateY(-2px);border-color:var(--pw-lt)}
+.cv-preview{height:160px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;border-bottom:1.5px solid var(--bdr)}
+.cv-mini{width:90px;height:120px;background:white;border-radius:5px;box-shadow:var(--shlg);padding:8px 6px;display:flex;flex-direction:column;gap:3px}
+.cvl{border-radius:2px}
+.cv-sbadge{position:absolute;top:9px;right:9px;font-size:9px;font-weight:700;font-family:var(--fm);padding:3px 8px;border-radius:10px;text-transform:uppercase;letter-spacing:.07em}
+.b-active{background:var(--offer-bg);color:var(--offer);border:1px solid rgba(5,150,105,0.25)}
+.b-draft{background:var(--applied-bg);color:var(--applied)}
+.cv-info{padding:12px 14px}
+.cv-name{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:2px;font-family:var(--fd);letter-spacing:-0.01em}
+.cv-meta{font-size:11.5px;color:var(--ink3);font-family:var(--fm);margin-bottom:8px;font-weight:500}
+.cv-tags{display:flex;flex-wrap:wrap;gap:4px}
+.cv-tag{font-size:10px;font-family:var(--fm);font-weight:600;padding:2px 8px;border-radius:10px;background:var(--pw-bg);color:var(--pw-dk);border:1px solid var(--pw-lt)}
+.cv-actions{display:flex;gap:4px;padding:8px 12px 11px;border-top:1px solid var(--bdr)}
+.cv-act{flex:1;padding:6px 4px;border-radius:var(--r6);border:1.5px solid var(--bdr);background:none;font-size:11px;font-weight:600;color:var(--ink3);cursor:pointer;transition:all 0.15s;display:flex;align-items:center;justify-content:center;gap:3px;font-family:var(--fb)}
+.cv-act svg{width:11px;height:11px}
+.cv-act:hover{border-color:var(--pw);color:var(--pw-dk);background:var(--pw-bg)}
+.upload-card{background:white;border:2px dashed var(--bdr2);border-radius:var(--r20);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:34px 18px;cursor:pointer;transition:all 0.2s;gap:9px;min-height:290px}
+.upload-card:hover{border-color:var(--pw);background:var(--pw-bg)}
+.uc-icon{width:46px;height:46px;border-radius:var(--r14);background:var(--bg);display:flex;align-items:center;justify-content:center;transition:all 0.2s}
+.uc-icon svg{width:21px;height:21px;color:var(--ink3)}
+.upload-card:hover .uc-icon{background:var(--pw)}
+.upload-card:hover .uc-icon svg{color:white}
+.uc-lbl{font-size:14px;font-weight:700;color:var(--ink2);font-family:var(--fd)}
+.uc-sub{font-size:12px;color:var(--ink3);text-align:center;line-height:1.5}
+
+/* ── EDITOR ── */
+.editor-layout{display:grid;grid-template-columns:1fr 310px;gap:14px;height:calc(100vh - 108px)}
+.editor-main{background:white;border:1.5px solid var(--bdr);border-radius:var(--r20);display:flex;flex-direction:column;overflow:hidden}
+.editor-toolbar{padding:10px 16px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;gap:7px;flex-wrap:wrap;background:var(--bg)}
+.tb-group{display:flex;gap:3px;padding-right:9px;border-right:1px solid var(--bdr)}
+.tb-group:last-child{border-right:none}
+.tb-btn{width:28px;height:26px;border-radius:var(--r6);border:1.5px solid var(--bdr);background:white;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink3);font-size:12px;font-weight:700;transition:all 0.15s}
+.tb-btn:hover{border-color:var(--pw);color:var(--pw-dk);background:var(--pw-bg)}
+.tb-btn.active{background:var(--pw);color:white;border-color:var(--pw)}
+.editor-area{flex:1;overflow-y:auto;padding:28px 36px;outline:none}
+.cv-section{margin-bottom:22px}
+.cv-st{font-family:var(--fd);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--pw-dk);border-bottom:2px solid var(--pw-lt);padding-bottom:5px;margin-bottom:11px}
+.cv-field{border:none;outline:none;font-family:var(--fb);font-size:14px;color:var(--ink2);width:100%;line-height:1.7;resize:none;background:transparent}
+.editor-sb{background:white;border:1.5px solid var(--bdr);border-radius:var(--r20);overflow:hidden}
+.es-sec{padding:14px 17px;border-bottom:1px solid var(--bdr)}
+.es-sec:last-child{border-bottom:none}
+.es-title{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--ink3);font-family:var(--fm);margin-bottom:11px}
+.ats-bar{height:5px;background:var(--bdr);border-radius:4px;overflow:hidden;margin-top:5px}
+.ats-fill{height:100%;border-radius:4px}
+.es-stat{display:flex;justify-content:space-between;font-size:12.5px;color:var(--ink2);padding:3px 0;font-weight:400}
+.es-stat strong{font-weight:700;color:var(--ink)}
+
+/* ── CL EDITOR ── */
+.cl-el{display:grid;grid-template-columns:1fr 270px;gap:14px;height:calc(100vh - 108px)}
+.cl-em{background:white;border:1.5px solid var(--bdr);border-radius:var(--r20);display:flex;flex-direction:column;overflow:hidden}
+.cl-ea{flex:1;overflow-y:auto;padding:36px 50px;font-family:var(--fb);font-size:14px;color:var(--ink2);line-height:1.8;font-weight:300;outline:none}
+.cl-ea h3{font-family:var(--fd);font-size:15px;font-weight:700;color:var(--ink);margin:16px 0 8px}
+.cl-esb{background:white;border:1.5px solid var(--bdr);border-radius:var(--r20);display:flex;flex-direction:column;overflow:hidden}
+
+/* ── COVER LETTERS ── */
+.cl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.cl-card{background:white;border:1.5px solid var(--bdr);border-radius:var(--r20);overflow:hidden;cursor:pointer;transition:all 0.2s}
+.cl-card:hover{box-shadow:var(--shmd);transform:translateY(-2px);border-color:rgba(190,24,93,0.3)}
+.cl-top{padding:15px 16px 12px;border-bottom:1px solid var(--bdr);position:relative}
+.cl-bar{position:absolute;top:0;left:0;right:0;height:4px;border-radius:var(--r20) var(--r20) 0 0;background:linear-gradient(90deg,var(--cl-c),#9333ea)}
+.cl-co{font-size:10px;font-weight:700;font-family:var(--fm);text-transform:uppercase;letter-spacing:.08em;color:var(--cl-c);margin-bottom:3px;margin-top:2px}
+.cl-role{font-size:13.5px;font-weight:700;color:var(--ink);font-family:var(--fd);letter-spacing:-.01em;margin-bottom:5px}
+.cl-preview{font-size:12px;color:var(--ink3);line-height:1.55;font-weight:400;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.cl-bottom{padding:9px 16px;display:flex;align-items:center;justify-content:space-between}
+.cl-date{font-size:11px;color:var(--ink4);font-family:var(--fm);font-weight:500}
+.cl-acts{display:flex;gap:5px;align-items:center}
+.cl-btn{padding:4px 9px;border-radius:10px;font-size:10px;font-weight:700;font-family:var(--fm);border:1.5px solid var(--bdr);background:none;color:var(--ink3);cursor:pointer;transition:all 0.15s}
+.cl-btn:hover{border-color:var(--cl-c);color:var(--cl-c);background:rgba(190,24,93,0.06)}
+.cl-linked{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;padding:3px 8px;border-radius:10px;background:var(--offer-bg);color:var(--offer);font-family:var(--fm)}
+.cl-draft-pill{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;padding:3px 8px;border-radius:10px;background:var(--applied-bg);color:var(--applied);font-family:var(--fm)}
+
+/* ── DL/EXPORT GRID ── */
+.dl-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:700px}
+.dl-card{background:white;border:1.5px solid var(--bdr);border-radius:var(--r20);padding:20px;display:flex;flex-direction:column;gap:13px;cursor:pointer;transition:all 0.15s}
+.dl-card:hover{box-shadow:var(--shmd);border-color:var(--pw-lt)}
+.dl-icon{width:38px;height:38px;border-radius:var(--r10);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.dl-icon svg{width:19px;height:19px}
+.dl-name{font-size:13.5px;font-weight:700;color:var(--ink)}
+.dl-desc{font-size:12px;color:var(--ink3);font-family:var(--fm);margin-top:2px;font-weight:500}
+
+/* ── DOCS & LINKS ── */
+.docs-layout{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.docs-sh{font-family:var(--fd);font-size:1rem;font-weight:800;color:var(--ink);letter-spacing:-.01em;margin-bottom:10px;display:flex;align-items:center;gap:9px}
+.docs-sh .sico{width:28px;height:28px;border-radius:var(--r6);display:flex;align-items:center;justify-content:center}
+.docs-sh .sico svg{width:14px;height:14px}
+.doc-item{background:white;border:1.5px solid var(--bdr);border-radius:var(--r14);padding:12px 14px;margin-bottom:6px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:all 0.15s}
+.doc-item:hover{box-shadow:var(--shsm);border-color:var(--doc-c)}
+.dico{width:34px;height:34px;border-radius:var(--r6);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.dico svg{width:17px;height:17px}
+.d-pdf .dico{background:rgba(220,38,38,0.1);color:var(--rejected)}
+.d-docx .dico{background:rgba(3,105,161,0.1);color:var(--doc-c)}
+.d-name{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:1px}
+.d-meta{font-size:11.5px;color:var(--ink3);font-family:var(--fm);font-weight:500}
+.link-item{background:white;border:1.5px solid var(--bdr);border-radius:var(--r14);padding:12px 14px;margin-bottom:6px;cursor:pointer;transition:all 0.15s}
+.link-item:hover{box-shadow:var(--shsm);border-color:var(--int1)}
+.li-hdr{display:flex;align-items:center;gap:9px;margin-bottom:3px}
+.li-fav{width:20px;height:20px;border-radius:4px;background:var(--bg2);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;font-family:var(--fm)}
+.li-title{font-size:13px;font-weight:600;color:var(--ink)}
+.li-url{font-size:11.5px;color:var(--int1);font-family:var(--fm);font-weight:500}
+.li-tags{display:flex;gap:5px;margin-top:6px}
+.li-tag{font-size:10px;font-weight:600;font-family:var(--fm);padding:2px 8px;border-radius:10px;background:var(--int1-bg);color:var(--int1)}
+.add-item-btn{width:100%;padding:10px;border:2px dashed var(--bdr2);border-radius:var(--r14);background:none;color:var(--ink3);font-size:13px;font-weight:600;cursor:pointer;transition:all 0.15s;font-family:var(--fb);display:flex;align-items:center;justify-content:center;gap:5px;margin-top:3px}
+.add-item-btn:hover{border-color:var(--doc-c);color:var(--doc-c)}
+
+/* ── SHARE MODAL ── */
+.share-url-row{display:flex;gap:7px;margin:14px 0}
+.share-url-inp{flex:1;padding:9px 12px;border:1.5px solid var(--bdr2);border-radius:var(--r14);font-family:var(--fm);font-size:12px;color:var(--ink2);background:var(--bg);outline:none;font-weight:500}
+.share-opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
+.share-opt{background:var(--bg);border:1.5px solid var(--bdr);border-radius:var(--r14);padding:12px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:all 0.15s}
+.share-opt:hover{border-color:var(--pw);background:var(--pw-bg)}
+.share-oi{width:34px;height:34px;border-radius:var(--r6);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.share-oi svg{width:17px;height:17px}
+.share-on{font-size:12.5px;font-weight:600;color:var(--ink)}
+.share-od{font-size:11px;color:var(--ink3);margin-top:1px;font-weight:400}
+
+/* ── AI ASSISTANT ── */
+.ai-layout{display:grid;grid-template-columns:255px 1fr;gap:11px;height:calc(100vh - 104px)}
+.ai-sb{background:white;border:1.5px solid var(--bdr);border-radius:var(--r20);display:flex;flex-direction:column;overflow:hidden}
+.ai-modes{padding:10px;border-bottom:1px solid var(--bdr);display:flex;flex-direction:column;gap:3px}
+.ai-mode{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:var(--r14);cursor:pointer;transition:all 0.15s;border:none;background:none;width:100%;font-family:var(--fb)}
+.ai-mode:hover{background:var(--bg)}
+.ai-mode.active{background:var(--sb)}
+.ai-mico{width:30px;height:30px;border-radius:var(--r6);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ai-mico svg{width:14px;height:14px}
+.ai-mode:not(.active) .ai-mico{background:var(--bg2)}
+.ai-mode:not(.active) .ai-mico svg{color:var(--ink3)}
+.ai-mode.active .ai-mico{background:rgba(255,255,255,0.14)}
+.ai-mode.active .ai-mico svg{color:white}
+.ai-mname{font-size:13px;font-weight:600}
+.ai-mode:not(.active) .ai-mname{color:var(--ink2)}
+.ai-mode.active .ai-mname{color:white}
+.ai-mdesc{font-size:10.5px;font-family:var(--fm);margin-top:1px;font-weight:500}
+.ai-mode:not(.active) .ai-mdesc{color:var(--ink4)}
+.ai-mode.active .ai-mdesc{color:rgba(255,255,255,0.5)}
+.ai-hist{padding:10px;flex:1;overflow-y:auto}
+.ai-hlbl{font-size:9.5px;font-family:var(--fm);text-transform:uppercase;letter-spacing:.12em;color:var(--ink4);margin-bottom:6px;font-weight:600}
+.ai-hitem{padding:7px 9px;border-radius:var(--r6);font-size:12.5px;color:var(--ink3);cursor:pointer;transition:background 0.15s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500}
+.ai-hitem:hover{background:var(--bg);color:var(--ink)}
+.ai-chat{background:white;border:1.5px solid var(--bdr);border-radius:var(--r20);display:flex;flex-direction:column;overflow:hidden}
+.chat-hdr{padding:12px 19px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;gap:10px}
+.chat-ava{width:34px;height:34px;border-radius:var(--r10);background:var(--sb);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.chat-ava svg{width:17px;height:17px;color:var(--pw)}
+.chat-aname{font-size:13.5px;font-weight:700;color:var(--ink);font-family:var(--fd)}
+.chat-status{font-size:11px;color:var(--offer);font-family:var(--fm);display:flex;align-items:center;gap:4px;font-weight:600}
+.chat-status::before{content:'';width:6px;height:6px;background:var(--offer);border-radius:50%}
+.chat-msgs{flex:1;overflow-y:auto;padding:14px 18px;display:flex;flex-direction:column;gap:12px}
+.msg{display:flex;gap:8px;max-width:83%}
+.msg.user{align-self:flex-end;flex-direction:row-reverse}
+.msg-ava{width:26px;height:26px;border-radius:50%;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;font-family:var(--fd)}
+.msg.ai .msg-ava{background:var(--sb);color:var(--pw)}
+.msg.user .msg-ava{background:linear-gradient(135deg,var(--pw),#BE185D);color:white}
+.msg-bub{padding:10px 13px;border-radius:var(--r14);font-size:13px;line-height:1.6}
+.msg.ai .msg-bub{background:var(--bg);border:1.5px solid var(--bdr);color:var(--ink2);border-radius:4px var(--r14) var(--r14) var(--r14)}
+.msg.user .msg-bub{background:var(--sb);color:white;border-radius:var(--r14) 4px var(--r14) var(--r14)}
+.msg-bub strong{font-weight:700}
+.msg.ai .msg-bub strong{color:var(--ink)}
+.msg-bub ul{padding-left:15px;margin-top:5px}
+.msg-bub li{margin-bottom:4px}
+.chat-chips{padding:0 18px 10px;display:flex;gap:6px;flex-wrap:wrap}
+.chip{padding:5px 12px;border:1.5px solid var(--bdr2);border-radius:20px;font-size:12px;font-weight:600;color:var(--ink3);cursor:pointer;transition:all 0.15s;background:none;font-family:var(--fb)}
+.chip:hover{background:var(--sb);color:white;border-color:var(--sb)}
+.chat-inp-row{padding:10px 17px;border-top:1px solid var(--bdr);display:flex;gap:7px;align-items:flex-end}
+.chat-inp{flex:1;border:1.5px solid var(--bdr2);border-radius:var(--r20);padding:8px 13px;font-family:var(--fb);font-size:13px;color:var(--ink);resize:none;line-height:1.5;max-height:100px;background:var(--bg);outline:none;transition:border-color 0.15s}
+.chat-inp:focus{border-color:var(--pw);background:white;box-shadow:0 0 0 3px rgba(91,114,201,0.12)}
+.chat-inp::placeholder{color:var(--ink4)}
+.send-btn{width:36px;height:36px;border-radius:50%;background:var(--pw);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.15s;box-shadow:0 2px 8px rgba(91,114,201,0.4)}
+.send-btn:hover{background:var(--pw-dk);transform:scale(1.08)}
+.send-btn svg{width:14px;height:14px;color:white}
+@keyframes p2{0%,100%{opacity:1}50%{opacity:.3}}
+.tdot{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--ink3);animation:p2 1.2s infinite}
+.tdot:nth-child(2){animation-delay:.2s}.tdot:nth-child(3){animation-delay:.4s}
+
+/* ── INTERVIEW PREP ── */
+.prep-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.prep-card{background:white;border:1.5px solid var(--bdr);border-radius:var(--r20);padding:20px;transition:all 0.2s;position:relative;overflow:hidden}
+.prep-card:hover{box-shadow:var(--shmd);transform:translateY(-2px)}
+.prep-stripe{position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--int1),#0891b2);border-radius:var(--r20) var(--r20) 0 0}
+.prep-dl{font-family:var(--fm);font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--applied);margin-bottom:6px}
+.prep-co{font-size:11px;font-weight:700;font-family:var(--fm);color:var(--ink3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px}
+.prep-title{font-size:15.5px;font-weight:800;color:var(--ink);font-family:var(--fd);letter-spacing:-.01em;margin-bottom:7px}
+.prep-meta{font-size:12.5px;color:var(--ink3);margin-bottom:11px;font-weight:400}
+.prep-topics{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:13px}
+.prep-topic{font-size:10px;font-weight:600;font-family:var(--fm);padding:2px 8px;border-radius:10px;background:var(--int1-bg);color:var(--int1)}
+.prep-prog{margin-bottom:14px}
+.prep-prog-lbl{display:flex;justify-content:space-between;font-size:12px;font-family:var(--fm);color:var(--ink3);margin-bottom:5px;font-weight:600}
+.prep-prog-bar{background:var(--bg2);border-radius:4px;height:5px;overflow:hidden}
+.prep-prog-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--int1),#0891b2)}
+
+/* ── ALERTS ── */
+.alerts-layout{display:grid;grid-template-columns:1fr 290px;gap:14px}
+.a-item{display:flex;align-items:flex-start;gap:13px;padding:13px 16px;background:white;border:1.5px solid var(--bdr);border-radius:var(--r14);margin-bottom:7px;transition:all 0.15s;position:relative;overflow:hidden}
+.a-item:hover{box-shadow:var(--shsm)}
+.a-item.unread::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:var(--r14) 0 0 var(--r14)}
+.a-item.unread.a-danger::before{background:var(--rejected)}
+.a-item.unread.a-warn::before{background:var(--applied)}
+.a-item.unread.a-info::before{background:var(--saved)}
+.a-item.unread.a-success::before{background:var(--offer)}
+.a-ico{width:36px;height:36px;border-radius:var(--r10);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.a-ico svg{width:17px;height:17px}
+.a-danger .a-ico{background:var(--rejected-bg);color:var(--rejected)}
+.a-warn .a-ico{background:var(--applied-bg);color:var(--applied)}
+.a-info .a-ico{background:var(--saved-bg);color:var(--saved)}
+.a-success .a-ico{background:var(--offer-bg);color:var(--offer)}
+.a-body{flex:1}
+.a-title{font-size:13.5px;font-weight:700;color:var(--ink);margin-bottom:2px}
+.a-desc{font-size:12.5px;color:var(--ink3);line-height:1.5;font-weight:400}
+.a-time{font-size:11px;color:var(--ink4);font-family:var(--fm);margin-top:4px;font-weight:500}
+.a-right{display:flex;flex-direction:column;align-items:flex-end;gap:7px;flex-shrink:0}
+.unread-dot{width:8px;height:8px;border-radius:50%;background:var(--pw)}
+.a-acts{display:flex;gap:5px}
+.a-act{padding:4px 9px;border-radius:10px;font-size:11px;font-weight:600;font-family:var(--fm);border:1.5px solid var(--bdr);background:none;color:var(--ink3);cursor:pointer;transition:all 0.15s}
+.a-act:hover{border-color:var(--pw);color:var(--pw-dk);background:var(--pw-bg)}
+.a-act.primary{background:var(--pw);color:white;border-color:var(--pw)}
+.a-act.primary:hover{background:var(--pw-dk)}
+
+/* ── ACCOUNT ── */
+.acc-layout{display:grid;grid-template-columns:210px 1fr;gap:16px}
+.acc-nav{background:white;border:1.5px solid var(--bdr);border-radius:var(--r20);overflow:hidden;height:fit-content}
+.an-item{display:flex;align-items:center;gap:9px;padding:12px 15px;cursor:pointer;transition:background .15s;border-bottom:1px solid var(--bdr);font-size:13.5px;font-weight:600;color:var(--ink2)}
+.an-item:last-child{border-bottom:none}
+.an-item:hover{background:var(--bg)}
+.an-item.active{background:var(--pw-bg);color:var(--pw-dk);font-weight:700}
+.an-item svg{width:15px;height:15px;flex-shrink:0;opacity:.7}
+.an-item.active svg{opacity:1}
+.acc-main{display:flex;flex-direction:column;gap:13px}
+.acc-sec{background:white;border:1.5px solid var(--bdr);border-radius:var(--r20);overflow:hidden}
+.acc-sec-hdr{padding:16px 20px 13px;border-bottom:1.5px solid var(--bdr);display:flex;align-items:center;justify-content:space-between}
+.acc-sec-title{font-family:var(--fd);font-size:1rem;font-weight:800;color:var(--ink)}
+.acc-sec-body{padding:18px 20px}
+.acc-field{margin-bottom:14px}
+.acc-field:last-child{margin-bottom:0}
+.acc-lbl{display:block;font-size:11px;font-weight:700;font-family:var(--fm);text-transform:uppercase;letter-spacing:.08em;color:var(--ink3);margin-bottom:5px}
+.acc-inp{width:100%;padding:9px 12px;border:1.5px solid var(--bdr2);border-radius:var(--r14);font-family:var(--fb);font-size:13.5px;color:var(--ink);background:white;outline:none;transition:border-color .15s}
+.acc-inp:focus{border-color:var(--pw);box-shadow:0 0 0 3px rgba(91,114,201,0.1)}
+.acc-inp:disabled{background:var(--bg);color:var(--ink3)}
+.acc-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--bdr)}
+.acc-row:last-child{border-bottom:none}
+.acc-row-lbl{font-size:13.5px;font-weight:600;color:var(--ink)}
+.acc-row-sub{font-size:12px;color:var(--ink3);margin-top:2px;font-weight:400}
+.toggle{width:40px;height:22px;background:var(--bdr2);border-radius:11px;cursor:pointer;position:relative;transition:background .2s;flex-shrink:0;border:none}
+.toggle.on{background:var(--pw)}
+.toggle::after{content:'';position:absolute;top:3px;left:3px;width:16px;height:16px;background:white;border-radius:50%;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.toggle.on::after{transform:translateX(18px)}
+.plan-card{background:linear-gradient(135deg,var(--sb),var(--sb3));border-radius:var(--r20);padding:22px;color:white;margin-bottom:13px;position:relative;overflow:hidden}
+.plan-card::after{content:'';position:absolute;top:-20px;right:-20px;width:80px;height:80px;background:rgba(123,143,212,0.18);border-radius:50%}
+.acc-field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.big-ava{width:68px;height:68px;border-radius:50%;background:linear-gradient(135deg,var(--pw),#EC4899);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;color:white;font-family:var(--fd);flex-shrink:0}
+.ava-section{display:flex;align-items:center;gap:16px;margin-bottom:18px}
+.danger-zone{background:rgba(220,38,38,0.04);border:1.5px solid rgba(220,38,38,0.15);border-radius:var(--r14);padding:13px 16px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+
+/* ── BOT ROWS ── */
+.bot-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.act-item{display:flex;gap:11px;padding:10px 0;border-bottom:1px solid var(--bdr)}
+.act-item:last-child{border-bottom:none}
+.act-dot{width:8px;height:8px;border-radius:50%;margin-top:5px;flex-shrink:0}
+.act-text{font-size:13px;color:var(--ink2);line-height:1.5;font-weight:400}
+.act-time{font-size:11.5px;color:var(--ink4);font-family:var(--fm);margin-top:2px;font-weight:500}
+.up-item{display:flex;gap:11px;padding:10px 0;border-bottom:1px solid var(--bdr);align-items:flex-start}
+.up-item:last-child{border-bottom:none}
+.up-dt{width:40px;height:40px;border-radius:var(--r10);display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0}
+.up-day{font-size:16px;font-weight:800;line-height:1;color:white;font-family:var(--fd)}
+.up-mon{font-size:8px;font-family:var(--fm);color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:.08em}
+.up-title{font-size:13.5px;font-weight:600;color:var(--ink)}
+.up-sub{font-size:12px;color:var(--ink3);font-family:var(--fm);margin-top:2px;font-weight:500}
+
+/* ── MODAL ── */
+.modal-ov{display:none;position:fixed;inset:0;background:rgba(18,19,58,0.48);z-index:200;align-items:center;justify-content:center;backdrop-filter:blur(6px)}
+.modal-ov.open{display:flex;animation:fadeUp .2s ease}
+.modal{background:white;border-radius:var(--r28);padding:26px;width:470px;max-width:90vw;box-shadow:var(--shlg);border:1.5px solid var(--bdr)}
+.modal-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.modal-title{font-family:var(--fd);font-size:1.25rem;font-weight:800;letter-spacing:-.02em;color:var(--ink)}
+.modal-x{width:28px;height:28px;border-radius:var(--r6);border:1.5px solid var(--bdr);background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--ink4);font-size:14px;transition:all .15s}
+.modal-x:hover{background:var(--bg2);color:var(--ink)}
+.form-grp{margin-bottom:12px}
+.form-lbl{display:block;font-size:11px;font-weight:700;font-family:var(--fm);text-transform:uppercase;letter-spacing:.08em;color:var(--ink3);margin-bottom:5px}
+.form-inp,.form-sel{width:100%;padding:9px 12px;border:1.5px solid var(--bdr2);border-radius:var(--r14);font-family:var(--fb);font-size:13.5px;color:var(--ink);background:white;outline:none;transition:border-color .15s}
+.form-inp:focus,.form-sel:focus{border-color:var(--pw);box-shadow:0 0 0 3px rgba(91,114,201,0.1)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.modal-ftr{display:flex;justify-content:flex-end;gap:8px;margin-top:18px;padding-top:15px;border-top:1px solid var(--bdr)}
+
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--bdr2);border-radius:4px}
+::-webkit-scrollbar-thumb:hover{background:var(--ink4)}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════ SIDEBAR ════════════════════════ -->
+<aside class="sb">
+  <div class="sb-logo">
+    <div class="wow-logo-row" onclick="goPage('dashboard',null)">
+      <div class="wow-badge">
+        <!-- WOW logo: full letters, wider badge, sparkle at top-right -->
+        <svg width="64" height="32" viewBox="0 0 64 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Subtle glow circle -->
+          <circle cx="56" cy="8" r="10" fill="rgba(255,255,255,0.12)"/>
+          <!-- W O W — perfectly spaced, nothing cut -->
+          <text x="4"  y="24" font-family="Nunito" font-weight="900" font-size="20" fill="white">W</text>
+          <text x="22" y="24" font-family="Nunito" font-weight="900" font-size="20" fill="rgba(255,255,255,0.88)">O</text>
+          <text x="40" y="24" font-family="Nunito" font-weight="900" font-size="20" fill="white">W</text>
+          <!-- Arch over O -->
+          <path d="M21 13 Q31 5 41 13" stroke="rgba(255,255,255,0.45)" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+          <!-- Sparkle star -->
+          <path d="M58 3 L59 6 L62 7 L59 8 L58 11 L57 8 L54 7 L57 6 Z" fill="rgba(255,255,255,0.92)"/>
+        </svg>
+      </div>
+      <div>
+        <div class="wow-wordmark">Work on Work</div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="sb-nav">
+    <div class="sb-grp">Overview</div>
+    <button class="ni active" data-p="dashboard" onclick="goPage('dashboard',this)">
+      <div class="ni-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></div>
+      <span class="ni-lbl">Dashboard</span>
+    </button>
+    <button class="ni" data-p="jobs" onclick="goPage('jobs',this)">
+      <div class="ni-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></div>
+      <span class="ni-lbl">Job Tracker</span>
+      <span class="ni-badge">12</span>
+    </button>
+
+    <div class="sb-grp">Documents</div>
+    <button class="ni" data-p="cvs" onclick="goPage('cvs',this)">
+      <div class="ni-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></div>
+      <span class="ni-lbl">CVs</span>
+      <span class="ni-badge">4</span>
+    </button>
+    <button class="ni" data-p="cl" onclick="goPage('cl',this)">
+      <div class="ni-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></div>
+      <span class="ni-lbl">Cover Letters</span>
+      <span class="ni-badge">6</span>
+    </button>
+    <button class="ni" data-p="docs" onclick="goPage('docs',this)">
+      <div class="ni-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg></div>
+      <span class="ni-lbl">Docs &amp; Links</span>
+      <span class="ni-badge">8</span>
+    </button>
+
+    <div class="sb-grp">Tools</div>
+    <!-- Interview Prep ABOVE AI Assistant -->
+    <button class="ni" data-p="prep" onclick="goPage('prep',this)">
+      <div class="ni-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg></div>
+      <span class="ni-lbl">Interview Prep</span>
+    </button>
+    <button class="ni" data-p="ai" onclick="goPage('ai',this)">
+      <div class="ni-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg></div>
+      <span class="ni-lbl">AI Assistant</span>
+    </button>
+
+    <div class="sb-grp">Account</div>
+    <button class="ni" data-p="alerts" onclick="goPage('alerts',this)">
+      <div class="ni-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></div>
+      <span class="ni-lbl">Alerts</span>
+      <span class="ni-badge red">5</span>
+    </button>
+    <button class="ni" data-p="account" onclick="goPage('account',this)">
+      <div class="ni-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg></div>
+      <span class="ni-lbl">Account</span>
+    </button>
+  </nav>
+
+  <div class="sb-user" onclick="goPage('account',null)">
+    <div class="u-ava">JL</div>
+    <div>
+      <div class="u-name">Jasmine Lee</div>
+      <div class="u-role">UX Designer</div>
+    </div>
+  </div>
+</aside>
+
+<!-- ════════════════════════ MAIN ════════════════════════ -->
+<main class="main">
+  <div class="topbar">
+    <div class="tb-title" id="pg-title">Dashboard</div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <div class="search"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg><input placeholder="Search jobs, CVs…" id="topbar-search-inp" onclick="openSearchPage()" readonly style="cursor:pointer"></div>
+      <button class="notif-btn" onclick="goPage('alerts',null)"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg><div class="notif-dot"></div></button>
+      <button class="btn" style="background:none;border:1.5px solid var(--bdr2);color:var(--ink3);border-radius:var(--r20);padding:7px 13px;font-size:13px;gap:5px" onclick="goPage('help',null)"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Help</button>
+      <button class="btn btn-p" onclick="openModal('add-job-modal')"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M12 4v16m8-8H4"/></svg>Add Job</button>
+    </div>
+  </div>
+
+  <!-- ═══ DASHBOARD ═══ -->
+  <div class="pg active" id="pg-dashboard">
+
+    <!-- WELCOME BANNER -->
+    <div class="welcome-banner">
+      <div class="wb-left">
+        <h2>Welcome back, Jasmine 👋</h2>
+        <p>You have 3 interviews this week and 1 offer pending — keep it up!</p>
+      </div>
+      <div class="wb-right">
+        <button class="btn" style="background:rgba(255,255,255,0.15);color:white;border:1.5px solid rgba(255,255,255,0.2)" onclick="goPage('prep',null)">Prep for interviews</button>
+        <button class="btn" style="background:white;color:var(--sb)" onclick="goPage('jobs',null)">View pipeline →</button>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-stripe" style="background:linear-gradient(90deg,var(--saved),var(--pw-dk))"></div>
+        <div class="stat-icon" style="background:var(--saved-bg)"><svg fill="none" viewBox="0 0 24 24" stroke="var(--saved)" stroke-width="2"><path d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></div>
+        <div class="stat-num">34</div><div class="stat-lbl">Applied</div>
+        <div class="stat-chg chg-up">↑ 8 this month</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-stripe" style="background:linear-gradient(90deg,var(--int1),#7c3aed)"></div>
+        <div class="stat-icon" style="background:var(--int1-bg)"><svg fill="none" viewBox="0 0 24 24" stroke="var(--int1)" stroke-width="2"><path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg></div>
+        <div class="stat-num">7</div><div class="stat-lbl">Interviews</div>
+        <div class="stat-chg chg-up">↑ 3 upcoming</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-stripe" style="background:linear-gradient(90deg,var(--applied),#f59e0b)"></div>
+        <div class="stat-icon" style="background:var(--applied-bg)"><svg fill="none" viewBox="0 0 24 24" stroke="var(--applied)" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+        <div class="stat-num">21%</div><div class="stat-lbl">Response Rate</div>
+        <div class="stat-chg chg-up">↑ +4% vs avg</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-stripe" style="background:linear-gradient(90deg,var(--offer),#06b6d4)"></div>
+        <div class="stat-icon" style="background:var(--offer-bg)"><svg fill="none" viewBox="0 0 24 24" stroke="var(--offer)" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+        <div class="stat-num">3</div><div class="stat-lbl">Offers</div>
+        <div class="stat-chg chg-neu">2 pending decision</div>
+      </div>
+    </div>
+
+    <!-- CHARTS ROW -->
+    <div class="charts-row">
+      <div class="card" style="display:flex;flex-direction:column">
+        <div class="card-hdr">
+          <div>
+            <div class="card-title">Applications over time</div>
+            <div class="card-sub" id="chart-subtitle">2026 · monthly view</div>
+          </div>
+          <div class="period-tabs">
+            <button class="ptab" onclick="setPeriod('week',this)">Week</button>
+            <button class="ptab active" onclick="setPeriod('month',this)">Month</button>
+            <button class="ptab" onclick="setPeriod('year',this)">Year</button>
+          </div>
+        </div>
+        <div class="card-body" style="padding:12px 18px 14px;display:flex;flex-direction:column;flex:1">
+          <div class="bar-chart-wrap">
+            <div class="chart-tooltip" id="bar-tt"></div>
+            <div class="bar-chart" id="bar-chart"></div>
+          </div>
+          <div class="chart-legend">
+            <div class="leg-item"><div class="leg-dot" style="background:var(--saved);opacity:.8"></div>Applications</div>
+            <div class="leg-item"><div class="leg-dot" style="background:var(--int1)"></div>Interviews</div>
+          </div>
+        </div>
+      </div>
+      <div class="card" style="display:flex;flex-direction:column">
+        <div class="card-hdr"><div><div class="card-title">Pipeline</div><div class="card-sub">34 total tracked</div></div></div>
+        <div class="card-body" style="padding:16px 18px 16px;display:flex;flex-direction:column;flex:1;align-items:center;justify-content:center">
+          <div class="donut-wrap" style="width:100%">
+            <svg id="donut-svg" width="160" height="160" viewBox="0 0 160 160" style="display:block;margin:0 auto 12px">
+              <circle cx="80" cy="80" r="60" fill="none" stroke="#ECEFFE" stroke-width="22"/>
+              <circle cx="80" cy="80" r="60" fill="none" stroke="var(--saved)"    stroke-width="22" stroke-dasharray="66 311"  stroke-dashoffset="93"   class="donut-seg" data-label="Saved|6"/>
+              <circle cx="80" cy="80" r="60" fill="none" stroke="var(--applied)"  stroke-width="22" stroke-dasharray="132 245" stroke-dashoffset="27"   class="donut-seg" data-label="Applied|12"/>
+              <circle cx="80" cy="80" r="60" fill="none" stroke="var(--int1)"     stroke-width="22" stroke-dasharray="77 300"  stroke-dashoffset="-105" class="donut-seg" data-label="Interview|7"/>
+              <circle cx="80" cy="80" r="60" fill="none" stroke="var(--offer)"    stroke-width="22" stroke-dasharray="33 344"  stroke-dashoffset="-182" class="donut-seg" data-label="Offer|3"/>
+              <circle cx="80" cy="80" r="60" fill="none" stroke="var(--rejected)" stroke-width="22" stroke-dasharray="66 311"  stroke-dashoffset="-215" class="donut-seg" data-label="Rejected|6"/>
+              <text id="d-main" x="80" y="73" text-anchor="middle" font-size="26" font-weight="800" fill="var(--ink)" font-family="Nunito,sans-serif">34</text>
+              <text id="d-sub"  x="80" y="91" text-anchor="middle" font-size="9"  fill="var(--ink4)" font-family="DM Mono,monospace" letter-spacing="1.5">TOTAL</text>
+            </svg>
+            <div class="donut-legend">
+              <div class="donut-row" data-seg="0"><div class="donut-lbl"><div class="donut-sw" style="background:var(--saved)"></div>Saved</div><div class="donut-pct">6</div></div>
+              <div class="donut-row" data-seg="1"><div class="donut-lbl"><div class="donut-sw" style="background:var(--applied)"></div>Applied</div><div class="donut-pct">12</div></div>
+              <div class="donut-row" data-seg="2"><div class="donut-lbl"><div class="donut-sw" style="background:var(--int1)"></div>Interview</div><div class="donut-pct">7</div></div>
+              <div class="donut-row" data-seg="3"><div class="donut-lbl"><div class="donut-sw" style="background:var(--offer)"></div>Offer</div><div class="donut-pct">3</div></div>
+              <div class="donut-row" data-seg="4"><div class="donut-lbl"><div class="donut-sw" style="background:var(--rejected)"></div>Rejected</div><div class="donut-pct">6</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MINI KANBAN (dashboard) — screenshot-matched -->
+    <div class="card" style="margin-bottom:13px">
+      <div class="card-hdr">
+        <div><div class="card-title">Application pipeline</div><div class="card-sub">Drag to move · click card for details</div></div>
+        <button class="btn btn-s" style="font-size:12px;border-radius:20px" onclick="goPage('jobs',null)">All jobs →</button>
+      </div>
+      <div style="padding:14px 16px 16px" id="mini-kanban"></div>
+    </div>
+
+    <div class="bot-row">
+      <div class="card"><div class="card-hdr"><div class="card-title">Recent activity</div></div>
+        <div style="padding:0 19px">
+          <div class="act-item"><div class="act-dot" style="background:var(--saved)"></div><div><div class="act-text">Applied to <strong>Product Designer II</strong> at Spotify</div><div class="act-time">Today · 9:41 AM</div></div></div>
+          <div class="act-item"><div class="act-dot" style="background:var(--offer)"></div><div><div class="act-text">Offer received from <strong>Canva</strong> — Lead UX</div><div class="act-time">Yesterday · 3:15 PM</div></div></div>
+          <div class="act-item"><div class="act-dot" style="background:var(--int1)"></div><div><div class="act-text">Final round confirmed at <strong>Notion</strong></div><div class="act-time">Mar 30</div></div></div>
+          <div class="act-item"><div class="act-dot" style="background:var(--cv-c)"></div><div><div class="act-text">CV <strong>"UX — Product Focus"</strong> updated</div><div class="act-time">Mar 28</div></div></div>
+          <div class="act-item"><div class="act-dot" style="background:var(--rejected)"></div><div><div class="act-text"><strong>Stripe</strong> application not progressed</div><div class="act-time">Mar 26</div></div></div>
+        </div>
+      </div>
+      <div class="card"><div class="card-hdr"><div class="card-title">Upcoming</div></div>
+        <div style="padding:0 19px">
+          <div class="up-item"><div class="up-dt" style="background:var(--int1)"><div class="up-day">03</div><div class="up-mon">Apr</div></div><div><div class="up-title">Spotify — Technical Screen</div><div class="up-sub">10:00 AM · Google Meet · 45 min</div></div></div>
+          <div class="up-item"><div class="up-dt" style="background:var(--applied)"><div class="up-day">07</div><div class="up-mon">Apr</div></div><div><div class="up-title">Notion — Final Round</div><div class="up-sub">2:00 PM · Zoom · 3 hours</div></div></div>
+          <div class="up-item"><div class="up-dt" style="background:var(--rejected)"><div class="up-day">08</div><div class="up-mon">Apr</div></div><div><div class="up-title">Canva — Offer deadline</div><div class="up-sub">Decision required by EOD</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ JOB TRACKER (list) ═══ -->
+  <div class="pg" id="pg-jobs">
+    <div class="ph">
+      <div><div class="ph-title">Job Tracker</div><div class="ph-sub">12 active · 34 total tracked</div></div>
+      <div class="ph-actions">
+        <button class="btn btn-s" style="border-radius:20px" onclick="goPage('kanban',null)"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="13" height="13"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Kanban view</button>
+      </div>
+    </div>
+    <div class="filter-tabs">
+      <button class="ft ft-all active" onclick="filterJobs('all',this)">All <strong>34</strong></button>
+      <button class="ft ft-saved" onclick="filterJobs('saved',this)"><span class="ft-dot"></span>Saved 6</button>
+      <button class="ft ft-applied" onclick="filterJobs('applied',this)"><span class="ft-dot"></span>Applied 12</button>
+      <button class="ft ft-phone" onclick="filterJobs('phone',this)"><span class="ft-dot"></span>Phone Screen 4</button>
+      <button class="ft ft-int" onclick="filterJobs('interview',this)"><span class="ft-dot"></span>Interview 7</button>
+      <button class="ft ft-offer" onclick="filterJobs('offer',this)"><span class="ft-dot"></span>Offer 3</button>
+      <button class="ft ft-rejected" onclick="filterJobs('rejected',this)"><span class="ft-dot"></span>Rejected 6</button>
+    </div>
+    <div class="table-wrap">
+      <table class="jtable">
+        <thead><tr><th></th><th>Company</th><th>Role</th><th>Status</th><th>Type</th><th>Salary</th><th>Applied</th><th>CV Used</th><th>Cover Letter</th><th></th></tr></thead>
+        <tbody>
+          <tr data-status="offer"><td>★</td><td><div class="co-cell"><div class="co-logo">CA</div><strong>Canva</strong></div></td><td>Lead UX Designer</td><td><span class="sp sp-offer">● Offer</span></td><td>Remote</td><td>£90–110k</td><td>Mar 18</td><td style="font-size:11.5px;font-family:var(--fm);color:var(--ink3);font-weight:500">UX — Product Focus</td><td style="font-size:11.5px;font-family:var(--fm);color:var(--ink3);font-weight:500">Canva CL</td><td><button class="view-btn" onclick="openJD('canva')">View →</button></td></tr>
+          <tr data-status="interview"><td>★</td><td><div class="co-cell"><div class="co-logo">NO</div><strong>Notion</strong></div></td><td>Senior UX, Collaboration</td><td><span class="sp sp-int1">● Interview</span></td><td>Remote</td><td>£80–95k</td><td>Mar 12</td><td style="font-size:11.5px;font-family:var(--fm);color:var(--ink3);font-weight:500">UX — System Design</td><td style="font-size:11.5px;font-family:var(--fm);color:var(--ink3);font-weight:500">Notion CL</td><td><button class="view-btn" onclick="openJD('notion')">View →</button></td></tr>
+          <tr data-status="interview"><td>☆</td><td><div class="co-cell"><div class="co-logo">SP</div><strong>Spotify</strong></div></td><td>Product Designer II</td><td><span class="sp sp-int1">● Interview</span></td><td>London</td><td>£75–90k</td><td>Mar 20</td><td style="font-size:11.5px;font-family:var(--fm);color:var(--ink3);font-weight:500">UX — Product Focus</td><td style="font-size:11.5px;font-family:var(--fm);color:var(--ink3);font-weight:500">Spotify CL</td><td><button class="view-btn" onclick="openJD('spotify')">View →</button></td></tr>
+          <tr data-status="applied"><td>☆</td><td><div class="co-cell"><div class="co-logo">RV</div><strong>Revolut</strong></div></td><td>Senior Product Designer</td><td><span class="sp sp-applied">● Applied</span></td><td>Remote</td><td>£85–100k</td><td>Mar 22</td><td style="font-size:11.5px;font-family:var(--fm);color:var(--ink3);font-weight:500">UX — Product Focus</td><td style="font-size:11.5px;font-family:var(--fm);color:var(--ink3);font-weight:500">Revolut CL</td><td><button class="view-btn" onclick="openJD('revolut')">View →</button></td></tr>
+          <tr data-status="phone"><td>☆</td><td><div class="co-cell"><div class="co-logo">FI</div><strong>Figma</strong></div></td><td>Design Advocate, EMEA</td><td><span class="sp sp-phone">● Phone Screen</span></td><td>Remote</td><td>£80–95k</td><td>Mar 22</td><td style="font-size:11.5px;font-family:var(--fm);color:var(--ink3);font-weight:500">UX — Product Focus</td><td style="font-size:11.5px;font-family:var(--fm);color:var(--ink4);font-weight:500">No CL</td><td><button class="view-btn" onclick="openJD('figma')">View →</button></td></tr>
+          <tr data-status="saved"><td>☆</td><td><div class="co-cell"><div class="co-logo">MZ</div><strong>Monzo</strong></div></td><td>Senior UX Designer, Growth</td><td><span class="sp sp-saved">Saved</span></td><td>London</td><td>£75–90k</td><td>—</td><td style="font-size:11.5px;font-family:var(--fm);color:var(--ink4);font-weight:500">Not applied</td><td style="font-size:11.5px;font-family:var(--fm);color:var(--ink4)">—</td><td><button class="view-btn" onclick="openJD('monzo')">View →</button></td></tr>
+          <tr data-status="rejected"><td>☆</td><td><div class="co-cell"><div class="co-logo">ST</div><strong>Stripe</strong></div></td><td>Design Systems Lead</td><td><span class="sp sp-rejected">● Rejected</span></td><td>London</td><td>£95–120k</td><td>Mar 5</td><td style="font-size:11.5px;font-family:var(--fm);color:var(--ink3);font-weight:500">UX — System Design</td><td style="font-size:11.5px;font-family:var(--fm);color:var(--ink3);font-weight:500">Stripe CL</td><td><button class="view-btn" onclick="openJD('stripe')">View →</button></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ═══ FULL KANBAN BOARD (expanded interview stages) ═══ -->
+  <div class="pg" id="pg-kanban">
+    <div class="ph">
+      <div>
+        <div class="ph-title">Kanban Board</div>
+        <div class="ph-sub">Drag &amp; drop · 8 stages including full interview pipeline · click cards for details</div>
+      </div>
+      <div class="ph-actions">
+        <button class="btn btn-s" style="border-radius:20px" onclick="goPage('jobs',null)">List view</button>
+        <button class="btn btn-p" onclick="openModal('add-job-modal')"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M12 4v16m8-8H4"/></svg>Add Job</button>
+      </div>
+    </div>
+    <div class="k-board full" id="full-kanban-board" style="padding-bottom:20px"></div>
+  </div>
+
+  <!-- ═══ CVs ═══ -->
+  <div class="pg" id="pg-cvs">
+    <div class="ph">
+      <div><div class="ph-title">CVs</div><div class="ph-sub">4 versions · last updated 2 days ago</div></div>
+      <div class="ph-actions">
+        <button class="btn btn-share" onclick="openShareModal('Your CV collection')"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>Share</button>
+        <button class="btn btn-p">＋ New CV</button>
+      </div>
+    </div>
+    <div class="cv-grid">
+      <div class="cv-card">
+        <div class="cv-preview" style="background:#EEF1FB"><div class="cv-mini"><div class="cvl" style="height:5px;background:var(--sb);width:74%"></div><div class="cvl" style="height:3px;background:#d4d8f0;width:52%;margin-bottom:4px"></div><div class="cvl" style="height:2px;background:#e8eaf5;width:90%"></div><div class="cvl" style="height:2px;background:#e8eaf5;width:80%;margin-bottom:4px"></div><div class="cvl" style="height:3px;background:var(--pw);width:42%;margin-bottom:2px"></div><div class="cvl" style="height:2px;background:#e8eaf5;width:88%"></div><div class="cvl" style="height:2px;background:#e8eaf5;width:75%;margin-bottom:3px"></div><div class="cvl" style="height:3px;background:var(--pw);width:50%;margin-bottom:2px"></div><div class="cvl" style="height:2px;background:#e8eaf5;width:90%"></div><div class="cvl" style="height:2px;background:#e8eaf5;width:62%"></div></div><div class="cv-sbadge b-active">Active</div></div>
+        <div class="cv-info"><div class="cv-name">UX — Product Focus</div><div class="cv-meta">Updated 2d ago · 2 pages · ATS 84%</div><div class="cv-tags"><span class="cv-tag">UX</span><span class="cv-tag">Product</span><span class="cv-tag">B2C</span></div></div>
+        <div class="cv-actions">
+          <button class="cv-act" onclick="goPage('cv-editor',null)"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>Edit</button>
+          <button class="cv-act" onclick="goPage('cv-dl',null)"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>Download</button>
+          <button class="cv-act" onclick="openShareModal('UX — Product Focus CV')"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>Share</button>
+        </div>
+      </div>
+      <div class="cv-card">
+        <div class="cv-preview" style="background:#FEF6EE"><div class="cv-mini"><div style="display:flex;gap:4px;margin-bottom:3px"><div style="width:18px;height:18px;border-radius:50%;background:var(--applied);flex-shrink:0"></div><div><div class="cvl" style="height:4px;background:var(--sb);width:48px;margin-bottom:2px"></div><div class="cvl" style="height:3px;background:#f5d5b8;width:32px"></div></div></div><div class="cvl" style="height:1px;background:var(--applied);width:100%;margin-bottom:3px"></div><div class="cvl" style="height:3px;background:var(--applied);width:38%;margin-bottom:2px"></div><div class="cvl" style="height:2px;background:#f5e8db;width:90%"></div><div class="cvl" style="height:2px;background:#f5e8db;width:76%;margin-bottom:3px"></div><div class="cvl" style="height:3px;background:var(--applied);width:46%;margin-bottom:2px"></div><div class="cvl" style="height:2px;background:#f5e8db;width:85%"></div><div class="cvl" style="height:2px;background:#f5e8db;width:68%"></div></div><div class="cv-sbadge b-active">Active</div></div>
+        <div class="cv-info"><div class="cv-name">UX — System Design</div><div class="cv-meta">Updated 1w ago · 2 pages · ATS 79%</div><div class="cv-tags"><span class="cv-tag">Systems</span><span class="cv-tag">Figma</span><span class="cv-tag">B2B</span></div></div>
+        <div class="cv-actions">
+          <button class="cv-act" onclick="goPage('cv-editor',null)"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>Edit</button>
+          <button class="cv-act" onclick="goPage('cv-dl',null)"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>Download</button>
+          <button class="cv-act" onclick="openShareModal('UX — System Design CV')"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>Share</button>
+        </div>
+      </div>
+      <div class="upload-card"><div class="uc-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75"><path d="M12 4v16m8-8H4"/></svg></div><div class="uc-lbl">New CV</div><div class="uc-sub">Upload PDF/DOCX or start from a template</div></div>
+    </div>
+  </div>
+
+  <!-- ═══ CV EDITOR ═══ -->
+  <div class="pg" id="pg-cv-editor">
+    <div class="ph">
+      <div><div class="ph-title">UX — Product Focus</div><div class="ph-sub">Editing · Saved 2 min ago</div></div>
+      <div class="ph-actions">
+        <button class="btn btn-s" onclick="goPage('cvs',null)">← Back</button>
+        <button class="btn btn-share" onclick="openShareModal('UX — Product Focus CV')"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>Share</button>
+        <button class="btn btn-s" onclick="goPage('cv-dl',null)">Download</button>
+        <button class="btn btn-p">Save</button>
+      </div>
+    </div>
+    <div class="editor-layout">
+      <div class="editor-main">
+        <div class="editor-toolbar">
+          <div class="tb-group"><button class="tb-btn active">B</button><button class="tb-btn" style="font-style:italic">I</button><button class="tb-btn" style="text-decoration:underline">U</button></div>
+          <div class="tb-group"><button class="tb-btn" style="font-size:10px;width:34px">H1</button><button class="tb-btn" style="font-size:10px;width:34px">H2</button><button class="tb-btn" style="font-size:10px;width:26px">P</button></div>
+          <div class="tb-group"><button class="btn btn-s" style="font-size:11px;padding:4px 9px;border-radius:var(--r10)">✦ AI Improve</button></div>
+        </div>
+        <div class="editor-area" contenteditable="true">
+          <div class="cv-section"><div style="text-align:center;margin-bottom:14px"><div style="font-family:var(--fd);font-size:22px;font-weight:800;color:var(--ink);letter-spacing:-.02em">JASMINE LEE</div><div style="font-size:13px;color:var(--ink3);margin-top:3px">UX Designer · London, UK · jasmine.lee@email.com · linkedin.com/in/jasminelee-ux</div></div></div>
+          <div class="cv-section"><div class="cv-st">Profile</div><textarea class="cv-field" rows="3">Creative UX Designer with 4+ years crafting intuitive digital products for fast-growing tech companies. Specialising in end-to-end product design, from user research and wireframing through to high-fidelity prototyping and design systems. Proven track record of reducing friction and increasing engagement through data-informed design decisions.</textarea></div>
+          <div class="cv-section"><div class="cv-st">Experience</div>
+            <div style="margin-bottom:14px"><div style="display:flex;justify-content:space-between;margin-bottom:3px"><strong style="font-size:14px;color:var(--ink)">Senior UX Designer — Monzo Bank</strong><span style="font-size:12px;color:var(--ink3);font-family:var(--fm)">2022 – Present</span></div><textarea class="cv-field" rows="4">• Led redesign of the account overview screen, increasing daily active usage by 28%
+• Built and maintained Monzo's mobile component library in Figma (300+ components)
+• Ran 12 user research sessions per quarter; translated findings into actionable design changes
+• Collaborated cross-functionally with 3 squads to ship 8 major features</textarea></div>
+            <div><div style="display:flex;justify-content:space-between;margin-bottom:3px"><strong style="font-size:14px;color:var(--ink)">UX Designer — Babylon Health</strong><span style="font-size:12px;color:var(--ink3);font-family:var(--fm)">2020 – 2022</span></div><textarea class="cv-field" rows="3">• Designed patient-facing appointment booking flows used by 2M+ users
+• Improved symptom checker completion rate by 34% through iterative usability testing</textarea></div>
+          </div>
+          <div class="cv-section"><div class="cv-st">Education</div><div style="display:flex;justify-content:space-between"><strong>BA Interaction Design — Central Saint Martins</strong><span style="font-size:12px;color:var(--ink3);font-family:var(--fm)">2017 – 2020</span></div></div>
+          <div class="cv-section"><div class="cv-st">Skills</div><textarea class="cv-field" rows="2">Figma · Framer · Principle · User Research · Usability Testing · Design Systems · Prototyping · A/B Testing · SQL (basic) · HTML/CSS (basic)</textarea></div>
+        </div>
+      </div>
+      <div class="editor-sb">
+        <div class="es-sec"><div class="es-title">ATS Score</div><div style="display:flex;align-items:flex-end;gap:4px;margin-bottom:5px"><span style="font-family:var(--fd);font-size:1.8rem;font-weight:800;color:var(--offer)">84</span><span style="font-size:11px;color:var(--ink3);font-family:var(--fm);margin-bottom:4px">/100</span></div><div class="ats-bar"><div class="ats-fill" style="width:84%;background:linear-gradient(90deg,var(--offer),#06b6d4)"></div></div><div style="margin-top:9px;display:flex;flex-direction:column;gap:4px"><div class="es-stat"><span>Keywords matched</span><strong>18/22</strong></div><div class="es-stat"><span>Word count</span><strong>487</strong></div></div></div>
+        <div class="es-sec"><div class="es-title">Suggestions</div><div style="display:flex;flex-direction:column;gap:6px"><div style="background:var(--applied-bg);border-radius:var(--r10);padding:9px 11px;font-size:12px;color:var(--applied);font-weight:500">Add "accessibility" — in 3 JDs</div><div style="background:var(--offer-bg);border-radius:var(--r10);padding:9px 11px;font-size:12px;color:var(--offer);font-weight:500">Quantified impact — strong ✓</div></div></div>
+        <div class="es-sec"><div class="es-title">Quick actions</div><div style="display:flex;flex-direction:column;gap:5px"><button class="btn btn-s" style="width:100%;justify-content:center;font-size:12px" onclick="openAICVMode('Spotify')">✦ Tailor for Spotify</button><button class="btn btn-s" style="width:100%;justify-content:center;font-size:12px">Preview as PDF</button></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ CV DOWNLOAD ═══ -->
+  <div class="pg" id="pg-cv-dl">
+    <div class="ph"><div><div class="ph-title">Download CV</div><div class="ph-sub">UX — Product Focus · Choose format</div></div><button class="btn btn-s" onclick="goPage('cv-editor',null)">← Back to editor</button></div>
+    <div class="dl-grid">
+      <div class="dl-card"><div class="dl-icon" style="background:var(--rejected-bg)"><svg fill="none" viewBox="0 0 24 24" stroke="var(--rejected)" stroke-width="2"><path d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg></div><div><div class="dl-name">PDF — Clean Export</div><div class="dl-desc">ATS-friendly, pixel-perfect</div></div><button class="btn btn-p" style="width:100%;justify-content:center">Download PDF</button></div>
+      <div class="dl-card"><div class="dl-icon" style="background:var(--saved-bg)"><svg fill="none" viewBox="0 0 24 24" stroke="var(--saved)" stroke-width="2"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></div><div><div class="dl-name">Word / DOCX</div><div class="dl-desc">Editable in Microsoft Word</div></div><button class="btn btn-s" style="width:100%;justify-content:center">Download DOCX</button></div>
+      <div class="dl-card" onclick="openShareModal('UX — Product Focus CV')"><div class="dl-icon" style="background:var(--offer-bg)"><svg fill="none" viewBox="0 0 24 24" stroke="var(--offer)" stroke-width="2"><path d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg></div><div><div class="dl-name">Shareable Link</div><div class="dl-desc">Hosted, always up to date</div></div><button class="btn btn-share" style="width:100%;justify-content:center">Generate link</button></div>
+      <div class="dl-card"><div class="dl-icon" style="background:var(--int1-bg)"><svg fill="none" viewBox="0 0 24 24" stroke="var(--int1)" stroke-width="2"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg></div><div><div class="dl-name">Tailored version</div><div class="dl-desc">AI-tailor for a specific role first</div></div><button class="btn btn-s" style="width:100%;justify-content:center">✦ Tailor &amp; Download</button></div>
+    </div>
+  </div>
+
+  <!-- ═══ COVER LETTERS ═══ -->
+  <div class="pg" id="pg-cl">
+    <div class="ph">
+      <div><div class="ph-title">Cover Letters</div><div class="ph-sub">6 letters · 4 linked to applications</div></div>
+      <div class="ph-actions">
+        <button class="btn btn-share" onclick="openShareModal('Cover letter collection')"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>Share</button>
+        <button class="btn btn-s" style="border-radius:20px" onclick="openAICLMode()">✦ Draft with AI</button>
+        <button class="btn btn-p">＋ New Letter</button>
+      </div>
+    </div>
+    <div class="cl-grid">
+      <div class="cl-card" onclick="goPage('cl-editor',null)"><div class="cl-top"><div class="cl-bar"></div><div class="cl-co">Spotify</div><div class="cl-role">Product Designer II</div><div class="cl-preview">I was immediately drawn to this role because the intersection of music and design is exactly where I've built my career. At Monzo I led discovery-driven features…</div></div><div class="cl-bottom"><div class="cl-date">Mar 28</div><div class="cl-acts"><span class="cl-linked">Linked</span><button class="cl-btn" onclick="event.stopPropagation();goPage('cl-editor',null)">Edit</button><button class="cl-btn" onclick="event.stopPropagation();goPage('cl-export',null)">Export</button><button class="cl-btn" onclick="event.stopPropagation();openShareModal('Spotify Cover Letter')">Share</button></div></div></div>
+      <div class="cl-card" onclick="goPage('cl-editor',null)"><div class="cl-top"><div class="cl-bar"></div><div class="cl-co">Notion</div><div class="cl-role">Senior UX, Collaboration</div><div class="cl-preview">Great collaboration tools disappear into the work. I've spent three years designing async workflows that reduce friction and help teams move faster…</div></div><div class="cl-bottom"><div class="cl-date">Mar 25</div><div class="cl-acts"><span class="cl-linked">Linked</span><button class="cl-btn" onclick="event.stopPropagation();goPage('cl-editor',null)">Edit</button><button class="cl-btn" onclick="event.stopPropagation();goPage('cl-export',null)">Export</button><button class="cl-btn" onclick="event.stopPropagation();openShareModal('Notion Cover Letter')">Share</button></div></div></div>
+      <div class="cl-card" onclick="goPage('cl-editor',null)"><div class="cl-top"><div class="cl-bar"></div><div class="cl-co">Canva</div><div class="cl-role">Lead UX Designer</div><div class="cl-preview">The best design tools disappear. I've spent my career reducing the distance between idea and output — which is exactly what Canva does better than anyone…</div></div><div class="cl-bottom"><div class="cl-date">Mar 18</div><div class="cl-acts"><span class="cl-draft-pill">Draft</span><button class="cl-btn" onclick="event.stopPropagation();goPage('cl-editor',null)">Edit</button><button class="cl-btn" onclick="event.stopPropagation();goPage('cl-export',null)">Export</button><button class="cl-btn" onclick="event.stopPropagation();openShareModal('Canva Cover Letter')">Share</button></div></div></div>
+      <div class="upload-card" style="min-height:190px;border-color:rgba(190,24,93,0.22)"><div class="uc-icon" style="background:rgba(190,24,93,0.08)"><svg fill="none" viewBox="0 0 24 24" stroke="var(--cl-c)" stroke-width="1.75"><path d="M12 4v16m8-8H4"/></svg></div><div class="uc-lbl">New cover letter</div><div class="uc-sub">Write from scratch or AI-draft it</div></div>
+    </div>
+  </div>
+
+  <!-- ═══ CL EDITOR ═══ -->
+  <div class="pg" id="pg-cl-editor">
+    <div class="ph">
+      <div><div class="ph-title">Spotify — Cover Letter</div><div class="ph-sub">Product Designer II · Editing</div></div>
+      <div class="ph-actions">
+        <button class="btn btn-s" onclick="goPage('cl',null)">← Back</button>
+        <button class="btn btn-share" onclick="openShareModal('Spotify Cover Letter')"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>Share</button>
+        <button class="btn btn-s" onclick="goPage('cl-export',null)">Export</button>
+        <button class="btn btn-p">Save</button>
+      </div>
+    </div>
+    <div class="cl-el">
+      <div class="cl-em">
+        <div class="editor-toolbar"><div class="tb-group"><button class="tb-btn active">B</button><button class="tb-btn" style="font-style:italic">I</button><button class="tb-btn" style="text-decoration:underline">U</button></div><div class="tb-group"><button class="btn btn-s" style="font-size:11px;padding:4px 9px;border-radius:var(--r10)">✦ AI Rewrite</button><button class="btn btn-s" style="font-size:11px;padding:4px 9px;border-radius:var(--r10)">✦ Improve Tone</button></div></div>
+        <div class="cl-ea" contenteditable="true">
+          <p style="color:var(--ink3);font-size:13px;margin-bottom:18px">Jasmine Lee · jasmine.lee@email.com · London, UK · 31 March 2026</p>
+          <h3>Re: Product Designer II — Discovery · Spotify</h3>
+          <p>I was immediately drawn to this role because the intersection of music and design is exactly where I've built my career. Discovery is the most emotionally significant moment in any music product — the instant an algorithm surfaces something that feels like it was made just for you.</p>
+          <p>At Monzo, I led the redesign of the account overview screen — a project that required deep user research, rigorous iteration, and close collaboration with engineering to ship on time. The result was a 28% lift in daily engagement. I believe the same principles apply to music discovery: clarity, delight, and a respect for the user's attention.</p>
+          <p>I'd love to bring my experience in user research, component systems, and cross-functional collaboration to your Discovery team. Thank you — I hope to speak soon.</p>
+          <p style="margin-top:22px">Warm regards,<br><strong>Jasmine Lee</strong></p>
+        </div>
+      </div>
+      <div class="cl-esb">
+        <div class="es-sec"><div class="es-title">Linked to</div><div style="background:var(--int1-bg);border-radius:var(--r10);padding:9px 12px"><div style="font-size:10px;font-family:var(--fm);color:var(--int1);margin-bottom:2px;text-transform:uppercase;letter-spacing:.06em;font-weight:700">Spotify</div><div style="font-size:13.5px;font-weight:700;color:var(--ink)">Product Designer II</div><div style="font-size:12px;color:var(--ink3);font-family:var(--fm);margin-top:2px;font-weight:500">Interview · Apr 3</div></div></div>
+        <div class="es-sec"><div class="es-title">CV linked</div><div style="background:var(--pw-bg);border-radius:var(--r10);padding:9px 12px"><div style="font-size:13.5px;font-weight:700;color:var(--pw-dk)">UX — Product Focus</div><div style="font-size:12px;color:var(--ink3);font-family:var(--fm);margin-top:2px;font-weight:500">Active · ATS 84%</div></div></div>
+        <div class="es-sec"><div class="es-title">Word count</div><div style="font-family:var(--fd);font-size:1.6rem;font-weight:800;color:var(--ink)">312</div><div style="font-size:12px;color:var(--offer);font-family:var(--fm);margin-top:2px;font-weight:600">✓ Good length (300–400)</div></div>
+        <div class="es-sec"><div class="es-title">AI Suggestions</div><div style="display:flex;flex-direction:column;gap:6px"><div style="background:var(--pw-bg);border-radius:var(--r10);padding:9px 11px;font-size:12px;color:var(--pw-dk);font-weight:500">Strong, specific opening ✓</div><div style="background:var(--applied-bg);border-radius:var(--r10);padding:9px 11px;font-size:12px;color:var(--applied);font-weight:500">Add a Spotify product reference</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ CL EXPORT ═══ -->
+  <div class="pg" id="pg-cl-export">
+    <div class="ph"><div><div class="ph-title">Export Cover Letter</div><div class="ph-sub">Spotify — Product Designer II</div></div><button class="btn btn-s" onclick="goPage('cl-editor',null)">← Back</button></div>
+    <div class="dl-grid">
+      <div class="dl-card"><div class="dl-icon" style="background:var(--rejected-bg)"><svg fill="none" viewBox="0 0 24 24" stroke="var(--rejected)" stroke-width="2"><path d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg></div><div><div class="dl-name">PDF</div><div class="dl-desc">Formatted, print-ready</div></div><button class="btn btn-p" style="width:100%;justify-content:center">Download PDF</button></div>
+      <div class="dl-card"><div class="dl-icon" style="background:var(--saved-bg)"><svg fill="none" viewBox="0 0 24 24" stroke="var(--saved)" stroke-width="2"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></div><div><div class="dl-name">DOCX</div><div class="dl-desc">Editable Word document</div></div><button class="btn btn-s" style="width:100%;justify-content:center">Download DOCX</button></div>
+      <div class="dl-card"><div class="dl-icon" style="background:var(--offer-bg)"><svg fill="none" viewBox="0 0 24 24" stroke="var(--offer)" stroke-width="2"><path d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg></div><div><div class="dl-name">Copy text</div><div class="dl-desc">Plain text for application forms</div></div><button class="btn btn-s" style="width:100%;justify-content:center">Copy to clipboard</button></div>
+      <div class="dl-card" onclick="openShareModal('Spotify Cover Letter')"><div class="dl-icon" style="background:var(--int1-bg)"><svg fill="none" viewBox="0 0 24 24" stroke="var(--int1)" stroke-width="2"><path d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg></div><div><div class="dl-name">Shareable link</div><div class="dl-desc">Hosted, shareable via URL</div></div><button class="btn btn-share" style="width:100%;justify-content:center">Share link</button></div>
+    </div>
+  </div>
+
+  <!-- ═══ DOCS & LINKS ═══ -->
+  <div class="pg" id="pg-docs">
+    <div class="ph">
+      <div><div class="ph-title">Docs &amp; Links</div><div class="ph-sub">Portfolios, references &amp; certificates</div></div>
+      <div class="ph-actions">
+        <button class="btn btn-share" onclick="openShareModal('Docs &amp; Links folder')"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>Share folder</button>
+        <button class="btn btn-s" style="border-radius:20px">＋ Add Link</button>
+        <button class="btn btn-p">Upload</button>
+      </div>
+    </div>
+    <div class="docs-layout">
+      <div>
+        <div class="docs-sh"><div class="sico" style="background:rgba(3,105,161,0.1)"><svg fill="none" viewBox="0 0 24 24" stroke="var(--doc-c)" stroke-width="2"><path d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg></div>Documents</div>
+        <div class="doc-item d-pdf"><div class="dico"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75"><path d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg></div><div style="flex:1"><div class="d-name">Portfolio 2024.pdf</div><div class="d-meta">3.2 MB · Mar 20</div></div><button class="cl-btn" onclick="openShareModal('Portfolio 2024')">Share</button></div>
+        <div class="doc-item d-docx"><div class="dico"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></div><div style="flex:1"><div class="d-name">Reference — Priya Shah, Monzo.docx</div><div class="d-meta">45 KB · Mar 14</div></div><button class="cl-btn" onclick="openShareModal('Reference Letter')">Share</button></div>
+        <div class="doc-item d-pdf"><div class="dico"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75"><path d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg></div><div style="flex:1"><div class="d-name">Google UX Certificate 2023.pdf</div><div class="d-meta">1.1 MB · Jan 8</div></div><button class="cl-btn" onclick="openShareModal('Google UX Certificate')">Share</button></div>
+        <button class="add-item-btn">Upload document</button>
+      </div>
+      <div>
+        <div class="docs-sh"><div class="sico" style="background:rgba(124,58,237,0.1)"><svg fill="none" viewBox="0 0 24 24" stroke="var(--int1)" stroke-width="2"><path d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg></div>Saved Links</div>
+        <div class="link-item"><div class="li-hdr"><div class="li-fav" style="color:var(--offer);background:var(--offer-bg)">Li</div><div class="li-title">LinkedIn Profile</div></div><div class="li-url">linkedin.com/in/jasmine-lee-ux</div><div class="li-tags"><span class="li-tag">Profile</span><span class="li-tag">Public</span></div></div>
+        <div class="link-item"><div class="li-hdr"><div class="li-fav">Be</div><div class="li-title">Behance Portfolio</div></div><div class="li-url">behance.net/jasminelee</div><div class="li-tags"><span class="li-tag">Portfolio</span><span class="li-tag">Cases</span></div></div>
+        <div class="link-item"><div class="li-hdr"><div class="li-fav" style="color:var(--applied);background:var(--applied-bg)">Fr</div><div class="li-title">Framer Portfolio Site</div></div><div class="li-url">jasminelee.framer.website</div><div class="li-tags"><span class="li-tag">Website</span></div></div>
+        <button class="add-item-btn" style="border-color:rgba(124,58,237,0.22)">＋ Add link</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ INTERVIEW PREP (above AI in sidebar — links to AI prep mode) ═══ -->
+  <div class="pg" id="pg-prep">
+    <div class="ph">
+      <div><div class="ph-title">Interview Prep</div><div class="ph-sub">3 upcoming · AI-personalised question banks</div></div>
+      <button class="btn btn-p" onclick="openAIPrepMode()">✦ Prep with AI →</button>
+    </div>
+    <div class="prep-grid">
+      <div class="prep-card">
+        <div class="prep-stripe"></div>
+        <div class="prep-dl">Upcoming · Apr 3 · 10:00 AM</div>
+        <div class="prep-co">Spotify</div>
+        <div class="prep-title">Technical Screen — Product Designer II</div>
+        <div class="prep-meta">Google Meet · 45 min · Recruiter: Anna K.</div>
+        <div class="prep-topics"><span class="prep-topic">Visual Design</span><span class="prep-topic">Interaction</span><span class="prep-topic">Portfolio</span><span class="prep-topic">Discovery</span></div>
+        <div class="prep-prog"><div class="prep-prog-lbl"><span>Prep progress</span><span>6/10 questions</span></div><div class="prep-prog-bar"><div class="prep-prog-fill" style="width:60%"></div></div></div>
+        <button class="btn btn-p" style="width:100%;justify-content:center;border-radius:var(--r20)" onclick="openAIPrepMode()">Continue preparing →</button>
+      </div>
+      <div class="prep-card">
+        <div class="prep-stripe" style="background:linear-gradient(90deg,var(--applied),#f59e0b)"></div>
+        <div class="prep-dl" style="color:var(--applied)">Upcoming · Apr 7 · 2:00 PM</div>
+        <div class="prep-co">Notion</div>
+        <div class="prep-title">Final Round — Senior UX, Collaboration</div>
+        <div class="prep-meta">Zoom · 3 hours · Panel of 4</div>
+        <div class="prep-topics"><span class="prep-topic" style="background:var(--applied-bg);color:var(--applied)">Portfolio Review</span><span class="prep-topic" style="background:var(--applied-bg);color:var(--applied)">Design Critique</span><span class="prep-topic" style="background:var(--applied-bg);color:var(--applied)">Strategy</span></div>
+        <div class="prep-prog"><div class="prep-prog-lbl"><span>Prep progress</span><span>2/12 questions</span></div><div class="prep-prog-bar"><div class="prep-prog-fill" style="width:17%;background:linear-gradient(90deg,var(--applied),#f59e0b)"></div></div></div>
+        <button class="btn btn-p" style="width:100%;justify-content:center;border-radius:var(--r20)" onclick="openAIPrepMode()">Start preparing →</button>
+      </div>
+      <!-- Tip card -->
+      <div class="prep-card" style="grid-column:1/-1;background:linear-gradient(135deg,var(--sb),var(--sb3));border:none">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap">
+          <div>
+            <div style="font-family:var(--fd);font-size:1rem;font-weight:800;color:white;margin-bottom:5px">AI Interview Coach</div>
+            <div style="font-size:13px;color:rgba(255,255,255,0.65);max-width:520px;line-height:1.6">Practice with mock Q&amp;A, get personalised question banks for each role, and receive feedback on your answers — all powered by Claude AI.</div>
+          </div>
+          <button class="btn" style="background:var(--pw);color:white;flex-shrink:0" onclick="openAIPrepMode()">Open AI Interview Coach →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ AI ASSISTANT ═══ -->
+  <div class="pg" id="pg-ai">
+    <div class="ph" style="margin-bottom:11px"><div><div class="ph-title">AI Assistant</div><div class="ph-sub">Powered by Claude · tailored to your pipeline</div></div></div>
+    <div class="ai-layout">
+      <div class="ai-sb">
+        <div class="ai-modes">
+          <button class="ai-mode" id="ai-mode-cv" onclick="setAiMode(this,'CV Feedback')"><div class="ai-mico"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></div><div><div class="ai-mname">CV Feedback</div><div class="ai-mdesc">Analyse &amp; improve</div></div></button>
+          <button class="ai-mode" id="ai-mode-cl" onclick="setAiMode(this,'Cover Letter')"><div class="ai-mico"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></div><div><div class="ai-mname">Cover Letter</div><div class="ai-mdesc">Draft &amp; tailor</div></div></button>
+          <button class="ai-mode" id="ai-mode-prep" onclick="setAiMode(this,'Interview Prep')"><div class="ai-mico"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg></div><div><div class="ai-mname">Interview Prep</div><div class="ai-mdesc">Mock Q&amp;A &amp; tips</div></div></button>
+          <button class="ai-mode" id="ai-mode-match" onclick="setAiMode(this,'Job Match')"><div class="ai-mico"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg></div><div><div class="ai-mname">Job Match</div><div class="ai-mdesc">Fit score &amp; gaps</div></div></button>
+        </div>
+        <div class="ai-hist"><div class="ai-hlbl">Recent sessions</div><div class="ai-hitem">Spotify — interview questions</div><div class="ai-hitem">Notion cover letter draft</div><div class="ai-hitem">CV feedback — product focus</div><div class="ai-hitem">Canva offer tips</div></div>
+      </div>
+      <div class="ai-chat">
+        <div class="chat-hdr">
+          <div class="chat-ava"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg></div>
+          <div><div class="chat-aname">WOW Assistant</div><div class="chat-status" id="ai-mode-lbl">CV Feedback mode</div></div>
+        </div>
+        <div class="chat-msgs" id="chat-msgs">
+          <div class="msg ai"><div class="msg-ava">W</div><div class="msg-bub">Hi Jasmine! 👋 You have <strong>4 CVs</strong>, <strong>12 active applications</strong>, and interviews at Spotify and Notion coming up. How can I help today?</div></div>
+          <div class="msg user"><div class="msg-ava">JL</div><div class="msg-bub">Review my UX Product Focus CV for the Spotify role</div></div>
+          <div class="msg ai"><div class="msg-ava">W</div><div class="msg-bub">Reviewed <strong>UX — Product Focus</strong> against the Spotify JD:<br><br><strong>✓ Strong</strong><ul><li>Quantified results — "28% DAU lift" lands well</li><li>Figma/design systems expertise clearly shown</li><li>Strong narrative: junior → mid → senior</li></ul><br><strong>⚠ Improve</strong><ul><li>Add "accessibility" — mentioned 4× in the JD</li><li>Mention "0→1 product design" experience</li></ul><br>Fit score: <strong>82/100</strong>. Want me to rewrite the profile section?</div></div>
+        </div>
+        <div class="chat-chips">
+          <button class="chip" onclick="sendChip(this)">Rewrite profile ↗</button>
+          <button class="chip" onclick="sendChip(this)">Interview questions ↗</button>
+          <button class="chip" onclick="sendChip(this)">Draft cover letter ↗</button>
+        </div>
+        <div class="chat-inp-row">
+          <textarea class="chat-inp" id="chat-inp" rows="1" placeholder="Ask anything about your search…" onkeydown="handleKey(event)"></textarea>
+          <button class="send-btn" onclick="sendMsg()"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ ALERTS ═══ -->
+  <div class="pg" id="pg-alerts">
+    <div class="ph"><div><div class="ph-title">Alerts</div><div class="ph-sub">5 unread · stay on top of your search</div></div><button class="btn btn-s" style="border-radius:20px">Mark all read</button></div>
+    <div class="alerts-layout">
+      <div>
+        <div class="a-item unread a-danger"><div class="a-ico"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div><div class="a-body"><div class="a-title">⚡ Canva offer expires in 7 days</div><div class="a-desc">Your Lead UX Designer offer expires April 8. Respond or request an extension from your contact.</div><div class="a-time">Today · 8:00 AM</div></div><div class="a-right"><div class="unread-dot"></div><div class="a-acts"><button class="a-act primary" onclick="openJD('canva')">View Offer</button><button class="a-act">Snooze</button></div></div></div>
+        <div class="a-item unread a-warn"><div class="a-ico"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg></div><div class="a-body"><div class="a-title">Interview tomorrow — Spotify Technical Screen</div><div class="a-desc">Your Spotify screen is tomorrow at 10:00 AM via Google Meet. 6/10 prep questions completed.</div><div class="a-time">Today · 9:00 AM</div></div><div class="a-right"><div class="unread-dot"></div><div class="a-acts"><button class="a-act primary" onclick="openAIPrepMode()">Prep now</button><button class="a-act">Dismiss</button></div></div></div>
+        <div class="a-item unread a-info"><div class="a-ico"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div><div class="a-body"><div class="a-title">Follow up on Revolut application?</div><div class="a-desc">You applied 9 days ago and haven't heard back. Consider sending a brief follow-up email.</div><div class="a-time">Yesterday</div></div><div class="a-right"><div class="unread-dot"></div><div class="a-acts"><button class="a-act primary">Draft Email</button><button class="a-act">Dismiss</button></div></div></div>
+        <div class="a-item unread a-success"><div class="a-ico"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div><div class="a-body"><div class="a-title">Notion final round confirmed — Apr 7</div><div class="a-desc">Your final round at Notion is confirmed for April 7 at 2:00 PM. Calendar invite sent to jasmine.lee@email.com.</div><div class="a-time">Yesterday</div></div><div class="a-right"><div class="unread-dot"></div><div class="a-acts"><button class="a-act primary" onclick="openAIPrepMode()">Prepare</button></div></div></div>
+        <div class="a-item unread a-warn"><div class="a-ico"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></div><div class="a-body"><div class="a-title">CV not updated in 3 weeks</div><div class="a-desc">"UX — System Design" hasn't been refreshed since March 10. Update before the Notion final round.</div><div class="a-time">Mar 30</div></div><div class="a-right"><div class="unread-dot"></div><div class="a-acts"><button class="a-act primary" onclick="goPage('cv-editor',null)">Update CV</button><button class="a-act">Ignore</button></div></div></div>
+        <div class="a-item a-info"><div class="a-ico"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg></div><div class="a-body"><div class="a-title">Weekly summary — March week 4</div><div class="a-desc">3 applications, 2 interviews progressed, 1 offer received. Response rate this week: 33%.</div><div class="a-time">Mar 29</div></div><div class="a-right"><div class="a-acts"><button class="a-act">View</button></div></div></div>
+        <div class="a-item a-danger"><div class="a-ico"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M6 18L18 6M6 6l12 12"/></svg></div><div class="a-body"><div class="a-title">Stripe application not progressed</div><div class="a-desc">Stripe confirmed they won't progress your Design Systems Lead application at this time. Feedback is available.</div><div class="a-time">Mar 26</div></div><div class="a-right"><div class="a-acts"><button class="a-act" onclick="openJD('stripe')">View</button></div></div></div>
+      </div>
+      <div>
+        <div class="card" style="padding:17px 19px;margin-bottom:12px">
+          <div class="card-title" style="margin-bottom:11px">Summary</div>
+          <div class="acc-row"><div style="display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:600"><div style="width:8px;height:8px;border-radius:50%;background:var(--rejected)"></div>Urgent</div><strong style="font-family:var(--fm)">2</strong></div>
+          <div class="acc-row"><div style="display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:600"><div style="width:8px;height:8px;border-radius:50%;background:var(--applied)"></div>Reminders</div><strong style="font-family:var(--fm)">3</strong></div>
+          <div class="acc-row" style="border-bottom:none"><div style="display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:600"><div style="width:8px;height:8px;border-radius:50%;background:var(--saved)"></div>Updates</div><strong style="font-family:var(--fm)">2</strong></div>
+        </div>
+        <div class="card" style="padding:17px 19px">
+          <div class="card-title" style="margin-bottom:11px">Alert settings</div>
+          <div class="acc-row"><div><div class="acc-row-lbl">Offer deadlines</div><div class="acc-row-sub">7 days before expiry</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
+          <div class="acc-row"><div><div class="acc-row-lbl">Interview reminders</div><div class="acc-row-sub">1 day before</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
+          <div class="acc-row"><div><div class="acc-row-lbl">Follow-up reminders</div><div class="acc-row-sub">After 7 days no response</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
+          <div class="acc-row"><div><div class="acc-row-lbl">CV staleness</div><div class="acc-row-sub">After 3+ weeks</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
+          <div class="acc-row" style="border-bottom:none"><div><div class="acc-row-lbl">Email alerts</div><div class="acc-row-sub">jasmine.lee@email.com</div></div><button class="toggle" onclick="this.classList.toggle('on')"></button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ ACCOUNT ═══ -->
+  <div class="pg" id="pg-account">
+    <div class="ph"><div><div class="ph-title">Account</div><div class="ph-sub">Manage your profile &amp; preferences</div></div></div>
+    <div class="acc-layout">
+      <div class="acc-nav">
+        <div class="an-item active" onclick="showAccTab('profile',this)"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>Profile</div>
+        <div class="an-item" onclick="showAccTab('security',this)"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>Password &amp; Security</div>
+        <div class="an-item" onclick="showAccTab('notif',this)"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>Notifications</div>
+        <div class="an-item" onclick="showAccTab('plan',this)"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>Plan &amp; Billing</div>
+        <div class="an-item" onclick="showAccTab('data',this)"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"/></svg>Data &amp; Privacy</div>
+      </div>
+      <div class="acc-main">
+        <div id="acc-profile">
+          <div class="acc-sec">
+            <div class="acc-sec-hdr"><div class="acc-sec-title">Profile</div><button class="btn btn-p" style="font-size:12px">Save changes</button></div>
+            <div class="acc-sec-body">
+              <div class="ava-section"><div class="big-ava">JL</div><div><button class="btn btn-s" style="font-size:12px">Change photo</button><div style="font-size:12px;color:var(--ink4);margin-top:5px">JPG, PNG up to 2MB</div></div></div>
+              <div class="acc-field-row">
+                <div class="acc-field" style="margin-bottom:0"><label class="acc-lbl">First name</label><input class="acc-inp" value="Jasmine"></div>
+                <div class="acc-field" style="margin-bottom:0"><label class="acc-lbl">Last name</label><input class="acc-inp" value="Lee"></div>
+              </div>
+              <div style="margin-bottom:13px"></div>
+              <div class="acc-field"><label class="acc-lbl">Email</label><input class="acc-inp" value="jasmine.lee@email.com" type="email"></div>
+              <div class="acc-field-row">
+                <div class="acc-field" style="margin-bottom:0"><label class="acc-lbl">Current role</label><input class="acc-inp" value="UX Designer"></div>
+                <div class="acc-field" style="margin-bottom:0"><label class="acc-lbl">Location</label><input class="acc-inp" value="London, UK"></div>
+              </div>
+              <div style="margin-bottom:13px"></div>
+              <div class="acc-field"><label class="acc-lbl">Industries of interest</label><input class="acc-inp" value="Design tools, Fintech, Music tech, Consumer apps"></div>
+              <div class="acc-field"><label class="acc-lbl">Target salary</label><input class="acc-inp" value="£75,000 – £100,000"></div>
+            </div>
+          </div>
+        </div>
+        <div id="acc-security" style="display:none">
+          <div class="acc-sec"><div class="acc-sec-hdr"><div class="acc-sec-title">Password</div></div><div class="acc-sec-body"><div class="acc-field"><label class="acc-lbl">Current password</label><input class="acc-inp" type="password" placeholder="••••••••••"></div><div class="acc-field"><label class="acc-lbl">New password</label><input class="acc-inp" type="password" placeholder="Min. 8 characters"></div><div class="acc-field"><label class="acc-lbl">Confirm new password</label><input class="acc-inp" type="password" placeholder="Repeat new password"></div><button class="btn btn-p">Update password</button></div></div>
+          <div class="acc-sec"><div class="acc-sec-hdr"><div class="acc-sec-title">Two-factor authentication</div></div><div class="acc-sec-body"><div class="acc-row"><div><div class="acc-row-lbl">Authenticator app</div><div class="acc-row-sub">Google Authenticator or similar</div></div><button class="btn btn-s" style="font-size:12px">Enable</button></div><div class="acc-row" style="border-bottom:none"><div><div class="acc-row-lbl">SMS verification</div><div class="acc-row-sub">+44 •••• ••• 821</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div></div></div>
+          <div class="acc-sec"><div class="acc-sec-hdr"><div class="acc-sec-title">Active sessions</div></div><div class="acc-sec-body"><div class="acc-row"><div><div class="acc-row-lbl">MacBook Pro — Chrome</div><div class="acc-row-sub">London, UK · Active now</div></div><span style="font-size:12px;color:var(--offer);font-family:var(--fm);font-weight:600">Current</span></div><div class="acc-row" style="border-bottom:none"><div><div class="acc-row-lbl">iPhone 15 — Safari</div><div class="acc-row-sub">London, UK · 2 hours ago</div></div><button class="btn btn-s" style="font-size:11px">Revoke</button></div></div></div>
+        </div>
+        <div id="acc-notif" style="display:none">
+          <div class="acc-sec"><div class="acc-sec-hdr"><div class="acc-sec-title">Notification preferences</div></div><div class="acc-sec-body"><div class="acc-row"><div><div class="acc-row-lbl">Email notifications</div><div class="acc-row-sub">Send to jasmine.lee@email.com</div></div><button class="toggle" onclick="this.classList.toggle('on')"></button></div><div class="acc-row"><div><div class="acc-row-lbl">Interview reminders</div><div class="acc-row-sub">24 hours before scheduled interviews</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div><div class="acc-row"><div><div class="acc-row-lbl">Offer deadlines</div><div class="acc-row-sub">7 days and 1 day before expiry</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div><div class="acc-row"><div><div class="acc-row-lbl">Follow-up reminders</div><div class="acc-row-sub">After 7 days with no response</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div><div class="acc-row"><div><div class="acc-row-lbl">Weekly summary</div><div class="acc-row-sub">Every Monday morning</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div><div class="acc-row" style="border-bottom:none"><div><div class="acc-row-lbl">AI tips &amp; suggestions</div><div class="acc-row-sub">Personalised CV and job tips</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div></div></div>
+        </div>
+        <div id="acc-plan" style="display:none">
+          <div class="plan-card"><div style="font-family:var(--fd);font-size:1.2rem;font-weight:800;color:white;margin-bottom:3px">Free Plan</div><div style="font-size:12px;color:rgba(255,255,255,0.45);font-family:var(--fm);margin-bottom:14px">£0 / forever</div><div style="display:flex;flex-direction:column;gap:6px;margin-bottom:18px"><div style="font-size:13px;color:rgba(255,255,255,0.8)">✓ Up to 3 CVs</div><div style="font-size:13px;color:rgba(255,255,255,0.8)">✓ Up to 5 cover letters</div><div style="font-size:13px;color:rgba(255,255,255,0.8)">✓ 50 AI messages / month</div><div style="font-size:13px;color:rgba(255,255,255,0.8)">✓ Unlimited job tracker</div></div><button class="btn" style="background:white;color:var(--sb)">Upgrade to Pro →</button></div>
+          <div class="acc-sec"><div class="acc-sec-hdr"><div class="acc-sec-title">Pro Plan — £9/month</div><button class="btn btn-p" style="font-size:12px">Upgrade</button></div><div class="acc-sec-body"><div class="acc-row"><div class="acc-row-lbl">Unlimited CVs &amp; cover letters</div><div style="font-size:12px;color:var(--offer);font-weight:600">✓</div></div><div class="acc-row"><div class="acc-row-lbl">Unlimited AI messages</div><div style="font-size:12px;color:var(--offer);font-weight:600">✓</div></div><div class="acc-row"><div class="acc-row-lbl">ATS scoring &amp; keywords</div><div style="font-size:12px;color:var(--offer);font-weight:600">✓</div></div><div class="acc-row" style="border-bottom:none"><div class="acc-row-lbl">Priority support</div><div style="font-size:12px;color:var(--offer);font-weight:600">✓</div></div></div></div>
+        </div>
+        <div id="acc-data" style="display:none">
+          <div class="acc-sec">
+            <div class="acc-sec-hdr">
+              <div class="acc-sec-title">Export your data</div>
+              <span id="export-done-badge" style="display:none;font-size:12px;color:var(--offer);font-family:var(--fm);font-weight:600">✓ Export ready</span>
+            </div>
+            <div class="acc-sec-body">
+              <div style="font-size:13px;color:var(--ink3);margin-bottom:16px;line-height:1.6">Download a complete archive of your account data in standard formats.</div>
+              <!-- Checkboxes -->
+              <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:18px">
+                <label style="display:flex;align-items:center;gap:12px;padding:10px 14px;border:1.5px solid var(--bdr);border-radius:var(--r10);cursor:pointer;background:var(--bg)"><input type="checkbox" id="exp-jobs" checked style="accent-color:var(--pw);width:15px;height:15px"><div><div style="font-size:13px;font-weight:600;color:var(--ink)">Job tracker</div><div style="font-size:12px;color:var(--ink3)">All 34 jobs, statuses, notes and timelines (CSV + JSON)</div></div></label>
+                <label style="display:flex;align-items:center;gap:12px;padding:10px 14px;border:1.5px solid var(--bdr);border-radius:var(--r10);cursor:pointer;background:var(--bg)"><input type="checkbox" id="exp-cvs" checked style="accent-color:var(--pw);width:15px;height:15px"><div><div style="font-size:13px;font-weight:600;color:var(--ink)">CVs</div><div style="font-size:12px;color:var(--ink3)">4 versions as PDF and DOCX</div></div></label>
+                <label style="display:flex;align-items:center;gap:12px;padding:10px 14px;border:1.5px solid var(--bdr);border-radius:var(--r10);cursor:pointer;background:var(--bg)"><input type="checkbox" id="exp-cls" checked style="accent-color:var(--pw);width:15px;height:15px"><div><div style="font-size:13px;font-weight:600;color:var(--ink)">Cover letters</div><div style="font-size:12px;color:var(--ink3)">6 letters as PDF, DOCX and plain text</div></div></label>
+                <label style="display:flex;align-items:center;gap:12px;padding:10px 14px;border:1.5px solid var(--bdr);border-radius:var(--r10);cursor:pointer;background:var(--bg)"><input type="checkbox" id="exp-docs" checked style="accent-color:var(--pw);width:15px;height:15px"><div><div style="font-size:13px;font-weight:600;color:var(--ink)">Supporting documents</div><div style="font-size:12px;color:var(--ink3)">Portfolio, references and certificates</div></div></label>
+                <label style="display:flex;align-items:center;gap:12px;padding:10px 14px;border:1.5px solid var(--bdr);border-radius:var(--r10);cursor:pointer;background:var(--bg)"><input type="checkbox" id="exp-prefs" style="accent-color:var(--pw);width:15px;height:15px"><div><div style="font-size:13px;font-weight:600;color:var(--ink)">Account settings</div><div style="font-size:12px;color:var(--ink3)">Profile and notification preferences (JSON)</div></div></label>
+              </div>
+              <!-- Progress -->
+              <div id="export-progress-wrap" style="display:none;margin-bottom:14px">
+                <div style="display:flex;justify-content:space-between;font-size:12px;font-family:var(--fm);color:var(--ink3);margin-bottom:6px;font-weight:600"><span id="export-progress-lbl">Preparing…</span><span id="export-progress-pct">0%</span></div>
+                <div style="height:6px;background:var(--bdr);border-radius:4px;overflow:hidden"><div id="export-bar" style="height:100%;background:linear-gradient(90deg,var(--pw),var(--offer));border-radius:4px;width:0;transition:width .3s"></div></div>
+              </div>
+              <button id="export-btn" class="btn btn-p" style="width:100%;justify-content:center;padding:11px;font-size:14px" onclick="runExport(this)">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="15" height="15"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                Export selected data
+              </button>
+            </div>
+          </div>
+          <div class="acc-sec">
+            <div class="acc-sec-hdr"><div class="acc-sec-title">Privacy settings</div></div>
+            <div class="acc-sec-body">
+              <div class="acc-row"><div><div class="acc-row-lbl">Usage analytics</div><div class="acc-row-sub">Help improve WOW with anonymised usage data</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
+              <div class="acc-row"><div><div class="acc-row-lbl">AI personalisation</div><div class="acc-row-sub">Allow Claude to use your job history for smarter suggestions</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
+              <div class="acc-row" style="border-bottom:none"><div><div class="acc-row-lbl">Data retention</div><div class="acc-row-sub">Your data is stored securely and never sold</div></div><span style="font-size:12px;color:var(--offer);font-family:var(--fm);font-weight:600">GDPR ✓</span></div>
+            </div>
+          </div>
+          <div class="acc-sec"><div class="acc-sec-hdr"><div class="acc-sec-title" style="color:var(--rejected)">Danger zone</div></div><div class="acc-sec-body"><div class="danger-zone"><div><div style="font-size:13.5px;font-weight:700;color:var(--rejected)">Delete account</div><div style="font-size:12.5px;color:var(--ink3);margin-top:2px">Permanently delete your account and all data. Cannot be undone.</div></div><button class="btn" style="background:var(--rejected);color:white;font-size:12px">Delete account</button></div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ═══ HELP CENTRE ═══ -->
+  <div class="pg" id="pg-help">
+    <div class="ph">
+      <div><div class="ph-title">Help Centre</div><div class="ph-sub">Guides, FAQs and support</div></div>
+      <button class="btn btn-s" onclick="window.open('mailto:support@wow.app')"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>Contact support</button>
+    </div>
+    <!-- Search bar -->
+    <div style="display:flex;align-items:center;gap:10px;background:var(--sb);border-radius:var(--r20);padding:0 20px;height:52px;margin-bottom:24px;box-shadow:var(--shmd)">
+      <svg fill="none" viewBox="0 0 24 24" stroke="rgba(255,255,255,0.5)" stroke-width="2" width="18" height="18"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input id="help-search" style="border:none;outline:none;background:none;font-family:var(--fb);font-size:15px;color:white;flex:1" placeholder="Search help articles…" oninput="filterHelp(this.value)">
+      <span style="font-size:12px;color:rgba(255,255,255,0.35);font-family:var(--fm)">Press Enter to search</span>
+    </div>
+    <!-- Category cards -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px" id="help-cats">
+      <div class="card" style="cursor:pointer;transition:all .2s" onclick="showHelpCat('getting-started')" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='var(--shmd)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+        <div style="padding:20px"><div style="width:38px;height:38px;border-radius:var(--r10);background:var(--pw-bg);display:flex;align-items:center;justify-content:center;margin-bottom:12px"><svg fill="none" viewBox="0 0 24 24" stroke="var(--pw)" stroke-width="2" width="19" height="19"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div><div style="font-family:var(--fd);font-size:.95rem;font-weight:800;color:var(--ink);margin-bottom:4px">Getting started</div><div style="font-size:12px;color:var(--ink3)">Set up your account, import your CV and add your first jobs.</div><div style="font-size:11px;font-family:var(--fm);color:var(--ink4);margin-top:10px">8 articles</div></div>
+      </div>
+      <div class="card" style="cursor:pointer;transition:all .2s" onclick="showHelpCat('cv')" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='var(--shmd)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+        <div style="padding:20px"><div style="width:38px;height:38px;border-radius:var(--r10);background:var(--applied-bg);display:flex;align-items:center;justify-content:center;margin-bottom:12px"><svg fill="none" viewBox="0 0 24 24" stroke="var(--applied)" stroke-width="2" width="19" height="19"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></div><div style="font-family:var(--fd);font-size:.95rem;font-weight:800;color:var(--ink);margin-bottom:4px">CVs &amp; Cover Letters</div><div style="font-size:12px;color:var(--ink3)">Uploading, editing, ATS scoring and AI tailoring.</div><div style="font-size:11px;font-family:var(--fm);color:var(--ink4);margin-top:10px">12 articles</div></div>
+      </div>
+      <div class="card" style="cursor:pointer;transition:all .2s" onclick="showHelpCat('tracker')" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='var(--shmd)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+        <div style="padding:20px"><div style="width:38px;height:38px;border-radius:var(--r10);background:var(--offer-bg);display:flex;align-items:center;justify-content:center;margin-bottom:12px"><svg fill="none" viewBox="0 0 24 24" stroke="var(--offer)" stroke-width="2" width="19" height="19"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div><div style="font-family:var(--fd);font-size:.95rem;font-weight:800;color:var(--ink);margin-bottom:4px">Job Tracker</div><div style="font-size:12px;color:var(--ink3)">Managing your pipeline, kanban board and tracking stages.</div><div style="font-size:11px;font-family:var(--fm);color:var(--ink4);margin-top:10px">9 articles</div></div>
+      </div>
+      <div class="card" style="cursor:pointer;transition:all .2s" onclick="showHelpCat('ai')" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='var(--shmd)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+        <div style="padding:20px"><div style="width:38px;height:38px;border-radius:var(--r10);background:var(--int1-bg);display:flex;align-items:center;justify-content:center;margin-bottom:12px"><svg fill="none" viewBox="0 0 24 24" stroke="var(--int1)" stroke-width="2" width="19" height="19"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg></div><div style="font-family:var(--fd);font-size:.95rem;font-weight:800;color:var(--ink);margin-bottom:4px">AI Assistant</div><div style="font-size:12px;color:var(--ink3)">Using Claude AI for CV feedback, cover letters and interview prep.</div><div style="font-size:11px;font-family:var(--fm);color:var(--ink4);margin-top:10px">7 articles</div></div>
+      </div>
+      <div class="card" style="cursor:pointer;transition:all .2s" onclick="showHelpCat('billing')" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='var(--shmd)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+        <div style="padding:20px"><div style="width:38px;height:38px;border-radius:var(--r10);background:var(--saved-bg);display:flex;align-items:center;justify-content:center;margin-bottom:12px"><svg fill="none" viewBox="0 0 24 24" stroke="var(--saved)" stroke-width="2" width="19" height="19"><path d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg></div><div style="font-family:var(--fd);font-size:.95rem;font-weight:800;color:var(--ink);margin-bottom:4px">Billing &amp; Plans</div><div style="font-size:12px;color:var(--ink3)">Free vs Pro, upgrading, invoices and cancellations.</div><div style="font-size:11px;font-family:var(--fm);color:var(--ink4);margin-top:10px">5 articles</div></div>
+      </div>
+      <div class="card" style="cursor:pointer;transition:all .2s" onclick="showHelpCat('privacy')" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='var(--shmd)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+        <div style="padding:20px"><div style="width:38px;height:38px;border-radius:var(--r10);background:var(--rejected-bg);display:flex;align-items:center;justify-content:center;margin-bottom:12px"><svg fill="none" viewBox="0 0 24 24" stroke="var(--rejected)" stroke-width="2" width="19" height="19"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg></div><div style="font-family:var(--fd);font-size:.95rem;font-weight:800;color:var(--ink);margin-bottom:4px">Privacy &amp; Security</div><div style="font-size:12px;color:var(--ink3)">Data export, deletion, GDPR rights and account security.</div><div style="font-size:11px;font-family:var(--fm);color:var(--ink4);margin-top:10px">6 articles</div></div>
+      </div>
+    </div>
+    <!-- FAQ section -->
+    <div class="card" id="help-faq-wrap">
+      <div class="card-hdr"><div class="card-title">Frequently asked questions</div></div>
+      <div id="help-faq">
+        <div class="help-faq-item" data-cat="getting-started cv tracker ai billing privacy">
+          <div class="help-faq-q" onclick="toggleFaq(this)"><span>How do I import my existing CV?</span><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M19 9l-7 7-7-7"/></svg></div>
+          <div class="help-faq-a">Go to <strong>CVs</strong> in the sidebar and click <strong>New CV</strong>. You can drag and drop a PDF or DOCX file, or paste text directly. WOW will parse your existing CV and make it editable.</div>
+        </div>
+        <div class="help-faq-item" data-cat="tracker">
+          <div class="help-faq-q" onclick="toggleFaq(this)"><span>How does drag-and-drop work on the Kanban board?</span><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M19 9l-7 7-7-7"/></svg></div>
+          <div class="help-faq-a">Click and hold any job card on the Kanban board or dashboard pipeline, then drag it into a different column. Dropping it there instantly updates the job's status. This works on both the mini pipeline on the dashboard and the full Kanban view.</div>
+        </div>
+        <div class="help-faq-item" data-cat="ai cv">
+          <div class="help-faq-q" onclick="toggleFaq(this)"><span>How does AI CV tailoring work?</span><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M19 9l-7 7-7-7"/></svg></div>
+          <div class="help-faq-a">In the CV editor sidebar, click <strong>✦ Tailor for [company]</strong>. This sends your CV and the job description to Claude AI, which highlights missing keywords, suggests restructuring, and rewrites sections to better match the role. Your original CV is never overwritten.</div>
+        </div>
+        <div class="help-faq-item" data-cat="ai">
+          <div class="help-faq-q" onclick="toggleFaq(this)"><span>What can the AI Assistant do?</span><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M19 9l-7 7-7-7"/></svg></div>
+          <div class="help-faq-a">The AI Assistant has four modes: <strong>CV Feedback</strong> (review and improve your CV), <strong>Cover Letter</strong> (draft tailored letters), <strong>Interview Prep</strong> (generate questions and model answers), and <strong>Job Match</strong> (score your fit against a job description). All powered by Claude AI.</div>
+        </div>
+        <div class="help-faq-item" data-cat="billing">
+          <div class="help-faq-q" onclick="toggleFaq(this)"><span>What's included in the Free plan?</span><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M19 9l-7 7-7-7"/></svg></div>
+          <div class="help-faq-a">The Free plan includes up to 3 CVs, 5 cover letters, 50 AI messages per month, unlimited job tracking, and basic interview prep. Pro (£9/month) gives you unlimited everything, ATS scoring, and priority support.</div>
+        </div>
+        <div class="help-faq-item" data-cat="privacy">
+          <div class="help-faq-q" onclick="toggleFaq(this)"><span>How do I export or delete my data?</span><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M19 9l-7 7-7-7"/></svg></div>
+          <div class="help-faq-a">Go to <strong>Account → Data &amp; Privacy</strong>. You can export a ZIP of all your CVs, cover letters and job data at any time. To permanently delete your account and all associated data, click <strong>Delete account</strong> in the danger zone.</div>
+        </div>
+        <div class="help-faq-item" data-cat="getting-started">
+          <div class="help-faq-q" onclick="toggleFaq(this)"><span>Can I share my CV or cover letter with a recruiter?</span><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M19 9l-7 7-7-7"/></svg></div>
+          <div class="help-faq-a">Yes — click the <strong>Share</strong> button on any CV or cover letter to generate a view-only link. Links expire after 30 days by default, but you can revoke access at any time from the Share modal.</div>
+        </div>
+        <div class="help-faq-item" data-cat="tracker ai">
+          <div class="help-faq-q" onclick="toggleFaq(this)"><span>How does interview prep work?</span><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M19 9l-7 7-7-7"/></svg></div>
+          <div class="help-faq-a">Go to <strong>Interview Prep</strong> to see prep cards for each upcoming interview. Click <strong>Prepare →</strong> to open the AI coach, which generates role-specific questions and gives you real-time feedback on your practice answers. Progress is tracked per interview.</div>
+        </div>
+      </div>
+    </div>
+    <!-- Contact section -->
+    <div style="margin-top:16px;background:linear-gradient(135deg,var(--sb),var(--sb3));border-radius:var(--r20);padding:24px 28px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap">
+      <div><div style="font-family:var(--fd);font-size:1.05rem;font-weight:800;color:white;margin-bottom:4px">Still need help?</div><div style="font-size:13px;color:rgba(255,255,255,0.55)">Our support team typically responds within 4 hours on weekdays.</div></div>
+      <div style="display:flex;gap:8px">
+        <button class="btn" style="background:rgba(255,255,255,0.12);color:white;border:1.5px solid rgba(255,255,255,0.2)" onclick="window.open('mailto:support@wow.app')">Email support</button>
+        <button class="btn" style="background:var(--pw);color:white">Live chat</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SEARCH ═══ -->
+  <div class="pg" id="pg-search">
+    <div class="ph">
+      <div><div class="ph-title">Search</div><div class="ph-sub" id="search-sub">Search across your jobs, CVs and documents</div></div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;background:white;border:1.5px solid var(--bdr2);border-radius:var(--r20);padding:0 18px;height:50px;margin-bottom:20px;box-shadow:var(--shsm);transition:box-shadow .2s" onfocusin="this.style.boxShadow='0 0 0 3px rgba(91,114,201,0.15)'" onfocusout="this.style.boxShadow='var(--shsm)'">
+      <svg fill="none" viewBox="0 0 24 24" stroke="var(--ink4)" stroke-width="2" width="18" height="18"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input id="search-inp" style="border:none;outline:none;font-family:var(--fb);font-size:15px;color:var(--ink);flex:1;background:none" placeholder="Search jobs, CVs, cover letters, documents…" oninput="doSearch(this.value)">
+      <span id="search-clear" style="color:var(--ink4);cursor:pointer;font-size:18px;display:none" onclick="clearSearch()">✕</span>
+    </div>
+    <div id="search-results"></div>
+  </div>
+
+</main>
+
+<!-- ═══ JOB DETAIL OVERLAY ═══ -->
+<div class="jdp-ov" id="jd-ov" onclick="closeJDifOv(event)">
+  <div class="jdp-panel">
+    <div class="jdp-hdr">
+      <button class="jdp-close" onclick="closeJD()">✕</button>
+      <div class="jdp-co" id="jdp-co">Canva</div>
+      <div class="jdp-role" id="jdp-role">Lead UX Designer</div>
+      <div id="jdp-status"></div>
+    </div>
+    <div class="jdp-body">
+      <!-- Job description link -->
+      <div style="margin-bottom:18px">
+        <div class="jdp-st">Job posting link</div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <input id="jdp-url-inp" style="flex:1;padding:8px 12px;border:1.5px solid var(--bdr2);border-radius:var(--r10);font-family:var(--fm);font-size:12px;color:var(--ink2);background:var(--bg);outline:none;transition:border-color .15s" placeholder="https://careers.company.com/…" onfocus="this.style.borderColor='var(--pw)'" onblur="this.style.borderColor='var(--bdr2)'">
+          <button onclick="openJDLink()" style="padding:7px 13px;border-radius:var(--r10);border:1.5px solid var(--bdr2);background:white;font-size:12px;font-weight:600;color:var(--ink3);cursor:pointer;font-family:var(--fb);transition:all .15s;white-space:nowrap" onmouseover="this.style.borderColor='var(--pw)';this.style.color='var(--pw)'" onmouseout="this.style.borderColor='var(--bdr2)';this.style.color='var(--ink3)'">Open ↗</button>
+        </div>
+      </div>
+      <div style="margin-bottom:18px"><div class="jdp-st">Details</div><div class="jdp-mg" id="jdp-meta"></div></div>
+      <div style="margin-bottom:18px"><div class="jdp-st">Documents used</div><div id="jdp-docs"></div></div>
+      <div style="margin-bottom:18px"><div class="jdp-st">Timeline</div><div id="jdp-tl"></div></div>
+      <div style="margin-bottom:16px"><div class="jdp-st">Notes</div><textarea style="width:100%;border:1.5px solid var(--bdr);border-radius:var(--r10);padding:10px 13px;font-family:var(--fb);font-size:13px;color:var(--ink2);resize:none;outline:none;background:var(--bg)" rows="3" id="jdp-notes"></textarea></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-p" style="flex:1;justify-content:center">Update status</button>
+        <button class="btn btn-s" style="flex:1;justify-content:center" onclick="closeJD();openAIPrepMode()">✦ Prep with AI</button>
+        <button class="btn" style="background:var(--rejected-bg);color:var(--rejected);border:1.5px solid rgba(220,38,38,0.2);font-size:12px;font-weight:600;font-family:var(--fb);cursor:pointer;border-radius:var(--r20);padding:7px 14px;display:inline-flex;align-items:center;gap:5px;transition:all .15s" onclick="deleteCurrentJob()" onmouseover="this.style.background='var(--rejected)';this.style.color='white'" onmouseout="this.style.background='var(--rejected-bg)';this.style.color='var(--rejected)'"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADD JOB MODAL -->
+<div class="modal-ov" id="add-job-modal" onclick="closeOvClick(event,'add-job-modal')">
+  <div class="modal">
+    <div class="modal-hdr"><div class="modal-title">Add new job</div><button class="modal-x" onclick="closeModal('add-job-modal')">✕</button></div>
+    <div class="form-row"><div class="form-grp"><label class="form-lbl">Company</label><input class="form-inp" placeholder="e.g. Figma"></div><div class="form-grp"><label class="form-lbl">Role title</label><input class="form-inp" placeholder="e.g. UX Designer"></div></div>
+    <div class="form-grp"><label class="form-lbl">Job posting URL</label><input class="form-inp" type="url" placeholder="https://…"></div>
+    <div class="form-row"><div class="form-grp"><label class="form-lbl">Status</label><select class="form-sel"><option>Saved</option><option>Applied</option><option>Phone Screen</option><option>1st Interview</option><option>2nd Interview</option><option>Final Round</option><option>Offer</option></select></div><div class="form-grp"><label class="form-lbl">Location</label><select class="form-sel"><option>Remote</option><option>Hybrid</option><option>On-site</option></select></div></div>
+    <div class="form-row"><div class="form-grp"><label class="form-lbl">Salary</label><input class="form-inp" placeholder="e.g. £80–100k"></div><div class="form-grp"><label class="form-lbl">CV version</label><select class="form-sel"><option>UX — Product Focus</option><option>UX — System Design</option><option>None yet</option></select></div></div>
+    <div class="modal-ftr"><button class="btn btn-s" onclick="closeModal('add-job-modal')">Cancel</button><button class="btn btn-p" onclick="closeModal('add-job-modal')"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M12 4v16m8-8H4"/></svg>Add Job</button></div>
+  </div>
+</div>
+
+<!-- SHARE MODAL -->
+<div class="modal-ov" id="share-modal" onclick="closeOvClick(event,'share-modal')">
+  <div class="modal">
+    <div class="modal-hdr"><div class="modal-title">Share</div><button class="modal-x" onclick="closeModal('share-modal')">✕</button></div>
+    <div style="font-size:13.5px;color:var(--ink3);margin-bottom:4px;font-weight:500">Sharing: <strong id="share-item-name" style="color:var(--ink)">Document</strong></div>
+    <div class="share-url-row">
+      <input class="share-url-inp" value="https://wow.app/share/abc-xyz-123" readonly id="share-url-val">
+      <button class="btn btn-p" style="flex-shrink:0" onclick="copyShareURL()">Copy</button>
+    </div>
+    <div style="font-size:11px;color:var(--ink3);font-family:var(--fm);margin-bottom:14px;font-weight:500">✓ Link is view-only · expires in 30 days · anyone with the link can view</div>
+    <div class="share-opts">
+      <div class="share-opt"><div class="share-oi" style="background:rgba(91,114,201,0.1)"><svg fill="none" viewBox="0 0 24 24" stroke="var(--saved)" stroke-width="2"><path d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg></div><div><div class="share-on">Copy link</div><div class="share-od">View-only URL</div></div></div>
+      <div class="share-opt"><div class="share-oi" style="background:rgba(5,150,105,0.1)"><svg fill="none" viewBox="0 0 24 24" stroke="var(--offer)" stroke-width="2"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></div><div><div class="share-on">Send via email</div><div class="share-od">Open in mail client</div></div></div>
+      <div class="share-opt"><div class="share-oi" style="background:rgba(3,105,161,0.1)"><svg fill="none" viewBox="0 0 24 24" stroke="var(--doc-c)" stroke-width="2"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg></div><div><div class="share-on">Download file</div><div class="share-od">Save as PDF/DOCX</div></div></div>
+      <div class="share-opt"><div class="share-oi" style="background:rgba(217,119,6,0.1)"><svg fill="none" viewBox="0 0 24 24" stroke="var(--applied)" stroke-width="2"><path d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg></div><div><div class="share-on">Manage access</div><div class="share-od">Control permissions</div></div></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════
+// PAGE ROUTING
+// ═══════════════════════════════
+const pageTitles={dashboard:'Dashboard',jobs:'Job Tracker',kanban:'Kanban Board',cvs:'CVs','cv-editor':'CV Editor','cv-dl':'Download CV',cl:'Cover Letters','cl-editor':'Cover Letter Editor','cl-export':'Export Cover Letter',docs:'Docs & Links',prep:'Interview Prep',ai:'AI Assistant',alerts:'Alerts',account:'Account',help:'Help Centre',search:'Search'};
+
+function goPage(name,btn){
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('active'));
+  const p=document.getElementById('pg-'+name);
+  if(p)p.classList.add('active');
+  document.getElementById('pg-title').textContent=pageTitles[name]||name;
+  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
+  if(btn){btn.classList.add('active');return}
+  document.querySelectorAll('.ni').forEach(n=>{
+    const dp=n.getAttribute('data-p');
+    if(dp===name)n.classList.add('active');
+    if(name.startsWith('cv')&&dp==='cvs')n.classList.add('active');
+    if(name.startsWith('cl')&&dp==='cl')n.classList.add('active');
+    if(name==='kanban'&&dp==='jobs')n.classList.add('active');
+  });
+}
+
+// ═══════════════════════════════
+// CHART DATA & RENDERING
+// ═══════════════════════════════
+const chartSets={
+  week:{
+    label:'2026 · weekly view (last 8 weeks)',
+    data:[
+      {m:'W6\nJan',apps:2,ints:0},{m:'W7\nJan',apps:3,ints:1},{m:'W8\nFeb',apps:4,ints:1},
+      {m:'W9\nFeb',apps:2,ints:0},{m:'W10\nMar',apps:5,ints:2},{m:'W11\nMar',apps:3,ints:2},
+      {m:'W12\nMar',apps:4,ints:3},{m:'W13\nMar',apps:4,ints:3}
+    ]
+  },
+  month:{
+    label:'2026 · monthly view',
+    data:[
+      {m:'Oct\n2025',apps:5,ints:2},{m:'Nov\n2025',apps:7,ints:3},{m:'Dec\n2025',apps:4,ints:1},
+      {m:'Jan\n2026',apps:9,ints:4},{m:'Feb\n2026',apps:11,ints:5},{m:'Mar\n2026',apps:8,ints:7}
+    ]
+  },
+  year:{
+    label:'All years · annual view',
+    data:[
+      {m:'2022',apps:12,ints:4},{m:'2023',apps:18,ints:7},{m:'2024',apps:22,ints:9},{m:'2025',apps:28,ints:11},{m:'2026',apps:34,ints:7}
+    ]
+  }
+};
+
+let currentPeriod='month';
+
+function setPeriod(period,btn){
+  currentPeriod=period;
+  document.querySelectorAll('.ptab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const set=chartSets[period];
+  document.getElementById('chart-subtitle').textContent=set.label;
+  buildChart(set.data);
+}
+
+function buildChart(data){
+  const bc=document.getElementById('bar-chart');
+  const tt=document.getElementById('bar-tt');
+  if(!bc)return;
+  bc.innerHTML='';
+  const maxV=Math.max(...data.map(d=>d.apps),1);
+  data.forEach(d=>{
+    const g=document.createElement('div');g.className='bar-grp';
+    const bars=document.createElement('div');bars.className='bars';
+    // Application bar
+    const bA=document.createElement('div');bA.className='bar';
+    bA.style.cssText=`height:${(d.apps/maxV)*100}%;background:var(--saved);opacity:0.8`;
+    // Interview bar
+    const bI=document.createElement('div');bI.className='bar';
+    bI.style.cssText=`height:${(d.ints/maxV)*100}%;background:var(--int1)`;
+    bars.appendChild(bA);bars.appendChild(bI);
+    // Label — two lines (month + year), matching screenshot
+    const lbl=document.createElement('div');lbl.className='bar-lbl';
+    const lines=d.m.split('\n');
+    lbl.innerHTML=lines.map(l=>`<span style="display:block">${l}</span>`).join('');
+    g.appendChild(bars);g.appendChild(lbl);
+    // Tooltip on hover
+    g.addEventListener('mouseenter',e=>{
+      tt.textContent=`${d.m.replace('\n',' ')}: ${d.apps} apps, ${d.ints} interviews`;
+      tt.classList.add('show');
+      const r=g.getBoundingClientRect();
+      const wr=bc.getBoundingClientRect();
+      tt.style.left=((r.left+r.width/2)-wr.left)+'px';
+    });
+    g.addEventListener('mouseleave',()=>tt.classList.remove('show'));
+    bc.appendChild(g);
+  });
+}
+
+// ═══════════════════════════════
+// DONUT CHART
+// ═══════════════════════════════
+function buildDonut(){
+  const segs=document.querySelectorAll('.donut-seg');
+  const mn=document.getElementById('d-main');
+  const sb=document.getElementById('d-sub');
+  const rows=document.querySelectorAll('.donut-row');
+  segs.forEach((s,i)=>{
+    s.style.transition='stroke-width 0.2s,opacity 0.2s';
+    s.addEventListener('mouseenter',()=>{
+      segs.forEach(ss=>{ss.style.opacity='0.35';ss.style.strokeWidth='16'});
+      s.style.opacity='1';s.style.strokeWidth='20';
+      const parts=s.getAttribute('data-label').split('|');
+      mn.textContent=parts[1];sb.textContent=parts[0];
+    });
+    s.addEventListener('mouseleave',()=>{
+      segs.forEach(ss=>{ss.style.opacity='1';ss.style.strokeWidth='16'});
+      mn.textContent='34';sb.textContent='TOTAL';
+    });
+  });
+  rows.forEach((row,i)=>{
+    row.addEventListener('mouseenter',()=>segs[i]?.dispatchEvent(new Event('mouseenter')));
+    row.addEventListener('mouseleave',()=>segs[i]?.dispatchEvent(new Event('mouseleave')));
+  });
+}
+
+// ═══════════════════════════════
+// KANBAN DATA
+// ═══════════════════════════════
+
+// 5-col mini (dashboard) — Saved / Applied / Interview / Offer / Rejected
+const MINI_COLS_DEF=[
+  {id:'saved',   label:'Saved',    cls:'col-saved',    jobs:[
+    {co:'Monzo',   role:'Senior UX Designer, Growth',   tag:'Hybrid', date:'2d ago',  id:'monzo'},
+    {co:'Deliveroo',role:'Lead Designer, Consumer',     tag:'Remote', date:'5d ago',  id:'deliveroo'}
+  ]},
+  {id:'applied', label:'Applied',  cls:'col-applied',  jobs:[
+    {co:'Revolut', role:'Senior Product Designer',      tag:'Remote', date:'1w ago',  id:'revolut'},
+    {co:'Figma',   role:'Design Advocate, EMEA',        tag:'Remote', date:'1w ago',  id:'figma'}
+  ]},
+  {id:'int',     label:'Interview',cls:'col-int1',      jobs:[
+    {co:'Spotify', role:'Product Designer II',          tag:'Hybrid', date:'Apr 3',   id:'spotify'},
+    {co:'Notion',  role:'Senior UX, Collaboration',     tag:'Remote', date:'Apr 7',   id:'notion'}
+  ]},
+  {id:'offer',   label:'Offer',    cls:'col-offer',    jobs:[
+    {co:'Canva',   role:'Lead UX Designer',             tag:'Remote', date:'Exp Apr 8',id:'canva'}
+  ]},
+  {id:'rejected',label:'Rejected', cls:'col-rejected', jobs:[
+    {co:'Stripe',  role:'Design Systems Lead',          tag:'Hybrid', date:'3w ago',  id:'stripe'}
+  ]}
+];
+
+// 6-col full kanban — single Interview stage
+const FULL_COLS_DEF=[
+  {id:'saved',   label:'Saved',        cls:'col-saved',    jobs:[
+    {co:'Monzo',   role:'Senior UX Designer, Growth',   tag:'Hybrid', date:'2d ago',  id:'monzo'},
+    {co:'Deliveroo',role:'Lead Designer, Consumer',     tag:'Remote', date:'5d ago',  id:'deliveroo'}
+  ]},
+  {id:'applied', label:'Applied',      cls:'col-applied',  jobs:[
+    {co:'Revolut', role:'Senior Product Designer',      tag:'Remote', date:'1w ago',  id:'revolut'},
+    {co:'Figma',   role:'Design Advocate, EMEA',        tag:'Remote', date:'1w ago',  id:'figma'}
+  ]},
+  {id:'phone',   label:'Phone Screen', cls:'col-phone',    jobs:[
+    {co:'Adobe',   role:'Sr UX Designer',               tag:'Remote', date:'Mar 18',  id:'adobe', interview:'Apr 1 · 30 min', interviewer:'Sarah K.'}
+  ]},
+  {id:'int',     label:'Interview',    cls:'col-int1',     jobs:[
+    {co:'Spotify', role:'Product Designer II',          tag:'Hybrid', date:'Apr 3',   id:'spotify', interview:'Apr 3 · 45 min', interviewer:'Anna K.'},
+    {co:'Notion',  role:'Senior UX, Collaboration',     tag:'Remote', date:'Apr 7',   id:'notion',  interview:'Apr 7 · 3 hrs',  interviewer:'Panel of 4'}
+  ]},
+  {id:'offer',   label:'Offer',        cls:'col-offer',    jobs:[
+    {co:'Canva',   role:'Lead UX Designer',             tag:'Remote', date:'Exp Apr 8',id:'canva'}
+  ]},
+  {id:'rejected',label:'Rejected',     cls:'col-rejected', jobs:[
+    {co:'Stripe',  role:'Design Systems Lead',          tag:'Hybrid', date:'3w ago',  id:'stripe'}
+  ]}
+];
+
+let _dragCard=null;
+let _currentJDId=null;
+
+// ── Screenshot-style mini kanban: white cards, flat col headers ──
+function buildMiniKanban(){
+  const wrap=document.getElementById('mini-kanban');
+  if(!wrap)return;
+  wrap.innerHTML='';
+  const board=document.createElement('div');
+  board.style.cssText='display:flex;gap:12px;overflow-x:auto;padding-bottom:2px';
+
+  const colourMap={saved:'var(--saved)',applied:'var(--applied)',int:'var(--int1)',offer:'var(--offer)',rejected:'var(--rejected)'};
+  const bgMap={saved:'rgba(91,114,201,0.12)',applied:'rgba(217,119,6,0.12)',int:'rgba(124,58,237,0.12)',offer:'rgba(5,150,105,0.12)',rejected:'rgba(220,38,38,0.12)'};
+
+  MINI_COLS_DEF.forEach(col=>{
+    const colEl=document.createElement('div');
+    colEl.dataset.col=col.id;
+    colEl.style.cssText='flex:1;min-width:150px;display:flex;flex-direction:column;gap:7px';
+
+    // Plain text header with coloured label + count badge
+    const hdr=document.createElement('div');
+    hdr.style.cssText='display:flex;align-items:center;justify-content:space-between;padding:0 1px 4px';
+    hdr.innerHTML=`
+      <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-family:var(--fm);color:${colourMap[col.id]}">${col.label}</span>
+      <span style="font-family:var(--fm);font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;background:${bgMap[col.id]};color:${colourMap[col.id]}">${col.jobs.length}</span>`;
+    colEl.appendChild(hdr);
+
+    // Cards — white, no background tint
+    col.jobs.forEach(j=>{
+      const card=document.createElement('div');
+      card.className='jcard';
+      card.style.marginBottom='0';
+      card.draggable=true;
+      card.dataset.jobId=j.id;
+      card.dataset.colId=col.id;
+      const tagCls=j.tag==='Remote'?'tag-r':j.tag==='Hybrid'?'tag-h':'tag-o';
+      card.innerHTML=`<div class="jc-co">${j.co}</div><div class="jc-role">${j.role}</div><div class="jc-meta"><span class="jc-tag ${tagCls}">${j.tag}</span><span class="jc-date">${j.date}</span></div>`;
+      card.addEventListener('click',()=>openJD(j.id));
+      card.addEventListener('dragstart',e=>{_dragCard=card;card.classList.add('dragging');e.dataTransfer.effectAllowed='move';});
+      card.addEventListener('dragend',()=>{card.classList.remove('dragging');document.querySelectorAll('[data-col]').forEach(c=>c.classList.remove('drag-over'));});
+      colEl.appendChild(card);
+    });
+
+    // + Add
+    const add=document.createElement('button');
+    add.className='k-add';add.style.marginTop='2px';
+    add.innerHTML='<svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M12 4v16m8-8H4"/></svg> Add';
+    add.onclick=()=>openModal('add-job-modal');
+    colEl.appendChild(add);
+
+    // Drop zone
+    colEl.addEventListener('dragover',e=>{e.preventDefault();colEl.classList.add('drag-over')});
+    colEl.addEventListener('dragleave',e=>{if(!colEl.contains(e.relatedTarget))colEl.classList.remove('drag-over')});
+    colEl.addEventListener('drop',e=>{
+      e.preventDefault();colEl.classList.remove('drag-over');
+      if(!_dragCard||_dragCard.dataset.colId===col.id)return;
+      const fromCol=MINI_COLS_DEF.find(c=>c.id===_dragCard.dataset.colId);
+      const toCol=MINI_COLS_DEF.find(c=>c.id===col.id);
+      if(!fromCol||!toCol)return;
+      const idx=fromCol.jobs.findIndex(j=>j.id===_dragCard.dataset.jobId);
+      if(idx===-1)return;
+      const[job]=fromCol.jobs.splice(idx,1);
+      toCol.jobs.push(job);
+      _dragCard=null;
+      buildMiniKanban();
+      buildFullKanban();
+    });
+
+    board.appendChild(colEl);
+  });
+  wrap.appendChild(board);
+}
+
+// ── Full Kanban: 6 cols, single "Interview" stage ──
+function buildFullKanban(){
+  const wrap=document.getElementById('full-kanban-board');
+  if(!wrap)return;
+  wrap.innerHTML='';
+  FULL_COLS_DEF.forEach(col=>{
+    const colEl=document.createElement('div');
+    colEl.className=`k-col ${col.cls}`;
+    colEl.dataset.col=col.id;
+    colEl.style.cssText='flex:1 0 auto;min-width:172px';
+    colEl.innerHTML=`<div class="k-hdr"><span class="k-title">${col.label}</span><span class="k-cnt">${col.jobs.length}</span></div>`;
+    col.jobs.forEach(j=>{
+      const card=document.createElement('div');
+      card.className='jcard';card.draggable=true;
+      card.dataset.jobId=j.id;card.dataset.col=col.id;
+      const tagCls=j.tag==='Remote'?'tag-r':j.tag==='Hybrid'?'tag-h':'tag-o';
+      let extra='';
+      if(j.interview) extra=`<div class="jcard-extra"><div class="jce-row"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>${j.interview}</div><div class="jce-row"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>${j.interviewer}</div></div>`;
+      card.innerHTML=`<div class="jc-co">${j.co}</div><div class="jc-role">${j.role}</div><div class="jc-meta"><span class="jc-tag ${tagCls}">${j.tag}</span><span class="jc-date">${j.date}</span></div>${extra}`;
+      card.addEventListener('click',()=>openJD(j.id));
+      card.addEventListener('dragstart',e=>{_dragCard=card;card.classList.add('dragging');e.dataTransfer.effectAllowed='move';e.dataTransfer.setData('text/plain',j.id);});
+      card.addEventListener('dragend',()=>{card.classList.remove('dragging');document.querySelectorAll('.k-col').forEach(c=>c.classList.remove('drag-over'));});
+      colEl.appendChild(card);
+    });
+    const add=document.createElement('button');add.className='k-add';
+    add.innerHTML='<svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M12 4v16m8-8H4"/></svg>Add';
+    add.onclick=()=>openModal('add-job-modal');colEl.appendChild(add);
+    colEl.addEventListener('dragover',e=>{e.preventDefault();colEl.classList.add('drag-over');});
+    colEl.addEventListener('dragleave',e=>{if(!colEl.contains(e.relatedTarget))colEl.classList.remove('drag-over');});
+    colEl.addEventListener('drop',e=>{
+      e.preventDefault();colEl.classList.remove('drag-over');
+      if(!_dragCard||_dragCard.dataset.col===col.id)return;
+      const fromC=FULL_COLS_DEF.find(c=>c.id===_dragCard.dataset.col);
+      const toC=FULL_COLS_DEF.find(c=>c.id===col.id);
+      if(!fromC||!toC)return;
+      const idx=fromC.jobs.findIndex(j=>j.id===_dragCard.dataset.jobId);
+      if(idx===-1)return;
+      const[job]=fromC.jobs.splice(idx,1);toC.jobs.push(job);_dragCard=null;
+      buildMiniKanban();buildFullKanban();
+    });
+    wrap.appendChild(colEl);
+  });
+}
+
+// ═══════════════════════════════
+// JOB DETAIL PANEL
+// ═══════════════════════════════
+const jdData={
+  canva:{co:'Canva',role:'Lead UX Designer',status:'offer',sCls:'sp-offer',sTxt:'● Offer',salary:'£90–110k',type:'Remote',applied:'Mar 18',cv:'UX — Product Focus',cl:'Canva — Lead UX',url:'https://www.canva.com/careers',notes:'Recruiter: Sophie Lee · Offer expires Apr 8 · £95k base + equity.',timeline:[{c:'var(--offer)',d:'Mar 29',e:'Offer received — £95k base'},{c:'var(--int1)',d:'Mar 25',e:'Final interview — design challenge'},{c:'var(--applied)',d:'Mar 10',e:'Application submitted'},{c:'var(--saved)',d:'Mar 8',e:'Job saved'}]},
+  notion:{co:'Notion',role:'Senior UX, Collaboration',status:'interview',sCls:'sp-int1',sTxt:'● Interview',salary:'£80–95k',type:'Remote',applied:'Mar 12',cv:'UX — System Design',cl:'Notion — Senior UX',url:'https://www.notion.so/careers',notes:'Final round Apr 7. Panel of 4. Design critique, strategy, portfolio deep-dive.',timeline:[{c:'var(--int1)',d:'Apr 7',e:'Final round scheduled — Zoom, 3 hrs'},{c:'var(--int1)',d:'Mar 25',e:'2nd interview passed'},{c:'var(--applied)',d:'Mar 12',e:'Applied via LinkedIn'}]},
+  spotify:{co:'Spotify',role:'Product Designer II, Discovery',status:'interview',sCls:'sp-int1',sTxt:'● Interview',salary:'£75–90k',type:'London (Hybrid)',applied:'Mar 20',cv:'UX — Product Focus',cl:'Spotify — Product Designer II',url:'https://www.lifeatspotify.com/jobs',notes:'Technical screen Apr 3 at 10am. Portfolio walk-through + Figma task.',timeline:[{c:'var(--int1)',d:'Apr 3',e:'Technical screen — Google Meet'},{c:'var(--phone)',d:'Mar 28',e:'Phone screen passed'},{c:'var(--applied)',d:'Mar 20',e:'Applied via Greenhouse'}]},
+  revolut:{co:'Revolut',role:'Senior Product Designer',status:'applied',sCls:'sp-applied',sTxt:'● Applied',salary:'£85–100k',type:'Remote',applied:'Mar 22',cv:'UX — Product Focus',cl:'Revolut — Senior Designer',url:'https://www.revolut.com/careers',notes:'No response yet. Consider following up after Apr 1.',timeline:[{c:'var(--applied)',d:'Mar 22',e:'Application submitted via Workable'}]},
+  figma:{co:'Figma',role:'Design Advocate, EMEA',status:'applied',sCls:'sp-phone',sTxt:'● Phone Screen',salary:'£80–95k',type:'Remote',applied:'Mar 22',cv:'UX — Product Focus',cl:'None — not submitted',url:'https://www.figma.com/careers',notes:'No cover letter submitted. Phone screen scheduled.',timeline:[{c:'var(--phone)',d:'Apr 1',e:'Phone screen scheduled'},{c:'var(--applied)',d:'Mar 22',e:'Applied via Figma careers'}]},
+  monzo:{co:'Monzo',role:'Senior UX Designer, Growth',status:'saved',sCls:'sp-saved',sTxt:'Saved',salary:'£75–90k',type:'London (Hybrid)',applied:'—',cv:'Not applied yet',cl:'Not applied yet',url:'https://monzo.com/careers',notes:'Strong match. Deadline unclear. Consider applying this week.',timeline:[{c:'var(--saved)',d:'Mar 29',e:'Job saved'}]},
+  stripe:{co:'Stripe',role:'Design Systems Lead',status:'rejected',sCls:'sp-rejected',sTxt:'● Rejected',salary:'£95–120k',type:'London (Hybrid)',applied:'Mar 5',cv:'UX — System Design',cl:'Stripe — Design Systems',url:'https://stripe.com/jobs',notes:'Feedback: Looking for more systems-at-scale experience. Reapply in 12 months.',timeline:[{c:'var(--rejected)',d:'Mar 26',e:'Application rejected — feedback received'},{c:'var(--int1)',d:'Mar 20',e:'1st round interview'},{c:'var(--applied)',d:'Mar 5',e:'Applied via Stripe careers'}]},
+  adobe:{co:'Adobe',role:'Senior UX Designer',status:'phone',sCls:'sp-phone',sTxt:'● Phone Screen',salary:'£80–100k',type:'Remote',applied:'Mar 15',cv:'UX — Product Focus',cl:'Adobe CL',url:'https://adobe.com/careers',notes:'Phone screen Apr 1 with Sarah K.',timeline:[{c:'var(--phone)',d:'Apr 1',e:'Phone screen scheduled'},{c:'var(--applied)',d:'Mar 15',e:'Applied via Adobe careers'}]},
+  deliveroo:{co:'Deliveroo',role:'Lead Designer, Consumer',status:'saved',sCls:'sp-saved',sTxt:'Saved',salary:'£85–100k',type:'London (Hybrid)',applied:'—',cv:'Not applied yet',cl:'Not applied yet',url:'',notes:'Good match. Deadline unclear.',timeline:[{c:'var(--saved)',d:'Mar 28',e:'Job saved'}]}
+};
+
+function openJD(id){
+  const j=jdData[id];if(!j)return;
+  _currentJDId=id;
+  document.getElementById('jdp-co').textContent=j.co;
+  document.getElementById('jdp-role').textContent=j.role;
+  document.getElementById('jdp-status').innerHTML=`<span class="sp ${j.sCls}">${j.sTxt}</span>`;
+  // Pre-fill URL field
+  const urlInp=document.getElementById('jdp-url-inp');
+  if(urlInp)urlInp.value=j.url||'';
+  document.getElementById('jdp-meta').innerHTML=`
+    <div class="jdp-mi"><div class="jdp-ml">Salary</div><div class="jdp-mv">${j.salary}</div></div>
+    <div class="jdp-mi"><div class="jdp-ml">Location</div><div class="jdp-mv">${j.type}</div></div>
+    <div class="jdp-mi"><div class="jdp-ml">Applied</div><div class="jdp-mv">${j.applied}</div></div>
+    <div class="jdp-mi"><div class="jdp-ml">Status</div><div class="jdp-mv" style="text-transform:capitalize">${j.status}</div></div>`;
+  document.getElementById('jdp-docs').innerHTML=`
+    <div class="dlc" onclick="goPage('cv-editor',null);closeJD()"><div class="dlci" style="background:var(--pw-bg)"><svg fill="none" viewBox="0 0 24 24" stroke="var(--pw)" stroke-width="2"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></div><div><div style="font-size:13px;font-weight:600;color:var(--ink)">CV: ${j.cv}</div><div style="font-size:12px;color:var(--ink3)">Click to view or edit</div></div></div>
+    <div class="dlc" onclick="goPage('cl-editor',null);closeJD()"><div class="dlci" style="background:rgba(190,24,93,0.1)"><svg fill="none" viewBox="0 0 24 24" stroke="var(--cl-c)" stroke-width="2"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></div><div><div style="font-size:13px;font-weight:600;color:var(--ink)">Cover Letter: ${j.cl}</div><div style="font-size:12px;color:var(--ink3)">Click to view or edit</div></div></div>`;
+  document.getElementById('jdp-tl').innerHTML=j.timeline.map(t=>`<div class="tlitem"><div class="tl-dot" style="background:${t.c}"></div><div><div class="tl-date">${t.d}</div><div class="tl-ev">${t.e}</div></div></div>`).join('');
+  document.getElementById('jdp-notes').value=j.notes;
+  document.getElementById('jd-ov').classList.add('open');
+}
+
+function openJDLink(){
+  const inp=document.getElementById('jdp-url-inp');
+  const url=(inp&&inp.value.trim())||(_currentJDId&&jdData[_currentJDId]&&jdData[_currentJDId].url)||'';
+  if(url)window.open(url,'_blank');
+}
+
+function deleteCurrentJob(){
+  if(!_currentJDId)return;
+  const j=jdData[_currentJDId];
+  if(!confirm(`Remove ${j?j.co+' — '+j.role:'this job'} from your tracker?`))return;
+  // Remove from kanban data arrays
+  [MINI_COLS_DEF,FULL_COLS_DEF].forEach(cols=>cols.forEach(c=>{
+    const idx=c.jobs.findIndex(job=>job.id===_currentJDId);
+    if(idx>-1)c.jobs.splice(idx,1);
+  }));
+  // Remove from table
+  const row=document.querySelector(`#pg-jobs tbody tr[data-id="${_currentJDId}"]`);
+  if(row){row.style.transition='opacity .3s,transform .3s';row.style.opacity='0';row.style.transform='translateX(20px)';setTimeout(()=>row.remove(),300);}
+  closeJD();
+  buildMiniKanban();
+  buildFullKanban();
+}
+
+function closeJD(){document.getElementById('jd-ov').classList.remove('open');_currentJDId=null;}
+function closeJDifOv(e){if(e.target===e.currentTarget)closeJD()}
+
+// ═══════════════════════════════
+// FILTERS (table)
+// ═══════════════════════════════
+function filterJobs(status,btn){
+  document.querySelectorAll('.ft').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.jtable tbody tr').forEach(tr=>{
+    tr.classList.toggle('hidden-row',status!=='all'&&tr.dataset.status!==status);
+  });
+}
+
+// ═══════════════════════════════
+// MODAL HELPERS
+// ═══════════════════════════════
+function openModal(id){document.getElementById(id).classList.add('open')}
+function closeModal(id){document.getElementById(id).classList.remove('open')}
+function closeOvClick(e,id){if(e.target===e.currentTarget)closeModal(id)}
+
+// ═══════════════════════════════
+// SHARE MODAL
+// ═══════════════════════════════
+function openShareModal(name){
+  document.getElementById('share-item-name').textContent=name;
+  const slug=name.toLowerCase().replace(/[^a-z0-9]+/g,'-').slice(0,24);
+  document.getElementById('share-url-val').value=`https://wow.app/share/${slug}-${Math.random().toString(36).slice(2,8)}`;
+  openModal('share-modal');
+}
+function copyShareURL(){
+  const inp=document.getElementById('share-url-val');
+  inp.select();document.execCommand('copy');
+  const btn=inp.nextElementSibling;const orig=btn.textContent;
+  btn.textContent='Copied!';btn.style.background='var(--offer)';
+  setTimeout(()=>{btn.textContent=orig;btn.style.background=''},1600);
+}
+
+// ═══════════════════════════════
+// ACCOUNT TABS
+// ═══════════════════════════════
+function showAccTab(tab,btn){
+  document.querySelectorAll('[id^="acc-"]:not(.acc-layout)').forEach(t=>{
+    if(['acc-profile','acc-security','acc-notif','acc-plan','acc-data'].includes(t.id))t.style.display='none';
+  });
+  document.getElementById('acc-'+tab).style.display='block';
+  document.querySelectorAll('.an-item').forEach(i=>i.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+// ═══════════════════════════════
+// AI MODES
+// ═══════════════════════════════
+function setAiMode(btn,mode){
+  document.querySelectorAll('.ai-mode').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('ai-mode-lbl').textContent=mode+' mode';
+}
+
+// Open AI page → Interview Prep mode
+function openAIPrepMode(){
+  goPage('ai',null);
+  document.querySelectorAll('.ni').forEach(n=>{if(n.getAttribute('data-p')==='ai')n.classList.add('active')});
+  const btn=document.getElementById('ai-mode-prep');
+  if(btn)setAiMode(btn,'Interview Prep');
+  _injectAIMsg('I want to prep for my upcoming interviews',
+    `Great timing, Jasmine! You have two upcoming interviews:<br><br><strong>1. Spotify — Technical Screen (Apr 3, 10am)</strong><br>6/10 prep questions done. Let's warm up on visual design questions and portfolio storytelling.<br><br><strong>2. Notion — Final Round (Apr 7, 2pm)</strong><br>Panel of 4. We should prep design critique, strategy and an exec presentation format.<br><br>Which interview do you want to tackle first?`);
+}
+
+// Open AI page → Cover Letter mode (from "Draft with AI" on CL page)
+function openAICLMode(){
+  goPage('ai',null);
+  document.querySelectorAll('.ni').forEach(n=>{if(n.getAttribute('data-p')==='ai')n.classList.add('active')});
+  const btn=document.getElementById('ai-mode-cl');
+  if(btn)setAiMode(btn,'Cover Letter');
+  _injectAIMsg('I need help drafting a cover letter',
+    `Happy to help, Jasmine! Which role are you applying for?<br><br>I can see you have active applications at <strong>Revolut</strong> and <strong>Figma</strong> without cover letters yet — or I can draft for a new role. Just tell me:<br><ul style="padding-left:15px;margin-top:8px"><li style="margin-bottom:5px">Company &amp; role title</li><li style="margin-bottom:5px">What you want to emphasise</li><li>Tone — formal, warm, punchy?</li></ul>`);
+}
+
+// Open AI page → CV Feedback mode (from "Tailor for X" in CV editor)
+function openAICVMode(company){
+  goPage('ai',null);
+  document.querySelectorAll('.ni').forEach(n=>{if(n.getAttribute('data-p')==='ai')n.classList.add('active')});
+  const btn=document.getElementById('ai-mode-cv');
+  if(btn)setAiMode(btn,'CV Feedback');
+  _injectAIMsg(`Please tailor my CV for the ${company} role`,
+    `I'm comparing your <strong>UX — Product Focus CV</strong> against the ${company} job description.<br><br>Here's what I'd change:<br><ul style="padding-left:15px;margin-top:8px"><li style="margin-bottom:5px">Move "Figma systems" higher — it's their first listed requirement</li><li style="margin-bottom:5px">Add "accessibility" to your skills section (appears 4× in the JD)</li><li>Trim the Babylon Health role to 2 bullets — keep Monzo front and centre</li></ul><br>Fit score: <strong>84 → 91/100</strong> after these changes. Want me to rewrite the profile section for ${company}?`);
+}
+
+// Shared helper: inject user + AI message into chat
+function _injectAIMsg(userMsg, aiReply){
+  const msgs=document.getElementById('chat-msgs');
+  if(!msgs)return;
+  const d=document.createElement('div');d.className='msg user';
+  d.innerHTML=`<div class="msg-ava">JL</div><div class="msg-bub">${userMsg}</div>`;
+  msgs.appendChild(d);
+  const typing=document.createElement('div');typing.className='msg ai';
+  typing.innerHTML=`<div class="msg-ava">W</div><div class="msg-bub" style="display:flex;gap:5px;align-items:center"><span class="tdot"></span><span class="tdot"></span><span class="tdot"></span></div>`;
+  msgs.appendChild(typing);msgs.scrollTop=msgs.scrollHeight;
+  setTimeout(()=>{
+    msgs.removeChild(typing);
+    const r=document.createElement('div');r.className='msg ai';
+    r.innerHTML=`<div class="msg-ava">W</div><div class="msg-bub">${aiReply}</div>`;
+    msgs.appendChild(r);msgs.scrollTop=msgs.scrollHeight;
+  },800);
+}
+
+// ═══════════════════════════════
+// CHAT
+// ═══════════════════════════════
+const chipReplies={
+  'Rewrite profile ↗':`Here's a rewritten profile tailored for Spotify:<br><br><em>"Creative UX Designer with 4+ years shipping high-impact products at scale. At Monzo, I redesigned the account overview — lifting DAU by 28% — and built a 300+ component Figma system across 3 squads. I specialise in discovery-led design and translating user research into elegant, accessible interfaces."</em><br><br>Want me to adjust the emphasis or tone?`,
+  'Interview questions ↗':`Likely questions for Spotify Product Designer II:<br><ul style="padding-left:15px;margin-top:8px"><li style="margin-bottom:6px">Walk me through a project where you had to design for ambiguity</li><li style="margin-bottom:6px">How do you approach accessibility in your design process?</li><li style="margin-bottom:6px">How would you improve Spotify's podcast discovery?</li><li style="margin-bottom:6px">Tell me about a time design and engineering disagreed</li><li>What does "good interaction design" mean to you?</li></ul><br>Want model STAR-format answers?`,
+  'Draft cover letter ↗':`Here's an opening for your Spotify letter:<br><br><em>"I was immediately drawn to this role because the intersection of music and design is where I've built my career. At Monzo I shipped discovery-led features that increased daily engagement by 28% — the same principles, clarity, delight, and a respect for attention, are exactly what I'd bring to Spotify's Discovery team."</em><br><br>Want me to write the full letter?`
+};
+
+function sendChip(btn){
+  addUserMsg(btn.textContent.replace(' ↗',''));
+  setTimeout(()=>addAiMsg(chipReplies[btn.textContent]||'Let me think through that for your specific applications…'),900);
+}
+function sendMsg(){
+  const inp=document.getElementById('chat-inp');
+  const t=inp.value.trim();if(!t)return;
+  addUserMsg(t);inp.value='';inp.style.height='auto';
+  setTimeout(()=>addAiMsg('Based on your pipeline and background, here\'s what I\'d focus on — pulling the most relevant advice for your situation.'),850);
+}
+function handleKey(e){
+  if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg()}
+  const ta=e.target;ta.style.height='auto';ta.style.height=Math.min(ta.scrollHeight,110)+'px';
+}
+function addUserMsg(text){
+  const m=document.getElementById('chat-msgs');
+  const d=document.createElement('div');d.className='msg user';
+  d.innerHTML=`<div class="msg-ava">JL</div><div class="msg-bub">${text}</div>`;
+  m.appendChild(d);m.scrollTop=m.scrollHeight;
+}
+function addAiMsg(text){
+  const m=document.getElementById('chat-msgs');
+  const t=document.createElement('div');t.className='msg ai';
+  t.innerHTML=`<div class="msg-ava">W</div><div class="msg-bub" style="display:flex;gap:5px;align-items:center"><span class="tdot"></span><span class="tdot"></span><span class="tdot"></span></div>`;
+  m.appendChild(t);m.scrollTop=m.scrollHeight;
+  setTimeout(()=>{
+    m.removeChild(t);
+    const d=document.createElement('div');d.className='msg ai';
+    d.innerHTML=`<div class="msg-ava">W</div><div class="msg-bub">${text}</div>`;
+    m.appendChild(d);m.scrollTop=m.scrollHeight;
+  },800);
+}
+
+// ═══════════════════════════════
+// INIT
+// ═══════════════════════════════
+buildChart(chartSets.month.data);
+buildDonut();
+buildMiniKanban();
+buildFullKanban();
+document.getElementById('ai-mode-cv')?.classList.add('active');
+
+// ═══════════════════════════════
+// HELP CENTRE
+// ═══════════════════════════════
+// Add help-faq CSS dynamically
+(function(){
+  const s=document.createElement('style');
+  s.textContent=`
+  .help-faq-item{border-bottom:1px solid var(--bdr)}
+  .help-faq-item:last-child{border-bottom:none}
+  .help-faq-q{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;cursor:pointer;font-size:14px;font-weight:600;color:var(--ink);gap:12px;transition:background .15s}
+  .help-faq-q:hover{background:var(--bg)}
+  .help-faq-q svg{flex-shrink:0;transition:transform .2s;color:var(--ink4)}
+  .help-faq-q.open svg{transform:rotate(180deg)}
+  .help-faq-a{display:none;padding:0 20px 16px;font-size:13.5px;color:var(--ink3);line-height:1.7}
+  .help-faq-a.open{display:block}`;
+  document.head.appendChild(s);
+})();
+
+function toggleFaq(qEl){
+  const isOpen=qEl.classList.contains('open');
+  document.querySelectorAll('.help-faq-q').forEach(q=>q.classList.remove('open'));
+  document.querySelectorAll('.help-faq-a').forEach(a=>a.classList.remove('open'));
+  if(!isOpen){
+    qEl.classList.add('open');
+    qEl.nextElementSibling.classList.add('open');
+  }
+}
+
+function showHelpCat(cat){
+  document.querySelectorAll('.help-faq-item').forEach(item=>{
+    const cats=(item.dataset.cat||'').split(' ');
+    item.style.display=cats.includes(cat)?'':'none';
+  });
+  document.getElementById('help-faq-wrap').querySelector('.card-title').textContent=
+    {'getting-started':'Getting started','cv':'CVs & Cover Letters','tracker':'Job Tracker','ai':'AI Assistant','billing':'Billing & Plans','privacy':'Privacy & Security'}[cat]||'FAQ';
+}
+
+function filterHelp(q){
+  q=q.trim().toLowerCase();
+  document.querySelectorAll('.help-faq-item').forEach(item=>{
+    if(!q){item.style.display='';return;}
+    const text=item.textContent.toLowerCase();
+    item.style.display=text.includes(q)?'':'none';
+  });
+}
+
+// ═══════════════════════════════
+// SEARCH
+// ═══════════════════════════════
+const SEARCH_INDEX=[
+  {type:'job',  icon:'💼', label:'Canva — Lead UX Designer',         sub:'Offer · Remote · £90–110k',        action:()=>openJD('canva')},
+  {type:'job',  icon:'💼', label:'Notion — Senior UX, Collaboration', sub:'Interview · Remote · £80–95k',     action:()=>openJD('notion')},
+  {type:'job',  icon:'💼', label:'Spotify — Product Designer II',      sub:'Interview · London · £75–90k',    action:()=>openJD('spotify')},
+  {type:'job',  icon:'💼', label:'Revolut — Senior Product Designer',  sub:'Applied · Remote · £85–100k',     action:()=>openJD('revolut')},
+  {type:'job',  icon:'💼', label:'Figma — Design Advocate, EMEA',      sub:'Phone Screen · Remote',           action:()=>openJD('figma')},
+  {type:'job',  icon:'💼', label:'Monzo — Senior UX Designer, Growth', sub:'Saved · London · £75–90k',        action:()=>openJD('monzo')},
+  {type:'job',  icon:'💼', label:'Stripe — Design Systems Lead',       sub:'Rejected · London · £95–120k',    action:()=>openJD('stripe')},
+  {type:'cv',   icon:'📄', label:'UX — Product Focus',                 sub:'CV · 2 pages · ATS 84%',          action:()=>goPage('cv-editor',null)},
+  {type:'cv',   icon:'📄', label:'UX — System Design',                 sub:'CV · 2 pages · ATS 79%',          action:()=>goPage('cvs',null)},
+  {type:'cl',   icon:'✉️', label:'Spotify cover letter',               sub:'Cover Letter · Mar 28 · Linked',  action:()=>goPage('cl-editor',null)},
+  {type:'cl',   icon:'✉️', label:'Notion cover letter',                sub:'Cover Letter · Mar 25 · Linked',  action:()=>goPage('cl',null)},
+  {type:'doc',  icon:'📎', label:'Portfolio 2024.pdf',                 sub:'Document · 3.2 MB',               action:()=>goPage('docs',null)},
+  {type:'doc',  icon:'📎', label:'Google UX Certificate 2023.pdf',     sub:'Document · 1.1 MB',               action:()=>goPage('docs',null)},
+  {type:'prep', icon:'🎯', label:'Spotify interview prep',             sub:'Technical Screen · Apr 3',        action:()=>goPage('prep',null)},
+  {type:'prep', icon:'🎯', label:'Notion final round prep',            sub:'Final Round · Apr 7',             action:()=>goPage('prep',null)},
+];
+const TYPE_COLOURS={job:'var(--applied)',cv:'var(--saved)',cl:'var(--cl-c)',doc:'var(--doc-c)',prep:'var(--int1)'};
+const TYPE_BG={job:'var(--applied-bg)',cv:'var(--saved-bg)',cl:'rgba(190,24,93,0.08)',doc:'rgba(3,105,161,0.08)',prep:'var(--int1-bg)'};
+const TYPE_LABELS={job:'Job',cv:'CV',cl:'Cover Letter',doc:'Document',prep:'Prep'};
+
+function openSearchPage(){
+  goPage('search',null);
+  setTimeout(()=>{
+    const inp=document.getElementById('search-inp');
+    if(inp){inp.focus();doSearch('');}
+  },50);
+}
+
+function clearSearch(){
+  const inp=document.getElementById('search-inp');
+  if(inp){inp.value='';doSearch('');}
+}
+
+function doSearch(q){
+  const wrap=document.getElementById('search-results');
+  const sub=document.getElementById('search-sub');
+  const clear=document.getElementById('search-clear');
+  if(!wrap)return;
+  if(clear)clear.style.display=q?'block':'none';
+  q=q.trim().toLowerCase();
+  if(!q){
+    sub.textContent='Search across your jobs, CVs and documents';
+    wrap.innerHTML=`<div style="text-align:center;padding:56px 0;color:var(--ink4)">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" width="48" height="48" style="margin:0 auto 14px;display:block;opacity:.3"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <div style="font-size:14px;font-family:var(--fm);text-transform:uppercase;letter-spacing:.1em;font-weight:600">Start typing to search</div>
+    </div>`;
+    return;
+  }
+  const hits=SEARCH_INDEX.filter(r=>r.label.toLowerCase().includes(q)||r.sub.toLowerCase().includes(q)||(r.type+' '+TYPE_LABELS[r.type]).toLowerCase().includes(q));
+  sub.textContent=hits.length?`${hits.length} result${hits.length!==1?'s':''} for "${q}"`:`No results for "${q}"`;
+  if(!hits.length){
+    wrap.innerHTML=`<div style="text-align:center;padding:56px 0;color:var(--ink4)">
+      <div style="font-size:36px;margin-bottom:12px">🔍</div>
+      <div style="font-size:15px;font-weight:600;color:var(--ink3);margin-bottom:6px">No results found</div>
+      <div style="font-size:13px">Try a different search term</div>
+    </div>`;
+    return;
+  }
+  // Group by type
+  const groups={};
+  hits.forEach(r=>{if(!groups[r.type])groups[r.type]=[];groups[r.type].push(r);});
+  const hl=(str)=>str.replace(new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'gi'),m=>`<mark style="background:rgba(91,114,201,0.18);color:var(--pw-dk);border-radius:3px;padding:0 2px">${m}</mark>`);
+  let html='';
+  ['job','cv','cl','doc','prep'].forEach(t=>{
+    if(!groups[t])return;
+    html+=`<div style="font-size:10px;font-family:var(--fm);text-transform:uppercase;letter-spacing:.13em;color:var(--ink4);font-weight:600;margin:0 0 8px 2px">${TYPE_LABELS[t]}s</div><div class="table-wrap" style="margin-bottom:18px">`;
+    groups[t].forEach((r,i)=>{
+      html+=`<div onclick="searchResultClick(${SEARCH_INDEX.indexOf(r)})" style="display:flex;align-items:center;gap:14px;padding:13px 16px;cursor:pointer;transition:background .1s;border-bottom:${i<groups[t].length-1?'1px solid var(--bdr)':'none'}" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background=''">
+        <div style="width:36px;height:36px;border-radius:var(--r10);background:${TYPE_BG[t]};display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px">${r.icon}</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:13.5px;font-weight:600;color:var(--ink);margin-bottom:2px">${hl(r.label)}</div>
+          <div style="font-size:12px;color:var(--ink3);font-family:var(--fm)">${hl(r.sub)}</div>
+        </div>
+        <svg fill="none" viewBox="0 0 24 24" stroke="var(--ink4)" stroke-width="2" width="14" height="14"><path d="M9 18l6-6-6-6"/></svg>
+      </div>`;
+    });
+    html+='</div>';
+  });
+  wrap.innerHTML=html;
+}
+
+function searchResultClick(idx){
+  const r=SEARCH_INDEX[idx];
+  if(r&&r.action)r.action();
+}
+
+// ═══════════════════════════════
+// EXPORT (Data & Privacy)
+// ═══════════════════════════════
+function runExport(btn){
+  const steps=[
+    {lbl:'Gathering job tracker data…',pct:15},
+    {lbl:'Compiling CVs…',pct:35},
+    {lbl:'Adding cover letters…',pct:58},
+    {lbl:'Bundling documents…',pct:76},
+    {lbl:'Compressing archive…',pct:92},
+    {lbl:'Done!',pct:100}
+  ];
+  const pw=document.getElementById('export-progress-wrap');
+  const bar=document.getElementById('export-bar');
+  const lbl=document.getElementById('export-progress-lbl');
+  const pct=document.getElementById('export-progress-pct');
+  const badge=document.getElementById('export-done-badge');
+  btn.disabled=true;btn.innerHTML='Preparing export…';
+  pw.style.display='block';
+  let i=0;
+  function next(){
+    if(i>=steps.length)return;
+    const s=steps[i++];
+    lbl.textContent=s.lbl;pct.textContent=s.pct+'%';bar.style.width=s.pct+'%';
+    if(s.pct<100){setTimeout(next,450);}
+    else{
+      setTimeout(()=>{
+        btn.disabled=false;
+        btn.style.background='var(--offer)';
+        btn.innerHTML='<svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="15" height="15"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg> Download wow-export-2026-04-02.zip';
+        badge.style.display='inline';
+        btn.onclick=()=>{
+          btn.style.background='';
+          btn.innerHTML='<svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="15" height="15"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg> Export selected data';
+          pw.style.display='none';badge.style.display='none';
+          btn.onclick=function(){runExport(this)};
+        };
+      },400);
+    }
+  }
+  next();
+}
+
+// (help and search titles declared in pageTitles above)
+</script>
+</body>
+</html>
