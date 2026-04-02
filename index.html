@@ -130,12 +130,15 @@ body{font-family:var(--fb);background:var(--bg);color:var(--ink);min-height:100v
   background:linear-gradient(135deg,var(--sb) 0%,var(--sb3) 100%);
   border-radius:var(--r20);padding:22px 28px;margin-bottom:16px;
   display:flex;align-items:center;justify-content:space-between;
-  position:relative;overflow:hidden;
+  position:relative;overflow:hidden;gap:16px;flex-wrap:wrap;
 }
 .welcome-banner::after{content:'';position:absolute;top:-40px;right:-40px;width:140px;height:140px;background:rgba(123,143,212,0.18);border-radius:50%}
 .wb-left h2{font-family:var(--fd);font-size:1.4rem;font-weight:800;color:white;letter-spacing:-0.01em;margin-bottom:4px}
 .wb-left p{font-size:13px;color:rgba(255,255,255,0.65);font-weight:400}
-.wb-right{display:flex;gap:8px;position:relative;z-index:1}
+.wb-right{display:flex;gap:8px;position:relative;z-index:1;flex-wrap:wrap}
+
+/* Mobile WOW brand in topbar */
+.mobile-brand{display:none;align-items:center;cursor:pointer;flex-shrink:0}
 
 /* ── STATS ── */
 .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:15px}
@@ -663,34 +666,38 @@ body{font-family:var(--fb);background:var(--bg);color:var(--ink);min-height:100v
 /* ══════════════════════════════
    RESPONSIVE
 ══════════════════════════════ */
+@media(max-width:1100px){
+  .stats-row{grid-template-columns:repeat(2,1fr)}
+  .charts-row{grid-template-columns:1fr}
+  .bot-row{grid-template-columns:1fr}
+}
 @media(max-width:900px){
   :root{--sw:220px}
   .feat-grid{grid-template-columns:1fr 1fr}
   .price-grid{grid-template-columns:1fr}
   .price-card.pro{order:-1}
   .stat-band-row{gap:32px}
+  .welcome-banner{padding:18px 20px}
+  .wb-left h2{font-size:1.2rem}
+  .wb-right .btn{font-size:12px;padding:7px 14px}
 }
 @media(max-width:700px){
   :root{--sw:0px}
-  .sb{transform:translateX(-248px);transition:transform .25s}
+  /* Sidebar slides in as overlay */
+  .sb{transform:translateX(-260px);transition:transform .28s cubic-bezier(.4,0,.2,1);z-index:52;width:248px}
   .sb.open{transform:translateX(0)}
   .main{margin-left:0;height:100vh;overflow-y:auto}
-  .topbar{padding:0 14px}
+  .topbar{padding:0 12px;gap:6px}
+  .topbar .search{display:none}
+  .topbar .tb-title{display:none}
   .mobile-menu-btn{display:flex !important}
-  .feat-grid{grid-template-columns:1fr}
-  .l-nav-links{display:none}
-  .l-nav{padding:0 18px}
-  .l-hero{padding:52px 20px 40px}
-  .l-section{padding:52px 20px}
-  .stats-band{padding:40px 20px}
-  .l-footer{padding:20px 18px}
-  .stat-band-row{gap:24px}
-  .hp-content{grid-template-columns:repeat(2,1fr)}
-  .hp-card.span2{grid-column:span 2}
-  .hero-preview{margin:32px 16px 0;border-radius:12px}
-  .pg{padding:14px 14px}
-  .ph{flex-direction:column;align-items:flex-start}
-  .ph-actions{flex-wrap:wrap}
+  .mobile-brand{display:flex !important}
+  /* Welcome banner stacks on mobile */
+  .welcome-banner{flex-direction:column;align-items:flex-start;padding:18px 18px}
+  .wb-right{width:100%}
+  .wb-right .btn{flex:1;justify-content:center;font-size:12px;padding:8px 10px}
+  .wb-left h2{font-size:1.1rem}
+  /* Grids */
   .stats-row{grid-template-columns:1fr 1fr}
   .charts-row{grid-template-columns:1fr}
   .bot-row{grid-template-columns:1fr}
@@ -703,7 +710,32 @@ body{font-family:var(--fb);background:var(--bg);color:var(--ink);min-height:100v
   .editor-layout{grid-template-columns:1fr;height:auto}
   .cl-el{grid-template-columns:1fr;height:auto}
   .acc-field-row{grid-template-columns:1fr}
-  .auth-box{padding:28px 22px}
+  .feat-grid{grid-template-columns:1fr}
+  /* Pages */
+  .pg{padding:12px 12px}
+  .ph{flex-direction:column;align-items:flex-start;gap:8px}
+  .ph-actions{flex-wrap:wrap}
+  /* Landing */
+  .l-nav-links{display:none}
+  .l-nav{padding:0 16px}
+  .l-hero{padding:40px 16px 36px}
+  .l-section{padding:44px 16px}
+  .stats-band{padding:36px 16px}
+  .l-footer{padding:20px 16px;flex-direction:column;gap:8px;text-align:center}
+  .stat-band-row{gap:20px}
+  .hp-content{grid-template-columns:repeat(2,1fr)}
+  .hp-card.span2{grid-column:span 2}
+  .hero-preview{margin:28px 12px 0;border-radius:12px}
+  .hero-h1{font-size:2rem}
+  /* Auth */
+  .auth-box{padding:24px 18px}
+  .price-grid{grid-template-columns:1fr}
+}
+@media(max-width:420px){
+  .stats-row{grid-template-columns:1fr}
+  .hero-btns{flex-direction:column;align-items:stretch}
+  .hero-btns .btn{justify-content:center}
+  .wb-right{flex-direction:column}
 }
 .mobile-menu-btn{display:none;width:36px;height:36px;background:none;border:1.5px solid var(--bdr);border-radius:var(--r10);align-items:center;justify-content:center;cursor:pointer;margin-right:4px}
 .mobile-menu-btn svg{width:18px;height:18px;color:var(--ink3)}
@@ -878,7 +910,7 @@ body{font-family:var(--fb);background:var(--bg);color:var(--ink);min-height:100v
 
 <!-- ════════ APP (signed-in) ════════ -->
 <div id="app-wrapper" class="hidden">
-<aside class="sb">
+<aside class="sb" id="sidebar">
   <div class="sb-logo">
     <div class="wow-logo-row" onclick="goPage('dashboard',null)">
       <div class="wow-badge">
@@ -970,6 +1002,12 @@ body{font-family:var(--fb);background:var(--bg);color:var(--ink);min-height:100v
 <main class="main">
   <div class="topbar">
     <button class="mobile-menu-btn" onclick="toggleMobileMenu()"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+    <!-- WOW brand shown only on mobile when sidebar is hidden -->
+    <div class="mobile-brand" onclick="goPage('dashboard',null)">
+      <div style="background:var(--pw);border-radius:9px;width:44px;height:28px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(91,114,201,0.4)">
+        <svg width="40" height="20" viewBox="0 0 40 20" fill="none"><text x="1" y="16" font-family="Nunito" font-weight="900" font-size="15" fill="white">WOW</text></svg>
+      </div>
+    </div>
     <div class="tb-title" id="pg-title">Dashboard</div>
     <div style="display:flex;align-items:center;gap:8px">
       <div class="search"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg><input placeholder="Search jobs, CVs…" id="topbar-search-inp" onclick="openSearchPage()" readonly style="cursor:pointer"></div>
@@ -1610,6 +1648,8 @@ body{font-family:var(--fb);background:var(--bg);color:var(--ink);min-height:100v
   </div>
 
 </main>
+<!-- Mobile sidebar overlay -->
+<div id="sidebar-overlay" onclick="closeMobileMenu()" style="display:none;position:fixed;inset:0;background:rgba(18,19,58,0.45);z-index:49;backdrop-filter:blur(2px)"></div>
 </div><!-- end #app-wrapper -->
 
 <!-- ═══ JOB DETAIL OVERLAY ═══ -->
@@ -1750,8 +1790,22 @@ function doSignOut(){
   showScreen('landing');
 }
 
+function openMobileMenu(){
+  const sb=document.getElementById('sidebar');
+  const ov=document.getElementById('sidebar-overlay');
+  if(sb)sb.classList.add('open');
+  if(ov)ov.style.display='block';
+}
+function closeMobileMenu(){
+  const sb=document.getElementById('sidebar');
+  const ov=document.getElementById('sidebar-overlay');
+  if(sb)sb.classList.remove('open');
+  if(ov)ov.style.display='none';
+}
 function toggleMobileMenu(){
-  document.getElementById('sidebar')?.classList.toggle('open');
+  const sb=document.getElementById('sidebar');
+  if(sb&&sb.classList.contains('open')){closeMobileMenu();}
+  else{openMobileMenu();}
 }
 
 // Start on landing page
@@ -1759,6 +1813,8 @@ showScreen('landing');
 const pageTitles={dashboard:'Dashboard',jobs:'Job Tracker',kanban:'Kanban Board',cvs:'CVs','cv-editor':'CV Editor','cv-dl':'Download CV',cl:'Cover Letters','cl-editor':'Cover Letter Editor','cl-export':'Export Cover Letter',docs:'Docs & Links',prep:'Interview Prep',ai:'AI Assistant',alerts:'Alerts',account:'Account',help:'Help Centre',search:'Search'};
 
 function goPage(name,btn){
+  // Close mobile sidebar on navigation
+  if(window.innerWidth<=700)closeMobileMenu();
   document.querySelectorAll('.pg').forEach(p=>p.classList.remove('active'));
   const p=document.getElementById('pg-'+name);
   if(p)p.classList.add('active');
